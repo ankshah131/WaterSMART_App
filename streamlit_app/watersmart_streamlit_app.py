@@ -79,7 +79,8 @@ get_data_btn = st.sidebar.button("Get Data!")
 
 
 # Execute upon clicking "Get Data"
-if get_data_btn is not None: #and coords_ee is not None:
+#if get_data_btn is not None: #and coords_ee is not None:
+if get_data_btn is not None and coords_ee is not None:
     st.empty()
 
     # Soil type determination
