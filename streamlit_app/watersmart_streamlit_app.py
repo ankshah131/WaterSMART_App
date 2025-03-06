@@ -561,47 +561,46 @@ if get_data_btn is not None: #and coords_ee is not None:
     #     mime="application/pdf"
     # )
 
-# Function to save plots to PDF with proper title spacing
-# Function to save plots to PDF with proper title spacing
-def save_plots_to_pdf():
-    pdf_buffer = io.BytesIO()
-
-    with PdfPages(pdf_buffer) as pdf:
-        # List of ggplots to save
-        plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
-        titles = [
-            "Annual Maximum Leaf Area Index (LAI)",
-            "Boxplot of Leaf Area Index (LAI)",
-            "Annual Actual Evapotranspiration-Total (AET)",
-            "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
-            "Groundwater Subsidy Time Series",
-            "Boxplot of Annual Groundwater Subsidy",
-            "Annual Actual Evapotranspiration-Groundwater (mm)",
-            "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
-        ]
-
-        for plot, title in zip(plots, titles):
-            fig = plot.draw()  # Correctly draw ggplot as a figure
-            fig.set_size_inches(6, 4)  # Adjust figure size
-            
-            # Adjust title position with more space
-            fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
-            plt.subplots_adjust(top=0.75)  # Increase top spacing
-
-            pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
-            plt.close(fig)  # Close figure to free memory
-
-    pdf_buffer.seek(0)
-    return pdf_buffer
-
-# Button to generate and download PDF
-pdf_buffer = save_plots_to_pdf()
-st.download_button(
-    label="Download Report as PDF",
-    data=pdf_buffer,
-    file_name="LAI_AET_Report.pdf",
-    mime="application/pdf"
-)
+    # Function to save plots to PDF with proper title spacing
+    def save_plots_to_pdf():
+        pdf_buffer = io.BytesIO()
+    
+        with PdfPages(pdf_buffer) as pdf:
+            # List of ggplots to save
+            plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
+            titles = [
+                "Annual Maximum Leaf Area Index (LAI)",
+                "Boxplot of Leaf Area Index (LAI)",
+                "Annual Actual Evapotranspiration-Total (AET)",
+                "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
+                "Groundwater Subsidy Time Series",
+                "Boxplot of Annual Groundwater Subsidy",
+                "Annual Actual Evapotranspiration-Groundwater (mm)",
+                "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
+            ]
+    
+            for plot, title in zip(plots, titles):
+                fig = plot.draw()  # Correctly draw ggplot as a figure
+                fig.set_size_inches(6, 4)  # Adjust figure size
+                
+                # Adjust title position with more space
+                fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
+                plt.subplots_adjust(top=0.75)  # Increase top spacing
+    
+                pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
+                plt.close(fig)  # Close figure to free memory
+    
+        pdf_buffer.seek(0)
+        return pdf_buffer
+    
+    # Button to generate and download PDF
+    pdf_buffer = save_plots_to_pdf()
+    st.download_button(
+        label="Download Report as PDF",
+        data=pdf_buffer,
+        file_name="LAI_AET_Report.pdf",
+        mime="application/pdf"
+    )
 
 else:
     if map_data is None:
