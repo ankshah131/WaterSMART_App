@@ -1,7 +1,6 @@
 streamlit 
 pydeck 
 pandas
-base64
 io
 matplotlib
 numpy
