@@ -10,4 +10,4 @@ streamlit_folium
 earthengine-api
 geemap
 plotnine
-StringIO
+--upgrade pip
