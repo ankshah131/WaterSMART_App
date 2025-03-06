@@ -1,7 +1,6 @@
 streamlit 
 pydeck 
 pandas
-io
 matplotlib
 numpy
 Pillow 
