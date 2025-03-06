@@ -1,7 +1,9 @@
 streamlit 
 pydeck 
 pandas
-plotly 
+base64
+io
+matplotlib
 numpy
 Pillow 
 folium
