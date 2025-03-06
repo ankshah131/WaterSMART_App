@@ -86,16 +86,22 @@ for label, key in layer_options.items():
 
 
 # Add a "Get Data" button
-get_data_btn = st.sidebar.button("Get Data!")
+#get_data_btn = st.sidebar.button("Get Data!")
 
 # Add an image to the main panel
 # image_path = "/content/nature_conservancy_logo.jpeg"  # Replace with the path to your image file
 # st.image(image_path)
 
+# Add a "Get Data" button with session state tracking
+if "get_data_clicked" not in st.session_state:
+    st.session_state.get_data_clicked = False  # Ensure default state is False
 
-# Execute upon clicking "Get Data"
-#if get_data_btn is not None: #and coords_ee is not None:
-if get_data_btn is not None and coords_ee is not None:
+if st.sidebar.button("Get Data!"):
+    st.session_state.get_data_clicked = True  # Update state when button is clicked
+
+# Ensure the code only runs if the button was clicked
+if st.session_state.get_data_clicked and coords_ee is not None:
+#if get_data_btn is not None and coords_ee is not None:
     st.empty()
 
     # Soil type determination
@@ -115,21 +121,21 @@ if get_data_btn is not None and coords_ee is not None:
         "12": "clay"
     })
 
-    # # Extract soil texture for the point
-    # soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
-    # soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
-
     # Extract soil texture for the point
     soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
+    soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
+
+    # # Extract soil texture for the point
+    # soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
     
-    # Ensure soil_point is valid before proceeding
-    soil_string = "Unknown"  # Default value if no soil data is found
+    # # Ensure soil_point is valid before proceeding
+    # soil_string = "Unknown"  # Default value if no soil data is found
     
-    if soil_point is not None:
-        try:
-            soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
-        except Exception as e:
-            st.error(f"Error retrieving soil data: {str(e)}")
+    # if soil_point is not None:
+    #     try:
+    #         soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
+    #     except Exception as e:
+    #         st.error(f"Error retrieving soil data: {str(e)}")
 
 
     # Water balance calculation
