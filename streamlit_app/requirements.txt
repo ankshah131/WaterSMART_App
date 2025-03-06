@@ -7,7 +7,7 @@ Pillow
 folium
 geopandas
 streamlit_folium
-earthengine-api==0.1.381
+earthengine-api
 geemap
 plotnine
 StringIO
