@@ -50,6 +50,7 @@ st.sidebar.write("Select your area of interest by clicking on the map below:")
 
 # Initialize a Folium map with a proper basemap
 default_coords = [39.5, -117]
+coords_ee = ee.Geometry.Point(default_coords)
 folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="cartodbpositron")
 
 # Add a marker to the map
