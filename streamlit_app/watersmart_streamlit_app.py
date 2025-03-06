@@ -51,10 +51,10 @@ st.sidebar.write("Select your area of interest by clicking on the map below:")
 # Initialize a Folium map with a proper basemap
 default_coords = [39.5, -117]
 coords_ee = ee.Geometry.Point(default_coords)
-# folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="cartodbpositron")
+folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="cartodbpositron")
 
-# # Add a marker to the map
-# folium.Marker(location=default_coords, popup="Default Location").add_to(folium_map)
+# Add a marker to the map
+folium.Marker(location=default_coords, popup="Default Location").add_to(folium_map)
 
 # Embed the map in the sidebar
 with st.sidebar:
@@ -562,6 +562,7 @@ if get_data_btn is not None: #and coords_ee is not None:
     # )
 
 # Function to save plots to PDF with proper title spacing
+# Function to save plots to PDF with proper title spacing
 def save_plots_to_pdf():
     pdf_buffer = io.BytesIO()
 
@@ -583,10 +584,10 @@ def save_plots_to_pdf():
             fig = plot.draw()  # Correctly draw ggplot as a figure
             fig.set_size_inches(6, 4)  # Adjust figure size
             
-            # Add title with adjusted spacing
-            fig.suptitle(title, y=1.05, fontsize=12)  # Move title higher
-            plt.subplots_adjust(top=0.85)  # Adjust top spacing to prevent overlap
-            
+            # Adjust title position with more space
+            fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
+            plt.subplots_adjust(top=0.75)  # Increase top spacing
+
             pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
             plt.close(fig)  # Close figure to free memory
 
