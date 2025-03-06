@@ -115,9 +115,22 @@ if get_data_btn is not None and coords_ee is not None:
         "12": "clay"
     })
 
+    # # Extract soil texture for the point
+    # soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
+    # soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
+
     # Extract soil texture for the point
     soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
-    soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
+    
+    # Ensure soil_point is valid before proceeding
+    soil_string = "Unknown"  # Default value if no soil data is found
+    
+    if soil_point is not None:
+        try:
+            soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
+        except Exception as e:
+            st.error(f"Error retrieving soil data: {str(e)}")
+
 
     # Water balance calculation
     year_start = 1991
