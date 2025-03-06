@@ -69,6 +69,21 @@ if map_data is not None and "last_clicked" in map_data and map_data["last_clicke
 else:
     st.sidebar.warning("No point selected on the map yet.")
 
+# Define layer options
+layer_options = {
+    "Administrative groundwater boundaries": "groundwater_boundaries",
+    "Soil texture": "soil_texture",
+    "Average precipitation": "avg_precipitation",
+    "Average potential evapotranspiration": "avg_evapotranspiration",
+    "Average potential water deficit": "avg_water_deficit"
+}
+
+# Add checkboxes for each layer
+st.sidebar.write("### Visualization layers:")
+selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
+for label, key in layer_options.items():
+    selected_layers[key] = st.sidebar.checkbox(label, value=False)  # Ensure unchecked by default
+
 
 # Add a "Get Data" button
 get_data_btn = st.sidebar.button("Get Data!")
