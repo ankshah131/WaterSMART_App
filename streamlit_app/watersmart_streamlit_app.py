@@ -167,7 +167,7 @@ if get_data_btn is not None: #and coords_ee is not None:
 
     # Load the dataset
     #dfcoeffs = pd.read_csv('/content/MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
-    dfcoeffs = pd.read_csv('MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
+    dfcoeffs = pd.read_csv('"https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
     dfcoeffs['wtd2'] = dfcoeffs['WTD'].apply(lambda x: "Free Drain" if x == 12 else f"{x} m")
     # print(dfcoeffs)
 
