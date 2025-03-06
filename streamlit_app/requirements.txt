@@ -10,3 +10,4 @@ streamlit_folium
 ee
 geemap
 plotnine
+StringIO
