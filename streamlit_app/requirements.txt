@@ -1,0 +1,11 @@
+streamlit 
+pydeck 
+pandas
+plotly 
+numpy
+Pillow 
+folium
+geopandas
+streamlit_folium
+ee
+geemap
