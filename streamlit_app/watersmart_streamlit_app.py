@@ -63,7 +63,7 @@ with st.sidebar:
 # Check for selected coordinates from the map
 if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-    #coords_ee = ee.Geometry.Point([lon, lat])
+    coords_ee = ee.Geometry.Point([lon, lat])
     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
 else:
     st.sidebar.warning("No point selected on the map yet.")
