@@ -52,12 +52,12 @@ st.sidebar.write("Select your area of interest by clicking on the map below:")
 default_coords = [39.5, -117]
 coords_ee = ee.Geometry.Point(default_coords)
 
-# Initialize session state
-if "selected_coords" not in st.session_state:
-    st.session_state.selected_coords = default_coords
+# # Initialize session state
+# if "selected_coords" not in st.session_state:
+#     st.session_state.selected_coords = default_coords
     
-# Create Folium map
-folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+# # Create Folium map
+# folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
 
 # # Add initial marker
 # marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
@@ -76,21 +76,31 @@ folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7,
 # else:
 #     st.sidebar.warning("No point selected on the map yet.")
 
-# Sidebar where the map is displayed
+# Initialize session state
+if "selected_coords" not in st.session_state:
+    st.session_state.selected_coords = default_coords
+
+# Create Folium map
+folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+
+# Embed the map in the sidebar
 with st.sidebar:
     st.write("### Interactive Map")
     map_data = st_folium(folium_map, width=300, height=500)
 
-# Process map clicks *outside* sidebar
+# Check for selected coordinates from the map
 if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-    st.session_state.selected_coords = [map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]]
+    lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+    st.session_state.selected_coords = [lat, lon]  # Update session state with new coordinates
+    coords_ee = ee.Geometry.Point([lon, lat])
+    st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+else:
+    st.sidebar.warning("No point selected on the map yet.")
 
-# Add updated marker
+# Add updated marker after user selection
 marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
 marker.add_to(folium_map)
 
-# Display updated coordinates in sidebar
-st.sidebar.write(f"**Selected Coordinates:** ({st.session_state.selected_coords[0]:.4f}, {st.session_state.selected_coords[1]:.4f})")
 
 # Define layer options
 layer_options = {
