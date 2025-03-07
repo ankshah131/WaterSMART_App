@@ -90,14 +90,14 @@ layer_options = {
     "Average potential water deficit": None
 }
 
-# Define visualization parameters for GEE layers
-layer_vis_params = {
-    "soil_texture": {
-        'min': 1,
-        'max': 12,
-        'palette': ['blue', 'green', 'yellow', 'orange', 'red']
-    }
-}
+# # Define visualization parameters for GEE layers
+# layer_vis_params = {
+#     "soil_texture": {
+#         'min': 1,
+#         'max': 12,
+#         'palette': ['blue', 'green', 'yellow', 'orange', 'red']
+#     }
+# }
 
 # Define information for each layer
 layer_info = {
