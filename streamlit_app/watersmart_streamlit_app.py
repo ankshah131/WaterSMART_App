@@ -233,18 +233,22 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
     soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
 
-    # # Extract soil texture for the point
-    # soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
-    
-    # # Ensure soil_point is valid before proceeding
-    # soil_string = "Unknown"  # Default value if no soil data is found
-    
-    # if soil_point is not None:
-    #     try:
-    #         soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
-    #     except Exception as e:
-    #         st.error(f"Error retrieving soil data: {str(e)}")
-
+    # Display summary box before root depth selector
+    st.markdown(
+        f"""
+        <div style="
+            background-color: #c6e2a9;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #666;
+            font-family: Arial, sans-serif;">
+            <b>We've got your data, here is a summary:</b><br>
+            <b>Location:</b> {lat:.2f} N, {lon:.2f} W &nbsp;&nbsp;
+            <b>Soil type:</b> {soil_string}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Water balance calculation
     year_start = 1991
