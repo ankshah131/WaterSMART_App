@@ -125,72 +125,72 @@ layer_info = {
     "avg_water_deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
 }
 
-# # Add checkboxes for each layer with info buttons
-# st.sidebar.write("### Visualization layers:")
-# selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
-
-# for label, key in layer_options.items():
-#     cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
-    
-#     # Checkbox for layer selection
-#     with cols[0]:
-#         selected_layers[key] = st.checkbox(label, value=False)
-
-#     # Small info button
-#     with cols[1]:
-#         if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
-#             st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
-
-# Add hover tooltip CSS
-st.markdown("""
-    <style>
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-    }
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 200px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 5px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%; /* Position above the icon */
-        left: 50%;
-        margin-left: -100px;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# Sidebar layout for checkboxes with hover info
+# Add checkboxes for each layer with info buttons
 st.sidebar.write("### Visualization layers:")
 selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
 for label, key in layer_options.items():
-    cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info icon
+    cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
     
+    # Checkbox for layer selection
     with cols[0]:
         selected_layers[key] = st.checkbox(label, value=False)
 
+    # Small info button
     with cols[1]:
-        st.markdown(
-            f"""
-            <div class="tooltip">ℹ️
-                <span class="tooltiptext">{layer_info[key]}</span>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
+            st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
+
+# # Add hover tooltip CSS
+# st.markdown("""
+#     <style>
+#     .tooltip {
+#         position: relative;
+#         display: inline-block;
+#         cursor: pointer;
+#     }
+#     .tooltip .tooltiptext {
+#         visibility: hidden;
+#         width: 200px;
+#         background-color: black;
+#         color: #fff;
+#         text-align: center;
+#         border-radius: 5px;
+#         padding: 5px;
+#         position: absolute;
+#         z-index: 1;
+#         bottom: 125%; /* Position above the icon */
+#         left: 50%;
+#         margin-left: -100px;
+#         opacity: 0;
+#         transition: opacity 0.3s;
+#     }
+#     .tooltip:hover .tooltiptext {
+#         visibility: visible;
+#         opacity: 1;
+#     }
+#     </style>
+#     """, unsafe_allow_html=True)
+
+# # Sidebar layout for checkboxes with hover info
+# st.sidebar.write("### Visualization layers:")
+# selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
+
+# for label, key in layer_options.items():
+#     cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info icon
+    
+#     with cols[0]:
+#         selected_layers[key] = st.checkbox(label, value=False)
+
+#     with cols[1]:
+#         st.markdown(
+#             f"""
+#             <div class="tooltip">ℹ️
+#                 <span class="tooltiptext">{layer_info[key]}</span>
+#             </div>
+#             """,
+#             unsafe_allow_html=True
+#         )
 
 
 # Add a "Get Data" button
