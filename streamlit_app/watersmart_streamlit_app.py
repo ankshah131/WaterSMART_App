@@ -57,28 +57,63 @@ coords_ee = ee.Geometry.Point(default_coords)
 # # Add a marker to the map
 # folium.Marker(location=default_coords, popup="Default Location").add_to(folium_map)
 
-# Check if session state is initialized
+# # Check if session state is initialized
+# if "selected_coords" not in st.session_state:
+#     st.session_state.selected_coords = default_coords  # Start with default location
+
+# # Create Folium map
+# folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="cartodbpositron")
+
+# # Add marker at the selected location
+# folium.Marker(location=st.session_state.selected_coords, popup="Selected Location").add_to(folium_map)
+
+# # Embed the map in the sidebar
+# with st.sidebar:
+#     st.write("### Interactive Map")
+#     map_data = st_folium(folium_map, width=300, height=500)
+
+# # Check for selected coordinates from the map
+# if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+#     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+#     coords_ee = ee.Geometry.Point([lon, lat])
+#     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+# else:
+#     st.sidebar.warning("No point selected on the map yet.")
+
+# Initialize session state
 if "selected_coords" not in st.session_state:
-    st.session_state.selected_coords = default_coords  # Start with default location
+    st.session_state.selected_coords = default_coords
 
-# Create Folium map
-folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="cartodbpositron")
+# Function to create folium map with a marker
+def create_folium_map(coords):
+    folium_map = folium.Map(location=coords, zoom_start=7, tiles="cartodbpositron")
+    folium.Marker(location=coords, popup="Selected Location", icon=folium.Icon(color="red")).add_to(folium_map)
+    return folium_map
 
-# Add marker at the selected location
-folium.Marker(location=st.session_state.selected_coords, popup="Selected Location").add_to(folium_map)
+# Create initial map with stored coordinates
+folium_map = create_folium_map(st.session_state.selected_coords)
 
 # Embed the map in the sidebar
 with st.sidebar:
     st.write("### Interactive Map")
     map_data = st_folium(folium_map, width=300, height=500)
 
-# Check for selected coordinates from the map
-if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+# Update marker on click
+if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+    
+    # Update session state
+    st.session_state.selected_coords = [lat, lon]
+    
+    # Convert to Earth Engine Geometry if needed
     coords_ee = ee.Geometry.Point([lon, lat])
+    
     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-else:
-    st.sidebar.warning("No point selected on the map yet.")
+
+    # Re-render the map with the new marker
+    folium_map = create_folium_map(st.session_state.selected_coords)
+    st.sidebar.write("### Updated Map")
+    st_folium(folium_map, width=300, height=500)
 
 
 # Define layer options
