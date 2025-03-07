@@ -298,10 +298,27 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     # Define allowed values
     allowed_values = [0.5, 2, 3.6]
 
+    # Create columns for Rooting Depth title and info button
+    cols_rooting = st.columns([0.8, 0.2])  # Title takes 80%, button 20%
+    with cols_rooting[0]:
+        st.subheader("Rooting Depth")
+    with cols_rooting[1]:
+        if st.button("ℹ️", key="info_rooting_depth"):
+            st.write("Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. Meadow and rangeland grasses often have roots within 2 m of the ground surface, whereas some phreatophytic shrubs and trees can have roots as deep as 6 m or more (The Nature Conservancy 2021). Choose from 0.5 m for herbaceous meadow root depths, 2 m for grass root depth, and 3.6 m for phreatophyte shrubland root depths.")
+
+    
     # Use select_slider instead of slider to restrict to specific values
     rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=0.5)
-
     st.write(f"Selected Rooting Depth: {rooting_depth} m")
+
+    # Create columns for Soil Type title and info button
+    cols_soil = st.columns([0.8, 0.2])
+    with cols_soil[0]:
+        st.subheader("Soil Type")
+    with cols_soil[1]:
+        if st.button("ℹ️", key="info_soil_type"):
+            st.write("The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question. Select another soil texture to see how it could affect results. Soils with different amounts of sand, silt, and clay have differing abilities to retain water, some drain away instantly, and some also hold onto It more tightly when dry, like a clay, which can limit plant access to that water")
+
 
     soil_type = st.selectbox(
         "Select soil type:",
