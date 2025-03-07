@@ -79,7 +79,7 @@ else:
 # Define layer options
 layer_options = {
     "Administrative groundwater boundaries": None,
-    "Soil texture": ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550'),
+    "Soil texture": None,
     "Average precipitation": None,
     "Average potential evapotranspiration": None,
     "Average potential water deficit": None
@@ -103,37 +103,37 @@ layer_info = {
     "Average potential water deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
 }
 
-# # Add checkboxes for each layer with info buttons
-# st.sidebar.write("### Visualization layers:")
-# selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
-
-# for label, key in layer_options.items():
-#     cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
-    
-#     # Checkbox for layer selection
-#     with cols[0]:
-#         selected_layers[key] = st.checkbox(label, value=False)
-
-#     # Small info button
-#     with cols[1]:
-#         if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
-#             st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
-
 # Add checkboxes for each layer with info buttons
-st.sidebar.write("### Visualization Layers:")
-selected_layers = {key: False for key in layer_options.keys()}
+st.sidebar.write("### Visualization layers:")
+selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
 for label, key in layer_options.items():
-    cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+    cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
     
     # Checkbox for layer selection
     with cols[0]:
-        selected_layers[label] = st.checkbox(label, value=False)
+        selected_layers[key] = st.checkbox(label, value=False)
 
-    # Small info button with unique key based on label
+    # Small info button
     with cols[1]:
-        if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-            st.sidebar.write(f"**{label}:** {layer_info[label]}")
+        if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
+            st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
+
+# # Add checkboxes for each layer with info buttons
+# st.sidebar.write("### Visualization Layers:")
+# selected_layers = {key: False for key in layer_options.keys()}
+
+# for label, key in layer_options.items():
+#     cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+    
+#     # Checkbox for layer selection
+#     with cols[0]:
+#         selected_layers[label] = st.checkbox(label, value=False)
+
+#     # Small info button with unique key based on label
+#     with cols[1]:
+#         if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
+#             st.sidebar.write(f"**{label}:** {layer_info[label]}")
 
 # # Add hover tooltip CSS
 # st.markdown("""
@@ -186,21 +186,21 @@ for label, key in layer_options.items():
 #             unsafe_allow_html=True
 #         )
 
-# Add selected layers to the Folium map
-for label, key in layer_options.items():
-    if selected_layers[label] and key is not None:  # Check if layer is selected and has a GEE image
-        vis_params = layer_vis_params.get(label.lower().replace(" ", "_"), {})  # Get visualization params
-        image_url = key.getMapId(vis_params)['tile_fetcher'].url_format  # Get GEE Tile URL
+# # Add selected layers to the Folium map
+# for label, key in layer_options.items():
+#     if selected_layers[label] and key is not None:  # Check if layer is selected and has a GEE image
+#         vis_params = layer_vis_params.get(label.lower().replace(" ", "_"), {})  # Get visualization params
+#         image_url = key.getMapId(vis_params)['tile_fetcher'].url_format  # Get GEE Tile URL
         
-        folium.TileLayer(
-            tiles=image_url,
-            attr="Google Earth Engine",
-            overlay=True,
-            name=label
-        ).add_to(folium_map)
+#         folium.TileLayer(
+#             tiles=image_url,
+#             attr="Google Earth Engine",
+#             overlay=True,
+#             name=label
+#         ).add_to(folium_map)
 
-# Add Layer Control to toggle layers
-folium.LayerControl().add_to(folium_map)
+# # Add Layer Control to toggle layers
+# folium.LayerControl().add_to(folium_map)
 
 # Re-render updated Folium map in the sidebar
 # with st.sidebar:
