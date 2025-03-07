@@ -336,7 +336,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     """, unsafe_allow_html=True)
     
     # Rooting Depth Section with Inline Info Button
-    col1, col2 = st.columns([0.2, 0.1])  # Adjust column widths to keep icon close
+    col1, col2 = st.columns([0.05, 0.1])  # Adjust column widths to keep icon close
     with col1:
         st.subheader("Rooting Depth")
     with col2:
@@ -357,7 +357,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     st.write(f"Selected Rooting Depth: {rooting_depth} m")
     
     # Soil Type Section with Inline Info Button
-    col3, col4 = st.columns([0.2, 0.1])
+    col3, col4 = st.columns([0.05, 0.1])
     with col3:
         st.subheader("Soil Type")
     with col4:
