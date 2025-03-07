@@ -118,11 +118,11 @@ layer_options = {
 
 # Define information for each layer
 layer_info = {
-    "groundwater_boundaries": "Defines administrative groundwater management zones.",
-    "soil_texture": "Describes the composition of soil in terms of sand, silt, and clay.",
-    "avg_precipitation": "Shows the average annual precipitation levels in mm.",
-    "avg_evapotranspiration": "Represents potential water loss due to evaporation and plant transpiration.",
-    "avg_water_deficit": "Indicates areas where water demand exceeds supply over time."
+    "groundwater_boundaries": "Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. [Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: Nevada Division of Water Resources]",
+    "soil_texture": "Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. [Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]",
+    "avg_precipitation": "The average precipitation for the area in question is calculated by summing the observed annual precipitation over 1991-2020 and dividing by the number of years for which there were observations. [Source of data: Abatzoglou (2013)]",
+    "avg_evapotranspiration": "Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is. Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method. ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface.",
+    "avg_water_deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
 }
 
 # Add checkboxes for each layer with info buttons
