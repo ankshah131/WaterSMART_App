@@ -110,11 +110,27 @@ layer_options = {
     "Average potential water deficit": "avg_water_deficit"
 }
 
-# Add checkboxes for each layer
+# # Add checkboxes for each layer
+# st.sidebar.write("### Visualization layers:")
+# selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
+# for label, key in layer_options.items():
+#     selected_layers[key] = st.sidebar.checkbox(label, value=False)  # Ensure unchecked by default
+
+# Add checkboxes for each layer with info buttons
 st.sidebar.write("### Visualization layers:")
-selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
+selected_layers = {key: False for key in layer_info.keys()}  # Default: No layers selected
+
 for label, key in layer_options.items():
-    selected_layers[key] = st.sidebar.checkbox(label, value=False)  # Ensure unchecked by default
+    cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
+    
+    # Checkbox for layer selection
+    with cols[0]:
+        selected_layers[key] = st.checkbox(label, value=False)
+
+    # Small info button
+    with cols[1]:
+        if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
+            st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
 
 
 # Add a "Get Data" button
