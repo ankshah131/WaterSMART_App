@@ -104,7 +104,6 @@ layer_info = {
 }
 
 # Add checkboxes for each layer with info buttons
-st.sidebar.write("### Visualization layers:")
 selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
 # for label, key in layer_options.items():
