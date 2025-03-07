@@ -52,17 +52,12 @@ st.sidebar.write("Select your area of interest by clicking on the map below:")
 default_coords = [39.5, -117]
 coords_ee = ee.Geometry.Point(default_coords)
 
-# folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="OpenStreetMap")
-
-# # Add a marker to the map
-# folium.Marker(location=default_coords, popup="Default Location").add_to(folium_map)
-
 # Initialize session state
 if "selected_coords" not in st.session_state:
     st.session_state.selected_coords = default_coords
     
 # Create Folium map
-folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="cartodbpositron")
+folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
 
 # Add initial marker
 marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
@@ -208,8 +203,8 @@ for label, key in layer_options.items():
 folium.LayerControl().add_to(folium_map)
 
 # Re-render updated Folium map in the sidebar
-with st.sidebar:
-    st_folium(folium_map, width=300, height=500)
+# with st.sidebar:
+#     st_folium(folium_map, width=300, height=500)
 
 
 # Add a "Get Data" button
