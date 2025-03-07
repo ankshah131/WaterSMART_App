@@ -353,7 +353,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
         """, unsafe_allow_html=True)
     
     # Rooting Depth Slider
-    rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=0.5)
+    rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=2)
     st.write(f"Selected Rooting Depth: {rooting_depth} m")
     
     # Soil Type Section with Inline Info Button
