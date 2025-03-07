@@ -116,9 +116,18 @@ layer_options = {
 # for label, key in layer_options.items():
 #     selected_layers[key] = st.sidebar.checkbox(label, value=False)  # Ensure unchecked by default
 
+# Define information for each layer
+layer_info = {
+    "groundwater_boundaries": "Defines administrative groundwater management zones.",
+    "soil_texture": "Describes the composition of soil in terms of sand, silt, and clay.",
+    "avg_precipitation": "Shows the average annual precipitation levels in mm.",
+    "avg_evapotranspiration": "Represents potential water loss due to evaporation and plant transpiration.",
+    "avg_water_deficit": "Indicates areas where water demand exceeds supply over time."
+}
+
 # Add checkboxes for each layer with info buttons
 st.sidebar.write("### Visualization layers:")
-selected_layers = {key: False for key in layer_info.keys()}  # Default: No layers selected
+selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
 for label, key in layer_options.items():
     cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
