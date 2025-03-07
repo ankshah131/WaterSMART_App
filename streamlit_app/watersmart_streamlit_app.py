@@ -60,11 +60,7 @@ coords_ee = ee.Geometry.Point(default_coords)
 # Initialize session state
 if "selected_coords" not in st.session_state:
     st.session_state.selected_coords = default_coords
-
-# Initialize session state
-if "selected_coords" not in st.session_state:
-    st.session_state.selected_coords = default_coords
-
+    
 # Create Folium map
 folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="cartodbpositron")
 
@@ -77,33 +73,32 @@ with st.sidebar:
     st.write("### Interactive Map")
     map_data = st_folium(folium_map, width=300, height=500)
 
-# # Check for selected coordinates from the map
-# if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-#     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-#     coords_ee = ee.Geometry.Point([lon, lat])
-#     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-# else:
-#     st.sidebar.warning("No point selected on the map yet.")
+# Check for selected coordinates from the map
+if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+    lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+    coords_ee = ee.Geometry.Point([lon, lat])
+    st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+else:
+    st.sidebar.warning("No point selected on the map yet.")
 
 # Create initial map with stored coordinates
 #folium_map = create_folium_map(st.session_state.selected_coords)
 
+# # Update marker on click
+# if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
+#     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
 
-# Update marker on click
-if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
-    lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+#     # Check if the selected location has changed
+#     if [lat, lon] != st.session_state.selected_coords:
+#         st.session_state.selected_coords = [lat, lon]
 
-    # Check if the selected location has changed
-    if [lat, lon] != st.session_state.selected_coords:
-        st.session_state.selected_coords = [lat, lon]
+#         # Convert to Earth Engine Geometry if needed
+#         coords_ee = ee.Geometry.Point([lon, lat])
 
-        # Convert to Earth Engine Geometry if needed
-        coords_ee = ee.Geometry.Point([lon, lat])
+#         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
 
-        st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-
-        # Remove the old marker by updating only session state
-        marker.location = [lat, lon]
+#         # Remove the old marker by updating only session state
+#         marker.location = [lat, lon]
 
 
 # Define layer options
