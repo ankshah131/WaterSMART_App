@@ -52,7 +52,7 @@ st.sidebar.write("Select your area of interest by clicking on the map below:")
 default_coords = [39.5, -117]
 coords_ee = ee.Geometry.Point(default_coords)
 
-# folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="cartodbpositron")
+# folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="OpenStreetMap")
 
 # # Add a marker to the map
 # folium.Marker(location=default_coords, popup="Default Location").add_to(folium_map)
@@ -81,45 +81,28 @@ if map_data is not None and "last_clicked" in map_data and map_data["last_clicke
 else:
     st.sidebar.warning("No point selected on the map yet.")
 
-# Create initial map with stored coordinates
-#folium_map = create_folium_map(st.session_state.selected_coords)
-
-# # Update marker on click
-# if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
-#     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-
-#     # Check if the selected location has changed
-#     if [lat, lon] != st.session_state.selected_coords:
-#         st.session_state.selected_coords = [lat, lon]
-
-#         # Convert to Earth Engine Geometry if needed
-#         coords_ee = ee.Geometry.Point([lon, lat])
-
-#         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-
-#         # Remove the old marker by updating only session state
-#         marker.location = [lat, lon]
-
-
 # Define layer options
 layer_options = {
     "Administrative groundwater boundaries": "groundwater_boundaries",
-    "Soil texture": "soil_texture",
+    "Soil texture": ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550'),
     "Average precipitation": "avg_precipitation",
     "Average potential evapotranspiration": "avg_evapotranspiration",
     "Average potential water deficit": "avg_water_deficit"
 }
 
-# # Add checkboxes for each layer
-# st.sidebar.write("### Visualization layers:")
-# selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
-# for label, key in layer_options.items():
-#     selected_layers[key] = st.sidebar.checkbox(label, value=False)  # Ensure unchecked by default
+# Define visualization parameters for GEE layers
+layer_vis_params = {
+    "soil_texture": {
+        'min': 1,
+        'max': 12,
+        'palette': ['blue', 'green', 'yellow', 'orange', 'red']
+    }
+}
 
 # Define information for each layer
 layer_info = {
     "groundwater_boundaries": "Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. [Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: Nevada Division of Water Resources]",
-    "soil_texture": "Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. [Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]",
+    "Soil Texture": "Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. [Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]",
     "avg_precipitation": "The average precipitation for the area in question is calculated by summing the observed annual precipitation over 1991-2020 and dividing by the number of years for which there were observations. [Source of data: Abatzoglou (2013)]",
     "avg_evapotranspiration": "Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is. Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method. ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface.",
     "avg_water_deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
@@ -191,6 +174,22 @@ for label, key in layer_options.items():
 #             """,
 #             unsafe_allow_html=True
 #         )
+
+# Add selected layers to the Folium map
+for label, key in layer_options.items():
+    if selected_layers[label] and key is not None:  # Check if layer is selected and has a GEE image
+        vis_params = layer_vis_params.get(label.lower().replace(" ", "_"), {})  # Get visualization params
+        image_url = key.getMapId(vis_params)['tile_fetcher'].url_format  # Get GEE Tile URL
+        
+        folium.TileLayer(
+            tiles=image_url,
+            attr="Google Earth Engine",
+            overlay=True,
+            name=label
+        ).add_to(folium_map)
+
+# Add Layer Control to toggle layers
+folium.LayerControl().add_to(folium_map)
 
 
 # Add a "Get Data" button
