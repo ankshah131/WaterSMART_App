@@ -298,26 +298,74 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     # Define allowed values
     allowed_values = [0.5, 2, 3.6]
 
-    # Create columns for Rooting Depth title and info button
-    cols_rooting = st.columns([0.8, 0.2])  # Title takes 80%, button 20%
-    with cols_rooting[0]:
-        st.subheader("Rooting Depth")
-    with cols_rooting[1]:
-        if st.button("ℹ️", key="info_rooting_depth"):
-            st.write("Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. Meadow and rangeland grasses often have roots within 2 m of the ground surface, whereas some phreatophytic shrubs and trees can have roots as deep as 6 m or more (The Nature Conservancy 2021). Choose from 0.5 m for herbaceous meadow root depths, 2 m for grass root depth, and 3.6 m for phreatophyte shrubland root depths.")
-
+    # Custom CSS for hoverable tooltips
+    st.markdown("""
+        <style>
+        .info-icon {
+            display: inline-block;
+            font-size: 18px;
+            margin-left: 8px;
+            cursor: pointer;
+            color: #4F8BF9;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #555;
+            color: #fff;
+            text-align: left;
+            border-radius: 5px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the icon */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     
+    # Rooting Depth Section
+    st.subheader("Rooting Depth")
+    st.markdown("""
+        <div class="tooltip">
+            <span class="info-icon">ℹ️</span>
+            <span class="tooltiptext">
+                Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. 
+                Meadow and rangeland grasses often have roots within 2m of the ground surface, whereas some phreatophytic shrubs and trees 
+                can have roots as deep as 6m or more (The Nature Conservancy 2021).
+                Choose from 0.5m for herbaceous meadow root depths, 2m for grass root depth, and 3.6m for phreatophyte shrubland root depths.
+            </span>
+        </div>
+    """, unsafe_allow_html=True)
+
+
     # Use select_slider instead of slider to restrict to specific values
     rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=0.5)
     st.write(f"Selected Rooting Depth: {rooting_depth} m")
 
-    # Create columns for Soil Type title and info button
-    cols_soil = st.columns([0.8, 0.2])
-    with cols_soil[0]:
-        st.subheader("Soil Type")
-    with cols_soil[1]:
-        if st.button("ℹ️", key="info_soil_type"):
-            st.write("The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question. Select another soil texture to see how it could affect results. Soils with different amounts of sand, silt, and clay have differing abilities to retain water, some drain away instantly, and some also hold onto It more tightly when dry, like a clay, which can limit plant access to that water")
+    # Soil Type Section
+    st.subheader("Soil Type")
+    st.markdown("""
+        <div class="tooltip">
+            <span class="info-icon">ℹ️</span>
+            <span class="tooltiptext">
+                The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question.
+                Soils with different amounts of sand, silt, and clay have differing abilities to retain water.
+                Some drain away instantly, and some also hold onto it more tightly when dry, like a clay, which can limit plant access to that water.
+            </span>
+        </div>
+    """, unsafe_allow_html=True)
 
 
     soil_type = st.selectbox(
