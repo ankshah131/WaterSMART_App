@@ -107,33 +107,33 @@ layer_info = {
 st.sidebar.write("### Visualization layers:")
 selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
-for label, key in layer_options.items():
-    cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
-    
-    # Checkbox for layer selection
-    with cols[0]:
-        selected_layers[key] = st.checkbox(label, value=False)
-
-    # Small info button
-    with cols[1]:
-        if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
-            st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
-
-# # Add checkboxes for each layer with info buttons
-# st.sidebar.write("### Visualization Layers:")
-# selected_layers = {key: False for key in layer_options.keys()}
-
 # for label, key in layer_options.items():
-#     cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+#     cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
     
 #     # Checkbox for layer selection
 #     with cols[0]:
-#         selected_layers[label] = st.checkbox(label, value=False)
+#         selected_layers[key] = st.checkbox(label, value=False)
 
-#     # Small info button with unique key based on label
+#     # Small info button
 #     with cols[1]:
-#         if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-#             st.sidebar.write(f"**{label}:** {layer_info[label]}")
+#         if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
+#             st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
+
+# Add checkboxes for each layer with info buttons
+st.sidebar.write("### Visualization Layers:")
+selected_layers = {key: False for key in layer_options.keys()}
+
+for label, key in layer_options.items():
+    cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+    
+    # Checkbox for layer selection
+    with cols[0]:
+        selected_layers[label] = st.checkbox(label, value=False)
+
+    # Small info button with unique key based on label
+    with cols[1]:
+        if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
+            st.sidebar.write(f"**{label}:** {layer_info[label]}")
 
 # # Add hover tooltip CSS
 # st.markdown("""
