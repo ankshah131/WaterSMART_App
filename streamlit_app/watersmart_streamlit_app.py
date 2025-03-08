@@ -270,7 +270,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
 
     # Water balance calculation
     year_start = 1991
-    year_end = 2021
+    year_end = 2020
     year_list = ee.List.sequence(year_start, year_end)
 
     gm = ee.ImageCollection('IDAHO_EPSCOR/GRIDMET').select(['pr', 'eto'])
@@ -481,7 +481,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     lai2["noverthresh"] = lai2["noverthresh"].fillna(0)
 
     # Calculate the percentage (percoverthresh) and round
-    lai2["percoverthresh"] = round(lai2["noverthresh"] / 21, 2) * 100
+    lai2["percoverthresh"] = round(lai2["noverthresh"] / 30, 2) * 100
 
     # Plot LAI time series
     p_lai1 = (
