@@ -80,6 +80,12 @@ else:
 marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
 marker.add_to(folium_map)
 
+# Add a "Get Data" button with session state tracking
+if "get_data_clicked" not in st.session_state:
+    st.session_state.get_data_clicked = False  # Ensure default state is False
+
+if st.sidebar.button("Get Data!"):
+    st.session_state.get_data_clicked = True  # Update state when button is clicked
 
 # Define layer options
 layer_options = {
@@ -147,12 +153,12 @@ for label, key in layer_options.items():
 # image_path = "/content/nature_conservancy_logo.jpeg"  # Replace with the path to your image file
 # st.image(image_path)
 
-# Add a "Get Data" button with session state tracking
-if "get_data_clicked" not in st.session_state:
-    st.session_state.get_data_clicked = False  # Ensure default state is False
+# # Add a "Get Data" button with session state tracking
+# if "get_data_clicked" not in st.session_state:
+#     st.session_state.get_data_clicked = False  # Ensure default state is False
 
-if st.sidebar.button("Get Data!"):
-    st.session_state.get_data_clicked = True  # Update state when button is clicked
+# if st.sidebar.button("Get Data!"):
+#     st.session_state.get_data_clicked = True  # Update state when button is clicked
 
 # Ensure the code only runs if the button was clicked
 if st.session_state.get_data_clicked and coords_ee is not None:
