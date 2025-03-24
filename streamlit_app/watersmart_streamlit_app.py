@@ -39,10 +39,15 @@ st.write("""
 Groundwater-dependent ecosystems (GDEs) in Nevada play a critical role in sustaining biodiversity and supporting ecological balance.
 These systems rely on stable water levels, making them particularly vulnerable to changes in groundwater availability caused by climate variability and human activities.
 
-This tool allows users to explore the water needs of GDEs in Nevada, assess soil types, and understand the relationship between water availability, rooting depths, and evapotranspiration.
-Select your area of interest on the map to gain insights and make data-informed decisions to support the sustainable management of these vital ecosystems.
+This tool allows users to explore the water needs of GDEs in Nevada and how this varies among soil textures, climate, rooting depth, and groundwater depth based on estimates from model output. 
 
-Use the control panel on the left to get started to select your area of interest and to pull climate and soils data for this location. Once you have selected your location, click “Get Data”.
+Use the control panel on the left to get started to select your area of interest and to pull climate and soils data for this location. Once you have selected your location, click “Get Data.”
+
+*NOTE: This tool provides estimates of how a GDE would respond IF it existed at the selected location with the chosen characteristics. 
+However, GDEs do not occur at many locations in Nevada and it is your responsibility to understand your results relate to a hypothetical system at the location you specify. 
+Estimates of GDE water needs are based on what water a hypothetical GDE might use under the climate conditions associated with the location on a map and the soil, vegetation, and groundwater depth characteristics you define.  
+The soil hydraulic properties, vegetation characteristics and health and groundwater conditions in an actual GDE might differ and could therefore cause actual water use to be substantially different. 
+Furthermore, the model developed here is a simplification of our current understanding of ecosystem processes and may not accurately quantify water use in all cases.*
 """)
 
 st.sidebar.header("Control Panel")
