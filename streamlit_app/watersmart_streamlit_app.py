@@ -228,10 +228,11 @@ if st.session_state.get_data_clicked and coords_ee is not None:
 
     def calculate_wb(image):
         image_ws = image.select('pr').subtract(image.select('eto')).rename('wb')
-        image_ws = image_ws.divide(100)
+        #image_ws = image_ws.divide(100)
         return image.addBands(image_ws)
 
     gm_wy = ee.ImageCollection(gm_wy).map(calculate_wb).toBands()
+    
     gm_point = gm_wy.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=4000).getInfo()
 
     # Rooting depth and soil type controls
@@ -334,15 +335,20 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     dfee = dfee.groupby('wy').first().reset_index()
 
     # Calculate annual water balance variables
-    dfee['wb2'] = dfee['wb'] ** 2  # Square of 'wb'
-    dfee['wb3'] = dfee['wb'] ** 3  # Cube of 'wb'
+    # dfee['wb2'] = dfee['wb'] ** 2  # Square of 'wb'
+    # dfee['wb3'] = dfee['wb'] ** 3  # Cube of 'wb'
+    
+    # Calculate annual water balance variables
+    dfee['eto2'] = dfee['eto'] /10  # divide ‘eto’ by 10
+    dfee['pr2'] = dfee['pr'] ** 2  # Square of 'pr'
+    dfee['pet2'] = dfee['eto2'] ** 2  # Square of ‘eto’/10'
 
     # Rename dfee as dfclimate
     dfclimate = dfee
 
     # Load the dataset
     #dfcoeffs = pd.read_csv('/content/MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
-    dfcoeffs = pd.read_csv('https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
+    dfcoeffs = pd.read_csv('https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_ppetquad.csv')
     dfcoeffs['wtd2'] = dfcoeffs['WTD'].apply(lambda x: "Free Drain" if x == 12 else f"{x} m")
     # print(dfcoeffs)
 
@@ -367,33 +373,66 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     # Calculate LAI, AET, AETgw, and GWsubs
     # TODO: Have some descriptions and visuals of LAI
     # TODO: Have explanation of groundwater subsidy with images
+    # dfsum['LAIcalc'] = (
+    #     dfsum['LAIIntercept'] +
+    #     dfsum['wb'] * dfsum['LAIwbx'] +
+    #     dfsum['wb2'] * dfsum['LAIwb2x'] +
+    #     dfsum['wb3'] * dfsum['LAIwb3x']
+    # )
+    # dfsum['aetcalc'] = (
+    #     dfsum['aetIntercept'] +
+    #     dfsum['wb'] * dfsum['aetwbx'] +
+    #     dfsum['wb2'] * dfsum['aetwb2x'] +
+    #     dfsum['wb3'] * dfsum['aetwb3x']
+    # )
+    # dfsum['aetgwcalc'] = (
+    #     dfsum['aetgwIntercept'] +
+    #     dfsum['wb'] * dfsum['aetgwwbx'] +
+    #     dfsum['wb2'] * dfsum['aetgwwb2x'] +
+    #     dfsum['wb3'] * dfsum['aetgwwb3x']
+    # )
+    # dfsum['gwsubscalc'] = (
+    #     dfsum['gwsubsIntercept'] +
+    #     dfsum['wb'] * dfsum['gwsubswbx'] +
+    #     dfsum['wb2'] * dfsum['gwsubswb2x'] +
+    #     dfsum['wb3'] * dfsum['gwsubswb3x']
+    # )
+    # # remove remnant error in GW ET calcs
+    # dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
+
     dfsum['LAIcalc'] = (
         dfsum['LAIIntercept'] +
-        dfsum['wb'] * dfsum['LAIwbx'] +
-        dfsum['wb2'] * dfsum['LAIwb2x'] +
-        dfsum['wb3'] * dfsum['LAIwb3x']
-    )
+        dfsum['pr'] * dfsum['LAIPx'] +
+        dfsum['eto2'] * dfsum['LAIPETx'] +
+        dfsum['pr2'] * dfsum['LAIP2x']+
+        dfsum['pet2'] * dfsum['LAIPET2x']
+        )
     dfsum['aetcalc'] = (
         dfsum['aetIntercept'] +
-        dfsum['wb'] * dfsum['aetwbx'] +
-        dfsum['wb2'] * dfsum['aetwb2x'] +
-        dfsum['wb3'] * dfsum['aetwb3x']
+        dfsum['pr'] * dfsum['aetPx'] +
+        dfsum['eto2'] * dfsum['aetPETx'] +
+        dfsum['pr2'] * dfsum['aetP2x'] +
+        dfsum['pet2'] * dfsum['aetPET2x']
     )
     dfsum['aetgwcalc'] = (
         dfsum['aetgwIntercept'] +
-        dfsum['wb'] * dfsum['aetgwwbx'] +
-        dfsum['wb2'] * dfsum['aetgwwb2x'] +
-        dfsum['wb3'] * dfsum['aetgwwb3x']
+        dfsum['pr'] * dfsum['aetgwPx'] +
+        dfsum['eto2'] * dfsum['aetgwPETx'] +
+        dfsum['pr2'] * dfsum['aetgwP2x'] +
+        dfsum['pet2'] * dfsum['aetgwPET2x']
     )
     dfsum['gwsubscalc'] = (
         dfsum['gwsubsIntercept'] +
-        dfsum['wb'] * dfsum['gwsubswbx'] +
-        dfsum['wb2'] * dfsum['gwsubswb2x'] +
-        dfsum['wb3'] * dfsum['gwsubswb3x']
+        dfsum['pr'] * dfsum['gwsubsPx'] +
+        dfsum['eto2'] * dfsum['gwsubsPETx'] +
+        dfsum['pr2'] * dfsum['gwsubsP2x'] +
+        dfsum['pet2'] * dfsum['gwsubsPET2x']
     )
     # remove remnant error in GW ET calcs
     dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
-
+    dfsum["LAIcalc"]=dfsum["LAIcalc"].apply(lambda x: 0 if x <1 else x)
+    dfsum["aetcalc"]=dfsum["aetcalc"].apply(lambda x: 0 if x <1 else x)
+    dfsum["gwsubscalc"]=dfsum["gwsubscalc"].apply(lambda x: 0 if x <1 else x)
     # # Display results
     # st.markdown("### We’ve got your data, here is a summary:")
     # st.markdown(f"""
@@ -404,7 +443,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
 
     # Set threshold based on root depth
     laithresh = 1.5 if rd == 0.5 else (2 if rd == 2 else 1 if rd == 3.6 else None)
-
+    
     # Group by wtd2 and count rows where LAIcalc >= laithresh
     filtered_lai = dfsum[dfsum["LAIcalc"] >= laithresh]
     laisum = (
@@ -413,27 +452,56 @@ if st.session_state.get_data_clicked and coords_ee is not None:
         .size()  # counts the number of rows per group
         .reset_index(name="noverthresh")
     )
-
+    
     # Left-join lai with laisum
     lai2 = pd.merge(dfsum, laisum, on="wtd2", how="left")
-
+    
+    #identify min and max lai values
+    minlai = lai2["LAIcalc"].min()
+    maxlai = lai2["LAIcalc"].max()
+    maxlai1 = maxlai*1.1
+    
     # Replace NaN values in 'noverthresh' with 0
     lai2["noverthresh"] = lai2["noverthresh"].fillna(0)
-
+    
     # Calculate the percentage (percoverthresh) and round
     lai2["percoverthresh"] = round(lai2["noverthresh"] / 30, 2) * 100
+
+    # Group by wtd2 and calculate min, max of pwd
+    pwdsum = dfsum[
+        (dfsum["wtd2"] == "Free Drain")
+    ]
+    #identify min and max lai values
+    mineto = pwdsum["eto"].min()*-1.2
+    maxp = pwdsum["pr"].max()*1.1
+    maxpwd = pwdsum["wb"].max()*0.9
+
+    p_pwd1 = (
+     ggplot(data=pwdsum)+
+          geom_bar(aes('wy','pr'), fill="Blue", stat="identity", alpha=0.5)+
+          geom_bar(aes('wy','eto*-1'), fill="Brown", stat="identity", alpha=0.5)+
+          geom_line(aes('wy','wb'), color="white")+
+          geom_point(aes('wy','wb', color='wb'))+
+          theme_bw()+
+          geom_text(aes(1990, mineto),label="Potential ET", color="Brown", ha="left", va="top")+
+          geom_text(aes(1990, maxp),label="Precipitation",color="Blue", ha="left")+
+          scale_color_distiller(palette="YlGnBu", direction=1)+
+          ggtitle("Annual Precipitation, Potential ET, and Potential Water Deficit")+
+          labs(x="Water Year", y="Annual Water Balance (mm)", color="Potential\nWater\nDeficit (mm)")
+    )
 
     # Plot LAI time series
     p_lai1 = (
         ggplot(lai2) +
         geom_line(aes('wy', 'LAIcalc', linetype='wtd2')) +
-        geom_point(aes('wy', 'LAIcalc', color='wb * 100')) +
+        geom_point(aes('wy', 'LAIcalc', color='wb')) +
         geom_hline(yintercept=laithresh, alpha=0.5) +
-        geom_text(aes(x=2007, y=laithresh + 0.1), label=f"Example Management Target, LAI={laithresh}") +
+       # geom_text(aes(x=2007, y=laithresh + 0.1), label=f"Example Management Target, LAI={laithresh}") +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-        #ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Year", y="Annual Maximum Leaf Area Index (LAI)", color="Annual Potential\nWater Deficit (mm)", linetype="Water Table Depth")
+        ggtitle("Timeseries of Annual Maximum\nLeaf Area Index (LAI)")+
+        labs(x="Water Year", y="Annual Maximum Leaf Area Index (LAI)", color="Annual\nPotential\nWater\nDeficit (mm)", linetype="Water Table\nDepth",
+             subtitle=f"Ex. Management Target, LAI={laithresh}")
     )
     # p_lai1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_LAI.png", height=4, width=6, units="in", dpi=300)
 
@@ -441,14 +509,18 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     p_lai2 = (
         ggplot(lai2) +
         geom_boxplot(aes('wtd2', 'LAIcalc')) +
-        geom_point(aes('wtd2', 'LAIcalc', color='wb * 100')) +
+        geom_point(aes('wtd2', 'LAIcalc', color='wb')) +
         geom_hline(yintercept=laithresh, alpha=0.5) +
-        geom_text(aes(x='wtd2', y=laithresh, label='percoverthresh'), va="bottom") +
-        geom_text(aes(y=laithresh, x=0), label=f"% Years over Management Target, LAI={laithresh}", va="top", ha="left")+
+       #geom_text(aes(x='wtd2', y=laithresh, label='percoverthresh'), va="bottom") +
+       #geom_text(aes(y=laithresh, x=0), label=f"% Years over Management Target, LAI={laithresh}", va="top", ha="left")+
+        annotate('text', y = maxlai1, x=lai2["wtd2"], label = lai2["percoverthresh"]) +
+        coord_cartesian(ylim = [minlai, maxlai1], expand = True) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
+        ggtitle(f"% Years over\nManagement Target, LAI={laithresh}")+
+        theme(legend_position="none")+
       #  ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Table Depth", y="Annual Maximum Leaf Area Index (LAI)", color="Annual Potential\nWater Deficit (mm)")
+        labs(x="Water Table Depth", y="Annual Maximum Leaf Area Index (LAI)", subtitle="")
     )
 
     # Group by wtd2 and calculate min, max of aetcalc
@@ -457,29 +529,33 @@ if st.session_state.get_data_clicked and coords_ee is not None:
         .agg(min=("aetcalc", "min"), max=("aetcalc", "max"))
         .reset_index()
     )
-
+    
     # Left-join aet with aetsum
     aet2 = pd.merge(dfsum, aetsum, on="wtd2", how="left")
-
+    
     # Round min and max to 0 digits
     aet2["min"] = aet2["min"].astype(int)
     aet2["max"] = aet2["max"].astype(int)
-
+    
     # Create a rangelab column (e.g., "10-25")
     aet2["rangelab"] = aet2["min"].astype(str) + "-" + aet2["max"].astype(str)
-
+    
     # charttop corresponds to the 'max' column in the DataFrame
     charttop = aet2["max"]
+    
+    #identify min and max aet values
+    minaet = aet2["aetcalc"].min()
+    maxaet = aet2["aetcalc"].max()
+    maxaet1 = maxaet*1.1
 
-    # Plot AET time series
     p_aet1 = (
         ggplot(aet2) +
         geom_line(aes('wy', 'aetcalc', linetype='wtd2')) +
-        geom_point(aes('wy', 'aetcalc', color='wb * 100')) +
+        geom_point(aes('wy', 'aetcalc', color='wb')) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-      # ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Year", y="Annual Actual Evapotranspiration-Total (mm)", color="Annual Potential\nWater Deficit (mm)", linetype="Water Table Depth")
+        ggtitle("Timeseries of Annual Actual\nEvapotranspiration (mm)") +
+        labs(x="Water Year", y="Annual Actual Evapotranspiration (mm)", color="Annual\nPotential\nWater\nDeficit (mm)", linetype="Water Table\nDepth")
     )
     # p_aet1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_totalET.png", height=4, width=6, units="in", dpi=300)
 
@@ -487,12 +563,17 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     p_aet2 = (
         ggplot(aet2) +
         geom_boxplot(aes('wtd2', 'aetcalc')) +
-        geom_point(aes('wtd2', 'aetcalc', color='wb * 100')) +
-        geom_text(aes(x='wtd2', y='max', label='rangelab'), va="bottom") +
+        geom_point(aes('wtd2', 'aetcalc', color='wb')) +
+       # geom_text(aes(x='wtd2', y='max', label='rangelab'), va="bottom") +
+        #annotate('text', y = maxaet1, x=aet2["wtd2"], label = aet2["rangelab"]) +
+        #coord_cartesian(ylim = [minaet, maxaet1], expand = True) +
+        annotate('text', y = maxaet1, x=aet2["wtd2"], label = aet2["rangelab"]) +
+        coord_cartesian(ylim = [minaet, maxaet1], expand = True) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-      # ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Table Depth", y="Annual Actual Evapotranspiration-Total (mm)",  color="Annual Potential\nWater Deficit (mm)")
+        ggtitle("Range of Annual\nActual ET (mm)") +
+        theme(legend_position="none")+
+        labs(x="Water Table Depth", y="Annual Actual Evapotranspiration (mm)",  color="Annual\nPotential\nWater\nDeficit (mm)", subtitle="")
     )
     # p_aet2.save(f"../outputs/python/{st}_{rd}_rootdepth_boxplot_totalET.png", height=4, width=6, units="in", dpi=300)
 
@@ -501,10 +582,10 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     gwsubs = dfsum[
         (dfsum["wtd2"] != "Free Drain")
     ]
-
+    
     # Create 'ratio' column for gwsubscalc/aetcalc
     gwsubs = gwsubs.assign(ratio = gwsubs["gwsubscalc"] / gwsubs["aetcalc"])
-
+    
     # Group by wtd2 and compute min, max, minperc, maxperc
     gwsubssum = (
         gwsubs.groupby("wtd2")
@@ -516,59 +597,66 @@ if st.session_state.get_data_clicked and coords_ee is not None:
         )
         .reset_index()
     )
-
+    
     # Left-join the summarized data back to the filtered data
     gwsubs2 = pd.merge(gwsubs, gwsubssum, on="wtd2", how="left")
-
+    
     # Round min and max to 0 decimals
     gwsubs2["min"] = gwsubs2["min"].astype(int)
     gwsubs2["max"] = gwsubs2["max"].astype(int)
-
+    
     # Create a range label (e.g., "10-25")
     gwsubs2["rangelab"] = gwsubs2["min"].astype(str) + "-" + gwsubs2["max"].astype(str)
-
+    
     # Define charttop as the 'max' column
     charttop = gwsubs2["max"]
-
+    
     # Multiply minperc, maxperc by 100 and round
     gwsubs2["minperc"] = (gwsubs2["minperc"] * 100).astype(int)
     gwsubs2["maxperc"] = (gwsubs2["maxperc"] * 100).astype(int)
-
+    
     # Create a percentage range label (e.g., "10-30% of Actual ET")
     gwsubs2["rangelabperc"] = (
         gwsubs2["minperc"].astype(str)
         + "-"
         + gwsubs2["maxperc"].astype(str)
-        + "% of Actual ET"
+        + "%"
     )
+    
+    #identify min and max gwsubs values
+    mingwsubs = gwsubs2["gwsubscalc"].min()
+    maxgwsubs = gwsubs2["gwsubscalc"].max()
+    maxgwsubs1 = maxgwsubs*1.1
 
     # Plot GWsubs time series
     p_gwsubs1 = (
         ggplot(gwsubs2) +
         geom_line(aes('wy', 'gwsubscalc', linetype='wtd2')) +
-        geom_point(aes('wy', 'gwsubscalc', color='wb * 100')) +
+        geom_point(aes('wy', 'gwsubscalc', color='wb')) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-        #ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Year", y="Annual Groundwater Subsidy (mm)", color="Annual Potential\nWater Deficit (mm)", linetype="Water Table Depth")
+        ggtitle("Timeseries of Annual Groundwater\nSubsidy (% of Actual ET)") +
+        labs(x="Water Year", y="Annual Groundwater Subsidy (mm)", color="Annual\nPotential\nWater\nDeficit (mm)", linetype="Water Table\nDepth")
     )
-    # p_gwsubs1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_GWsubsET.png", height=4, width=6, units="in", dpi=300)
-
+    # p_gwsubs1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_GWsubsET.png", height=4, width=4, units="in", dpi=300)
+    
     # Plot GWsubs boxplot
     p_gwsubs2 = (
         ggplot(gwsubs2) +
         geom_boxplot(aes('wtd2', 'gwsubscalc')) +
-        geom_point(aes('wtd2', 'gwsubscalc', color='wb * 100')) +
-        geom_text(aes(x='wtd2', y='max', label='rangelabperc'), va="bottom") +
+        geom_point(aes('wtd2', 'gwsubscalc', color='wb')) +
+       # geom_text(aes(x='wtd2', y='max', label='rangelabperc'), va="bottom") +
+        annotate('text', y = maxgwsubs1, x=gwsubs2["wtd2"], label = gwsubs2["rangelabperc"]) +
+        coord_cartesian(ylim = [mingwsubs, maxgwsubs1], expand = True) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-      # ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
+        ggtitle("Range of Annual Groundwater\nSubsidy (% of Actual ET)") +
+        theme(legend_position="none")+
         labs(x="Water Table Depth", y="Annual Groundwater Subsidy (mm)",  color="Annual Potential\nWater Deficit (mm)")
     )
-
     # Create 'ratio' column for gwetcalc/aetcalc
     dfsum = dfsum.assign(ratio = dfsum["aetgwcalc"] / dfsum["aetcalc"])
-
+    
     # Group by wtd2 and compute min, max, minperc, maxperc
     aetgwsum = (
         dfsum.groupby("wtd2")
@@ -580,55 +668,62 @@ if st.session_state.get_data_clicked and coords_ee is not None:
         )
         .reset_index()
     )
-
-
+    
+    
     # Left-join aetaetgw with aetgwsum
     aetgw2 = pd.merge(dfsum, aetgwsum, on="wtd2", how="left")
-
+    
     # Round min and max to 0 decimals
     aetgw2["min"] = aetgw2["min"].astype(int)
     aetgw2["max"] = aetgw2["max"].astype(int)
-
+    
     # Create a range label (e.g., "10-25")
     aetgw2["rangelab"] = aetgw2["min"].astype(str) + "-" + aetgw2["max"].astype(str)
-
+    
     # Define charttop as the 'max' column
     charttop = aetgw2["max"]
-
+    
     # Multiply minperc, maxperc by 100 and round
     aetgw2["minperc"] = (aetgw2["minperc"] * 100).astype(int)
     aetgw2["maxperc"] = (aetgw2["maxperc"] * 100).astype(int)
-
+    
     # Create a percentage range label (e.g., "10-30% of Actual ET")
     aetgw2["rangelabperc"] = (
         aetgw2["minperc"].astype(str)
         + "-"
         + aetgw2["maxperc"].astype(str)
-        + "%\nof Actual ET"
+        + "%"
     )
+    
+    #identify min and max aetgwc values
+    minaetgw = aetgw2["aetgwcalc"].min()
+    maxaetgw = aetgw2["aetgwcalc"].max()
+    maxaetgw1 = maxaetgw*1.1
 
     # Plot AETAETGW time series
     p_aetgw1 = (
         ggplot(aetgw2) +
         geom_line(aes('wy', 'aetgwcalc', linetype='wtd2')) +
-        geom_point(aes('wy', 'aetgwcalc', color='wb * 100')) +
+        geom_point(aes('wy', 'aetgwcalc', color='wb')) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-      #  ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
-        labs(x="Water Year", y="Annual Actual Evapotranspiration-Groundwater (mm)", color="Annual Potential\nWater Deficit (mm)", linetype="Water Table Depth")
+        ggtitle("Timeseries of Annual Groundwater ET\n(% of Actual ET)") +
+        labs(x="Water Year", y="Annual Actual Evapotranspiration-Groundwater (mm)", color="Annual\nPotential\nWater\nDeficit (mm)", linetype="Water Table\nDepth")
     )
-    #p_aetgw1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_GWET.png", height=4, width=6, units="in", dpi=300)
-
+    #p_aetgw1.save(f"../outputs/python/{st}_{rd}_rootdepth_timeseries_GWET.png", height=4, width=4, units="in", dpi=300)
+    
     # Plot AETAETGW boxplot
     p_aetgw2 = (
         ggplot(aetgw2) +
         geom_boxplot(aes('wtd2', 'aetgwcalc')) +
-        geom_point(aes('wtd2', 'aetgwcalc', color='wb * 100')) +
-        geom_text(aes(x='wtd2', y='max', label='rangelabperc')) +
-
+        geom_point(aes('wtd2', 'aetgwcalc', color='wb')) +
+        #geom_text(aes(x='wtd2', y='max', label='rangelabperc')) +
+        annotate('text', y = maxaetgw1, x=aetgw2["wtd2"], label = aetgw2["rangelabperc"]) +
+        coord_cartesian(ylim = [minaetgw, maxaetgw1], expand = True) +
         theme_bw() +
         scale_color_distiller(palette="YlGnBu", direction=1) +
-        #ggtitle(f"Root Depth: {rd}m, Soil Type: {st}") +
+        ggtitle("Range of Annual Groundwater\nET (% of Actual ET)") +
+        theme(legend_position="none")+
         labs(x="Water Table Depth", y="Annual Actual Evapotranspiration-Groundwater (mm)",  color="Annual Potential\nWater Deficit (mm)")
     )
 
