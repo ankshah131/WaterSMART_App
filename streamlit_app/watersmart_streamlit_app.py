@@ -119,11 +119,19 @@ layer_info = {
     "Average potential water deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
 }
 
+layer_assets = {
+    "Average potential evapotranspiration": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_ETo_1991_2020",
+    "Average precipitation": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_Precip_1991_2020",
+    "Average potential water deficit": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Water_Deficit_1991_2020",
+    "Soil Texture": "projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550",
+}
+
 # Add checkboxes for each layer with info buttons
 selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
 # Add checkboxes for each layer with info buttons
 st.sidebar.write("### Visualization Layers:")
+#selected_layers = {}  # Store checkbox states
 selected_layers = {key: False for key in layer_options.keys()}
 
 for label, key in layer_options.items():
