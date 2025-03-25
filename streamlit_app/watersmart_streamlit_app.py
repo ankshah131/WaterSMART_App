@@ -758,7 +758,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
 
     # Render and display the third set of plots
     with col5:
-        st.markdown("#### Groundwater Subsidy Time Series)")
+        st.markdown("#### Groundwater Subsidy Time Series")
         st.pyplot(ggplot.draw(p_gwsubs1))
 
     with col6:
