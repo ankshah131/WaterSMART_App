@@ -737,6 +737,8 @@ if st.session_state.get_data_clicked and coords_ee is not None:
     img_p_lai1 = plot_to_image(p_lai1)
     img_p_lai2 = plot_to_image(p_lai2)
 
+    st.pyplot(ggplot.draw(p_pwd1))
+
     # Display the plots side by side on the main panel
     st.markdown("### Leaf Area Index (LAI) Analysis")
 
