@@ -122,18 +122,6 @@ layer_info = {
 # Add checkboxes for each layer with info buttons
 selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
 
-# for label, key in layer_options.items():
-#     cols = st.sidebar.columns([0.8, 0.2])  # Create two columns: checkbox (80%) and button (20%)
-    
-#     # Checkbox for layer selection
-#     with cols[0]:
-#         selected_layers[key] = st.checkbox(label, value=False)
-
-#     # Small info button
-#     with cols[1]:
-#         if st.button("ℹ️", key=f"info_{key}"):  # Unique key for each button
-#             st.sidebar.write(f"**{label}:** {layer_info[key]}")  # Display info when clicked
-
 # Add checkboxes for each layer with info buttons
 st.sidebar.write("### Visualization Layers:")
 selected_layers = {key: False for key in layer_options.keys()}
@@ -150,20 +138,6 @@ for label, key in layer_options.items():
         if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
             st.sidebar.write(f"**{label}:** {layer_info[label]}")
 
-
-# Add a "Get Data" button
-#get_data_btn = st.sidebar.button("Get Data!")
-
-# Add an image to the main panel
-# image_path = "/content/nature_conservancy_logo.jpeg"  # Replace with the path to your image file
-# st.image(image_path)
-
-# # Add a "Get Data" button with session state tracking
-# if "get_data_clicked" not in st.session_state:
-#     st.session_state.get_data_clicked = False  # Ensure default state is False
-
-# if st.sidebar.button("Get Data!"):
-#     st.session_state.get_data_clicked = True  # Update state when button is clicked
 
 # Ensure the code only runs if the button was clicked
 if st.session_state.get_data_clicked and coords_ee is not None:
