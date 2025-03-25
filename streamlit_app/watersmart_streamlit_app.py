@@ -767,7 +767,7 @@ if st.session_state.get_data_clicked and coords_ee is not None:
 
 
     # Fourth row: Display Groundwater Subsidy (GWsubs) Analysis plots
-    st.markdown("### Groundwater Subsidy (GWsubs) Analysis")
+    st.markdown("### Groundwater Evapotranspiration (AETgw) Analysis")
     col7, col8 = st.columns(2)
 
     # Render and display the fourth set of plots
