@@ -425,7 +425,7 @@ def render_definitions():
         "Groundwater Component of Evapotranspiration (ETgw)",
         """This represents the portion of evapotranspiration that is directly sourced from groundwater, which can vary with depth to the water table. 
         It's an essential factor in understanding groundwater use by vegetation. If the water table were deeper, the groundwater component might be lower.""",
-        "assets/images/groundwater_et.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/dda06340a021b043ac3c74e4b1dace9b375f01e0/streamlit_app/app_def/assets/images/groundwater_et.png",
         "(Modified from Lowry and Loheide, 2010)",
         image_size="small",
         section_id="etgw"
