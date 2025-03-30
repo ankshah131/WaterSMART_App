@@ -1,11 +1,5 @@
 import streamlit as st
 
-# def load_css():
-#     """Load custom CSS."""
-#     with open('https://raw.githubusercontent.com/ankshah131/watersmart/main/streamlit_app/app_def/content/main.css') as f:
-#         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-import streamlit as st
 
 def load_css():
     """Inject custom CSS directly."""
