@@ -884,6 +884,9 @@ with tab2:
         """,
         unsafe_allow_html=True
     )
+
+    import os
+    st.write("Working directory:", os.getcwd())
     
     # Load custom CSS
     with open("main.css") as f:
@@ -892,10 +895,10 @@ with tab2:
     # Render header with logos
     render_header()
     
-    # Main title and subtitle
-    st.markdown("<h1 class='main-title'>Nevada GDE Water Needs Explorer</h1>", unsafe_allow_html=True)
+    # # Main title and subtitle
+    # st.markdown("<h1 class='main-title'>Nevada GDE Water Needs Explorer</h1>", unsafe_allow_html=True)
     
-    render_definitions()
+    # render_definitions()
     
     # Close container
     st.markdown('</div>', unsafe_allow_html=True)
