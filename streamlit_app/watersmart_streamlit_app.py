@@ -1109,7 +1109,7 @@ with tab2:
     # Main title and subtitle
     st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
     
-    render_definitions()
+    #render_definitions()
     
     # Close container
     st.markdown('</div>', unsafe_allow_html=True)
