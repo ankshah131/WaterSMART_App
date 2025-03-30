@@ -355,7 +355,7 @@ def render_definitions():
         """Soil texture refers to the proportion of sand, silt, and clay particles in the soil. 
         This affects the soil's ability to hold water, air, and influence the rate at which water moves through it. 
         <span class="source-text">[Source: FAO, 2006; Data: Walkinshaw et al. (2020)]</span>""",
-        "assets/images/soil_texture.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png", 
         "Soil Texture Example",
         image_size="medium",
         section_id="soil-texture"
