@@ -874,10 +874,21 @@ with tab1:
 
 
 with tab2:
-        # Load custom CSS
+
+    # Add custom Google font
+    st.markdown(
+        """
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Load custom CSS
     with open("app_def/styles/main.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    
+
     # Render header with logos
     render_header()
     
