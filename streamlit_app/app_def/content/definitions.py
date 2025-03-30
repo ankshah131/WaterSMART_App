@@ -2,7 +2,7 @@ import streamlit as st
 
 def load_css():
     """Load custom CSS."""
-    with open('styles/main.css') as f:
+    with open('main.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 def render_definition_section(title, content, image=None, image_caption=None, image_size="medium", section_id=None):
