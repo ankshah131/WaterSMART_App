@@ -871,3 +871,19 @@ with tab1:
     else:
         if map_data is None:
             st.sidebar.warning("Please select a point on the map before clicking 'Get Data'.")
+
+
+with tab2:
+        # Render header with logos
+    render_header()
+    
+    # Main title and subtitle
+    st.markdown("<h1 class='main-title'>Nevada GDE Water Needs Explorer</h1>", unsafe_allow_html=True)
+    
+    render_definitions()
+    
+    # Close container
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Render footer
+    render_footer()
