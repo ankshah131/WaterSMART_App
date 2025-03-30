@@ -30,13 +30,15 @@ def get_auth():
 
 get_auth()
 
+# Set up Streamlit layout
+st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
+
 # Create tabs
 tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
 
 with tab1:
 
     # Set up Streamlit layout
-    st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
     st.title("Welcome to the Nevada GDE Water Needs Explorer")
     
     # App description
