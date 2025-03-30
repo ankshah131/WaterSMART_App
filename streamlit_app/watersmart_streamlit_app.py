@@ -874,7 +874,11 @@ with tab1:
 
 
 with tab2:
-        # Render header with logos
+        # Load custom CSS
+    with open("app_def/styles/main.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    
+    # Render header with logos
     render_header()
     
     # Main title and subtitle
