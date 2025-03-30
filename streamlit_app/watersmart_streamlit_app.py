@@ -886,7 +886,7 @@ with tab2:
     )
     
     # Load custom CSS
-    with open("app_def/styles/main.css") as f:
+    with open("main.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     # Render header with logos
