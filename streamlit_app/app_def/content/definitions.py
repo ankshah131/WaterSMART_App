@@ -375,7 +375,7 @@ def render_definitions():
         "Average Annual Potential Evapotranspiration (1991-2020)",
         """Potential evapotranspiration (ET) indicates how much moisture is "demanded" by the atmosphere. 
         It's represented by ETref, based on the Penman-Monteith method. ETref describes water loss from a well-watered grass surface.""",
-        "assets/images/et_ref.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/et_ref.png",
         "ETref Example",
         image_size="small",
         section_id="evapotranspiration"
@@ -394,7 +394,7 @@ def render_definitions():
         "Soil Texture Selection",
         """Select soil textures to explore how different proportions of sand, silt, and clay influence the soil's ability to retain water. 
         For example, clay can hold water more tightly, limiting plant access when dry.""",
-        "assets/images/soil_texture.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png",
         "Soil Texture Example",
         image_size="small",
         section_id="soil-texture-selection"
@@ -414,7 +414,7 @@ def render_definitions():
         """Leaf area index (LAI) quantifies the leaf surface area in a given area. It influences photosynthesis, evapotranspiration, and ecosystem productivity. 
         A typical LAI for phreatophytic shrublands in Nevada is 1, while a meadow could have a typical target LAI of 2. 
         <span class="source-text">[LAI Data Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H" target="_blank">MODIS</a>]</span>""",
-        "assets/images/lai_examples1.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/lai_examples1.png",
         "LAI Examples",
         image_size="medium",
         section_id="leaf-area-index"
@@ -436,7 +436,7 @@ def render_definitions():
         "Groundwater Subsidy",
         """Groundwater subsidy refers to the additional water available for plant uptake due to shallow groundwater tables. 
         It is an important indicator for groundwater-dependent ecosystems (GDEs) in water-limited environments, helping reduce water stress on vegetation.""",
-        "assets/images/groundwater_subsidy.png",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/groundwater_subsidy.png",
         "(Modified from Lowry and Loheide, 2010)",
         image_size="small",
         section_id="groundwater-subsidy"
