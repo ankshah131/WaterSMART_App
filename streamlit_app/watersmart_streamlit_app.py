@@ -16,6 +16,10 @@ from io import BytesIO
 from io import StringIO
 from PIL import Image
 
+from app_def.components.header import render_header
+from app_def.components.footer import render_footer
+from app_def.content.definitions import render_definitions
+
 # Earth Engine Setup
 def get_auth():
     service_account_keys = st.secrets["GEE_CREDS"]['settings']
