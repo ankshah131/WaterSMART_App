@@ -889,7 +889,7 @@ with tab2:
     st.write("Working directory:", os.getcwd())
     
     # Load custom CSS
-    with open("https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/app_def/styles/main.css") as f:
+    with open("https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/main.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     # Render header with logos
