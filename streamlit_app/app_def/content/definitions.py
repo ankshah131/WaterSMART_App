@@ -1,0 +1,264 @@
+import streamlit as st
+
+def load_css():
+    """Load custom CSS."""
+    with open('styles/main.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+def render_definition_section(title, content, image=None, image_caption=None, image_size="medium", section_id=None):
+    """
+    Render a definition section with optional image, placing the image to the right of the content.
+    
+    Args:
+        title (str): Section title
+        content (str): HTML content for the section
+        image (str): Path to image file (optional)
+        image_caption (str): Caption for the image (optional)
+        image_size (str): Size of image ("small", "medium", or "large", default is "medium")
+        section_id (str): HTML id for the section to create anchor links
+    """
+    # Add an anchor for this section
+    if section_id:
+        st.markdown(f"<div id='{section_id}'></div>", unsafe_allow_html=True)
+    
+    # Render title with styling
+    st.markdown(f"<h3 class='definition-header'>{title}</h3>", unsafe_allow_html=True)
+
+    if image:
+        col1, col2 = st.columns([3, 1]) 
+
+        with col1:
+            st.markdown(f"<div class='definition-card'> <div class='disclaimer-content'> <div class='definition-content'>{content}</div></div></div>", unsafe_allow_html=True)
+
+        with col2:
+            st.image(image)
+            if image_caption:
+                st.markdown(f"<p class='image-caption'>{image_caption}</p>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='definition-card'> <div class='disclaimer-content'> <div class='definition-content'>{content}</div></div></div>", unsafe_allow_html=True)
+    
+    # Add some spacing between sections
+    st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
+
+
+def render_definitions():
+    """
+    Render all definition topics on a single page with anchor links navigation.
+    """
+    # Load CSS
+    load_css()
+    
+    # Introduction section
+    st.markdown("<h2>Definitions</h2>", unsafe_allow_html=True)
+    st.markdown("""
+        <div class="intro-section">
+            <p>This page provides definitions and explanations for key terms used in groundwater management and hydrology.</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Define all topics including disclaimers and references
+    topics = [
+        {"id": "groundwater-boundaries", "title": "Groundwater Boundaries"},
+        {"id": "soil-texture", "title": "Soil Texture"},
+        {"id": "precipitation", "title": "Precipitation"},
+        {"id": "evapotranspiration", "title": "Evapotranspiration"},
+        {"id": "water-deficit", "title": "Water Deficit"},
+        {"id": "soil-texture-selection", "title": "Soil Texture (Selection)"},
+        {"id": "rooting-depth", "title": "Rooting Depth"},
+        {"id": "leaf-area-index", "title": "Leaf Area Index"},
+        {"id": "etgw", "title": "Groundwater Component of ET (ETgw)"},
+        {"id": "groundwater-subsidy", "title": "Groundwater Subsidy"},
+        {"id": "disclaimers", "title": "Disclaimers"},
+        {"id": "references", "title": "References"}
+    ]
+    
+    # Create a table of contents with anchor links
+    st.markdown("<h3>Jump to Section:</h3>", unsafe_allow_html=True)
+    
+    # Use columns to create a multi-column layout for the table of contents
+    col1, col2, col3 = st.columns(3)
+    
+    # Calculate the number of items per column for even distribution
+    items_per_column = len(topics) // 3
+    remainder = len(topics) % 3
+    
+    # First column of links
+    with col1:
+        end_idx = items_per_column + (1 if remainder > 0 else 0)
+        for topic in topics[:end_idx]:
+            st.markdown(f"<a href='#{topic['id']}' target='_self'>{topic['title']}</a>", unsafe_allow_html=True)
+    
+    # Second column of links
+    with col2:
+        start_idx = end_idx
+        end_idx = start_idx + items_per_column + (1 if remainder > 1 else 0)
+        for topic in topics[start_idx:end_idx]:
+            st.markdown(f"<a href='#{topic['id']}' target='_self'>{topic['title']}</a>", unsafe_allow_html=True)
+    
+    # Third column of links
+    with col3:
+        for topic in topics[end_idx:]:
+            st.markdown(f"<a href='#{topic['id']}' target='_self'>{topic['title']}</a>", unsafe_allow_html=True)
+    
+    # Add separator after table of contents
+    st.markdown("<hr>", unsafe_allow_html=True)
+    
+    # Add JavaScript to handle anchor links scrolling correctly in Streamlit
+    st.markdown("""
+    <script>
+    // Function to scroll to the element with the given ID
+    function scrollToElement(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    // Check for hash in URL and scroll to that element when page loads
+    window.addEventListener('load', function() {
+        if (window.location.hash) {
+            const id = window.location.hash.substring(1);
+            setTimeout(function() {
+                scrollToElement(id);
+            }, 500); // Short delay to ensure Streamlit content is loaded
+        }
+    });
+    </script>
+    """, unsafe_allow_html=True)
+    
+    # Administrative groundwater boundaries
+    render_definition_section(
+        "Administrative Groundwater Boundaries",
+        """Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. 
+        These areas, created in the 1960s, serve as the foundation for water planning, management, and regulation. 
+        <span class="source-text">[Source: Nevada Division of Water Planning, 1999; Data: <a href="https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about" target="_blank">
+        Nevada Division of Water Resources</a>]</span>""",
+        section_id="groundwater-boundaries"
+    )
+    
+    # Soil texture
+    render_definition_section(
+        "Soil Texture",
+        """Soil texture refers to the proportion of sand, silt, and clay particles in the soil. 
+        This affects the soil's ability to hold water, air, and influence the rate at which water moves through it. 
+        <span class="source-text">[Source: FAO, 2006; Data: Walkinshaw et al. (2020)]</span>""",
+        "assets/images/soil_texture.png",
+        "Soil Texture Example",
+        image_size="medium",
+        section_id="soil-texture"
+    )
+    
+    # Precipitation
+    render_definition_section(
+        "Average Annual Precipitation (1991-2020)",
+        """This is the average yearly precipitation calculated by summing the observed annual precipitation 
+        from 1991 to 2020 and dividing by the number of years with data. 
+        <span class="source-text">[Source: Abatzoglou, 2013]</span>""",
+        section_id="precipitation"
+    )
+    
+    # Evapotranspiration
+    render_definition_section(
+        "Average Annual Potential Evapotranspiration (1991-2020)",
+        """Potential evapotranspiration (ET) indicates how much moisture is "demanded" by the atmosphere. 
+        It's represented by ETref, based on the Penman-Monteith method. ETref describes water loss from a well-watered grass surface.""",
+        "assets/images/et_ref.png",
+        "ETref Example",
+        image_size="small",
+        section_id="evapotranspiration"
+    )
+    
+    # Water deficit
+    render_definition_section(
+        "Average Annual Potential Water Deficit (1991-2020)",
+        """This represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). 
+        Negative values show higher demand than available water. It's calculated by subtracting potential evapotranspiration from precipitation.""",
+        section_id="water-deficit"
+    )
+    
+    # Soil texture selection
+    render_definition_section(
+        "Soil Texture Selection",
+        """Select soil textures to explore how different proportions of sand, silt, and clay influence the soil's ability to retain water. 
+        For example, clay can hold water more tightly, limiting plant access when dry.""",
+        "assets/images/soil_texture.png",
+        "Soil Texture Example",
+        image_size="small",
+        section_id="soil-texture-selection"
+    )
+
+    # Rooting depth
+    render_definition_section(
+        "Rooting Depth",
+        """Different types of vegetation have varying rooting depths. Grass typically has roots within 2m, while some shrubs and trees 
+        can reach depths of 6m or more. Choose different depths to see how they influence groundwater usage.""",
+        section_id="rooting-depth"
+    )
+    
+    # Leaf area index
+    render_definition_section(
+        "Leaf Area Index (LAI)",
+        """Leaf area index (LAI) quantifies the leaf surface area in a given area. It influences photosynthesis, evapotranspiration, and ecosystem productivity. 
+        A typical LAI for phreatophytic shrublands in Nevada is 1, while a meadow could have a typical target LAI of 2. 
+        <span class="source-text">[LAI Data Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H" target="_blank">MODIS</a>]</span>""",
+        "assets/images/lai_examples1.png",
+        "LAI Examples",
+        image_size="medium",
+        section_id="leaf-area-index"
+    )
+    
+    # Groundwater component of evapotranspiration
+    render_definition_section(
+        "Groundwater Component of Evapotranspiration (ETgw)",
+        """This represents the portion of evapotranspiration that is directly sourced from groundwater, which can vary with depth to the water table. 
+        It's an essential factor in understanding groundwater use by vegetation. If the water table were deeper, the groundwater component might be lower.""",
+        "assets/images/groundwater_et.png",
+        "(Modified from Lowry and Loheide, 2010)",
+        image_size="small",
+        section_id="etgw"
+    )
+    
+    # Groundwater subsidy
+    render_definition_section(
+        "Groundwater Subsidy",
+        """Groundwater subsidy refers to the additional water available for plant uptake due to shallow groundwater tables. 
+        It is an important indicator for groundwater-dependent ecosystems (GDEs) in water-limited environments, helping reduce water stress on vegetation.""",
+        "assets/images/groundwater_subsidy.png",
+        "(Modified from Lowry and Loheide, 2010)",
+        image_size="small",
+        section_id="groundwater-subsidy"
+    )
+    
+    # Disclaimers section
+    st.markdown(
+        """
+        <div id="disclaimers"></div>
+        <div class="definition-card">
+            <h3 class='definition-header'>Disclaimers</h3>
+            <div class="disclaimer-content">
+                <p>This map tool presents results of modeling for Reclamation Applied Science project R19AP00278 Quantifying Environmental Water Requirements for Groundwater Dependent Ecosystems for Resilient Water Management. See <a href="#" target="_blank">this link</a> to find out more about the project. The paper describing the methods for the modeling is still in preparation but an overview is available on the Nevada TNC website (<a href="#" target="_blank">here</a>). <br><br> This dataset does not prove or make any claim about the nature and/or extent of groundwater levels or groundwater-dependent ecosystems (GDEs) for any mapped location. The dataset is non-regulatory and no information presented here is intended to imply whether a project can or should be approved or denied, and the data are not legally binding in any way. This tool does not replace the need for field surveys or agency consultation to determine water level status, presence of GDEs, or impacts of groundwater use or climate. This tool does not contain bias in favor or against any one form of conservation or land use development. <br> <br> This tool does not preempt the authority of local land use agencies. Features mapped here are not intended for legal uses and no warranty, expressed or implied, is made by The Nature Conservancy or data contributors as to the accuracy of the data. The Nature Conservancy shall not be held liable for improper or incorrect use of the data described and/or contained herein. Any sale, distribution, loan, or offering for use of these data, in whole or in part, is prohibited. The use of these data to produce other products and services with the intent to use or sell for a profit is prohibited. All parties receiving these data must be informed of these restrictions. This is an aggregate dataset with multiple data contributors.</p>
+            </div>
+        </div>
+        <div style='margin-bottom: 30px;'></div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # References section
+    st.markdown(
+        """
+        <div id="references"></div>
+        <div class="definition-card">
+            <h3 class='definition-header'>References</h3>
+            <div class="references-content">
+                <p>Abatzoglou JT. 2013. Development of gridded surface meteorological data for ecological applications and modelling. Int. J. Climatol. 33: 121--131. Available at <a href="http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full" target="_blank">http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full</a></p>
+                <p>Fang, H., Baret, F., Plummer, S., & Schaepman-Strub, G. (2019). An overview of global leaf area index (LAI): Methods, products, validation, and applications. <em>Reviews of Geophysics</em>. 57, 739--799. <a href="https://doi.org/10.1029/2018RG000608" target="_blank">https://doi.org/10.1029/2018RG000608</a></p>
+                <p>Food and Agriculture Organization. 2006. Soil Texture. <a href="https://www.fao.org/fishery/static/FAO_Training/FAO_Training/General/x6706e/x6706e06.htm" target="_blank">https://www.fao.org/fishery/static/FAO_Training/FAO_Training/General/x6706e/x6706e06.htm</a></p>
+                <p>Nevada Division of Water Planning. 1999. Nevada State Water Plan. Carson City: Department of Conservation and Natural Resources, Nevada Division of Water Planning. Available at <a href="https://water.nv.gov/library/water-planning-reports" target="_blank">https://water.nv.gov/library/water-planning-reports</a>.</p>
+                <p>The Nature Conservancy. 2021. Plant Rooting Depth Database. Available at <a href="https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/" target="_blank">https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/</a>.</p>
+                <p>Walkinshaw M, O'Geen AT, Beaudette DE. 2020. Soil Properties. California Soil Resource Lab. Available at <a href="https://casoilresource.lawr.ucdavis.edu/soil-properties/" target="_blank">https://casoilresource.lawr.ucdavis.edu/soil-properties/</a></p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
