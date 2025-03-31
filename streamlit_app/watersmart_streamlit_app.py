@@ -156,7 +156,7 @@ with tab1:
         # Small info button with unique key based on label
         with cols[1]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                url = layer_links.get(label, "#")
+                url = layer_info.get(label, "#")
                 st.sidebar.markdown(f"[More info about {label}]({url})", unsafe_allow_html=True)
                 # st.sidebar.write(f"**{label}:** {layer_info[label]}")
     
