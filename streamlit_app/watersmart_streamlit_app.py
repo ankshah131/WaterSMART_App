@@ -168,9 +168,10 @@ with tab_map["GDE Explorer"]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
                 anchor = layer_links.get(label)
                 if anchor:
-                    # Set the session state to trigger tab switch
                     st.session_state["active_tab"] = "Definitions"
                     st.session_state["jump_to"] = anchor
+                    st.experimental_rerun()  # <-- this is key to trigger the tab switch immediately
+            
 
                 # st.sidebar.write(f"**{label}:** {layer_info[label]}")
     
