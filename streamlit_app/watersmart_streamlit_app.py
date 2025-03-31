@@ -170,7 +170,7 @@ with tab_map["GDE Explorer"]:
                 if anchor:
                     st.session_state["active_tab"] = "Definitions"
                     st.session_state["jump_to"] = anchor
-                    st.experimental_rerun()  # <-- this is key to trigger the tab switch immediately
+                    st.rerun()  # <-- this is key to trigger the tab switch immediately
             
 
                 # st.sidebar.write(f"**{label}:** {layer_info[label]}")
