@@ -1002,16 +1002,35 @@ with tab_map["Definitions"]:
 
         render_definitions()
 
-        if jump_to:
+        if not jump_to:
+            # Fallback: try to grab from the URL hash if not passed as query param
+            st.markdown("""
+                <script>
+                    const hash = window.location.hash;
+                    if (hash && hash.length > 1) {
+                        const anchorId = hash.substring(1);
+                        const interval = setInterval(function() {
+                            const el = document.getElementById(anchorId);
+                            if (el) {
+                                el.scrollIntoView({ behavior: "smooth", block: "start" });
+                                clearInterval(interval);
+                                // Optionally remove hash from URL
+                                history.replaceState(null, "", window.location.pathname + window.location.search);
+                            }
+                        }, 100);
+                    }
+                </script>
+            """, unsafe_allow_html=True)
+        else:
+            # Jump using query param method (from info button)
             st.markdown(f"""
                 <script>
                     const anchorId = "{jump_to}";
-                    const scrollInterval = setInterval(function() {{
+                    const interval = setInterval(function() {{
                         const el = document.getElementById(anchorId);
                         if (el) {{
                             el.scrollIntoView({{ behavior: "smooth", block: "start" }});
-                            clearInterval(scrollInterval);
-                            // Optional: clean up the hash from URL
+                            clearInterval(interval);
                             history.replaceState(null, "", window.location.pathname + window.location.search);
                         }}
                     }}, 100);
