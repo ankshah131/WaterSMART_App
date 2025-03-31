@@ -133,7 +133,7 @@ with tab_map["GDE Explorer"]:
     
     # Define information for each layer
     # Change links accordingly
-    layer_info = {
+    layer_links = {
         "Administrative groundwater boundaries": "#groundwater-boundaries",
         "Soil texture": "#soil-texture",
         "Average precipitation": "#precipitation",
