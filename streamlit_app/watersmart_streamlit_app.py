@@ -203,6 +203,7 @@ with tab_map["GDE Explorer"]:
 
             # Layer checkboxes
             st.write("### Visualization Layers:")
+            selected_layers = {}
             for label in layer_options:
                 cols = st.columns([0.8, 0.2])
                 with cols[0]:
