@@ -111,12 +111,12 @@ with tab_map["GDE Explorer"]:
         marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
         marker.add_to(folium_map)
 
-        # Embed the map in the sidebar
-        with st.sidebar:
-            st.header("Control Panel")
-            st.write("Select your area of interest by clicking on the map below:")
-            st.write("### Interactive Map")
-            map_data = st_folium(folium_map, width=300, height=500)
+        # # Embed the map in the sidebar
+        # with st.sidebar:
+        #     st.header("Control Panel")
+        #     st.write("Select your area of interest by clicking on the map below:")
+        #     st.write("### Interactive Map")
+        #     map_data = st_folium(folium_map, width=300, height=500)
 
         # Check for selected coordinates from the map
         if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
@@ -211,18 +211,25 @@ with tab_map["GDE Explorer"]:
                         st.query_params.tab = "Definitions"
                         st.query_params.jump_to = anchor
                         st.rerun()
-
+        # Embed the map in the sidebar
+        with st.sidebar:
+            st.header("Control Panel")
+            st.write("Select your area of interest by clicking on the map below:")
+            st.write("### Interactive Map")
+            map_data = st_folium(folium_map, width=300, height=500)
         
-        # display ee layers
-        for label, is_checked in selected_layers.items():
-            if is_checked and label in layer_assets:
-                asset_id = layer_assets[label]
-                vis_params = layer_vis_params.get(label, {})
-                ee_image = ee.Image(asset_id)
-                folium_map.add_ee_layer(ee_image, vis_params, label)
-        
-        # Add layer toggle control
-        folium.LayerControl().add_to(folium_map)
+            # display ee layers
+            for label, is_checked in selected_layers.items():
+                if is_checked and label in layer_assets:
+                    asset_id = layer_assets[label]
+                    vis_params = layer_vis_params.get(label, {})
+                    ee_image = ee.Image(asset_id)
+                    folium_map.add_ee_layer(ee_image, vis_params, label)
+            
+            # Add layer toggle control
+            folium.LayerControl().add_to(folium_map)
+            
+            map_data = st_folium(folium_map, width=300, height=500)
 
         
         # Ensure the code only runs if the button was clicked
