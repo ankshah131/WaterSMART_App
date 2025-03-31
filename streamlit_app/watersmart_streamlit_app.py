@@ -863,43 +863,52 @@ with tab1:
             pdf_buffer = io.BytesIO()
         
             with PdfPages(pdf_buffer) as pdf:
-                # Group plots and titles in pairs
-                plot_pairs = [
+                # Pair the plots and their titles
+                paired_plots = [
                     (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
                     (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
                     (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
                     (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
                 ]
         
-                for plot1, title1, plot2, title2 in plot_pairs:
-                    # Create a side-by-side figure
-                    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+                for plot1, title1, plot2, title2 in paired_plots:
+                    # Draw individual ggplot figures
+                    fig1 = plot1.draw()
+                    fig2 = plot2.draw()
         
-                    # Draw each ggplot into a separate axis
-                    plot1_fig = plot1.draw()
-                    plot2_fig = plot2.draw()
+                    fig1.set_size_inches(6, 4)
+                    fig2.set_size_inches(6, 4)
         
-                    # Transfer artists from each ggplot to the corresponding axis
-                    for artist in plot1_fig.axes[0].get_children():
-                        try:
-                            artist.remove()
-                            ax1.add_artist(artist)
-                        except Exception:
-                            pass
+                    # Render both into images
+                    buf1 = BytesIO()
+                    buf2 = BytesIO()
+                    fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
+                    fig2.savefig(buf2, format='png', dpi=300, bbox_inches='tight')
+                    plt.close(fig1)
+                    plt.close(fig2)
         
-                    for artist in plot2_fig.axes[0].get_children():
-                        try:
-                            artist.remove()
-                            ax2.add_artist(artist)
-                        except Exception:
-                            pass
+                    buf1.seek(0)
+                    buf2.seek(0)
         
-                    ax1.set_title(title1, fontsize=10)
-                    ax2.set_title(title2, fontsize=10)
+                    img1 = Image.open(buf1)
+                    img2 = Image.open(buf2)
+        
+                    # Match heights
+                    h = max(img1.height, img2.height)
+                    img1 = img1.resize((int(img1.width * h / img1.height), h))
+                    img2 = img2.resize((int(img2.width * h / img2.height), h))
+        
+                    # Combine side by side
+                    combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
+                    combined.paste(img1, (0, 0))
+                    combined.paste(img2, (img1.width, 0))
+        
+                    # Insert combined image into a matplotlib figure
+                    fig, ax = plt.subplots(figsize=(12, h / 100))  # height in inches
+                    ax.axis('off')
+                    ax.imshow(combined)
         
                     pdf.savefig(fig, bbox_inches='tight')
-                    plt.close(plot1_fig)
-                    plt.close(plot2_fig)
                     plt.close(fig)
         
             pdf_buffer.seek(0)
