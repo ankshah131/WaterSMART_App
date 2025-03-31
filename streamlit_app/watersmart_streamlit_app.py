@@ -118,14 +118,6 @@ with tab_map["GDE Explorer"]:
         #     st.write("### Interactive Map")
         #     map_data = st_folium(folium_map, width=300, height=500)
 
-        # # Check for selected coordinates from the map
-        # if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-        #     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-        #     coords_ee = ee.Geometry.Point([lon, lat])
-        #     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-        # else:
-        #     st.sidebar.warning("No point selected on the map yet.")
-
 
         # Add a "Get Data" button with session state tracking
         if "get_data_clicked" not in st.session_state:
@@ -184,10 +176,7 @@ with tab_map["GDE Explorer"]:
             }
         }
 
-        # Add checkboxes for each layer with info buttons
-        selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
-        
-     # Add checkboxes for each layer with info buttons
+         # Add checkboxes for each layer with info buttons
         st.sidebar.write("### Visualization Layers:")
         #selected_layers = {}  # Store checkbox states
         selected_layers = {key: False for key in layer_options.keys()}
@@ -226,8 +215,6 @@ with tab_map["GDE Explorer"]:
             # Add layer toggle control
             folium.LayerControl().add_to(folium_map)
             
-            map_data = st_folium(folium_map, width=300, height=500)
-
             # Check for selected coordinates from the map
             if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
                 lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
