@@ -963,14 +963,29 @@ with tab_map["Definitions"]:
     if default_tab == "Definitions":
          # Render header with logos
         render_header()
-        jump_to = st.query_params.get("jump_to", None)
-        if jump_to:
-            st.markdown(f"<script>location.hash = '{jump_to}';</script>", unsafe_allow_html=True)
         
         # Main title and subtitle
         st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
-        
+
         render_definitions()
+
+        jump_to = st.query_params.get("jump_to")
+        if jump_to:
+            st.markdown(f"""
+                <script>
+                    // Delay scroll to anchor after full render
+                    window.addEventListener("load", function() {{
+                        setTimeout(function() {{
+                            var el = document.getElementById("{jump_to}");
+                            if (el) {{
+                                el.scrollIntoView({{ behavior: "smooth", block: "start" }});
+                                // Optional: clean up the hash from the URL
+                                history.replaceState(null, "", window.location.pathname + window.location.search);
+                            }}
+                        }}, 500);
+                    }});
+                </script>
+            """, unsafe_allow_html=True)
         
         # Close container
         st.markdown('</div>', unsafe_allow_html=True)
