@@ -126,7 +126,6 @@ with tab_map["GDE Explorer"]:
         # else:
         #     st.sidebar.warning("No point selected on the map yet.")
 
-    
 
         # Add a "Get Data" button with session state tracking
         if "get_data_clicked" not in st.session_state:
@@ -237,7 +236,6 @@ with tab_map["GDE Explorer"]:
             else:
                 st.sidebar.warning("No point selected on the map yet.")
 
-    
             
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
