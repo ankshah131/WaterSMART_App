@@ -122,12 +122,13 @@ with tab1:
     # }
     
     # Define information for each layer
+    # Change links accordingly
     layer_info = {
-        "Administrative groundwater boundaries": "Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. [Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: Nevada Division of Water Resources]",
-        "Soil Texture": "Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. [Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]",
-        "Average precipitation": "The average precipitation for the area in question is calculated by summing the observed annual precipitation over 1991-2020 and dividing by the number of years for which there were observations. [Source of data: Abatzoglou (2013)]",
-        "Average potential evapotranspiration": "Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is. Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method. ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface.",
-        "Average potential water deficit": "The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations."
+        "Administrative groundwater boundaries": "https://watersmartapp-trial.streamlit.app/~/+/#groundwater-boundaries",
+        "Soil Texture": "https://watersmartapp-trial.streamlit.app/~/+/#soil-texture",
+        "Average precipitation": "https://watersmartapp-trial.streamlit.app/~/+/#precipitation",
+        "Average potential evapotranspiration": "https://watersmartapp-trial.streamlit.app/~/+/#evapotranspiration",
+        "Average potential water deficit": "https://watersmartapp-trial.streamlit.app/~/+/#water-deficit"
     }
     
     layer_assets = {
@@ -155,7 +156,9 @@ with tab1:
         # Small info button with unique key based on label
         with cols[1]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                st.sidebar.write(f"**{label}:** {layer_info[label]}")
+                url = layer_links.get(label, "#")
+                st.sidebar.markdown(f"[More info about {label}]({url})", unsafe_allow_html=True)
+                # st.sidebar.write(f"**{label}:** {layer_info[label]}")
     
     
     # Ensure the code only runs if the button was clicked
