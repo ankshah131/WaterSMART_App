@@ -38,9 +38,19 @@ get_auth()
 st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
 
 # Create tabs
-tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
+#tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
+# Define tab labels
+tabs = ["GDE Explorer", "Definitions"]
+active_tab = st.session_state.get("active_tab", "GDE Explorer")
 
-with tab1:
+# Render tabs and grab references
+tab_refs = st.tabs(tabs)
+
+# Match tab names to their Streamlit tab object
+tab_map = dict(zip(tabs, tab_refs))
+
+
+with tab_map["GDE Explorer"]:
 
     # Set up Streamlit layout
     st.title("Welcome to the Nevada GDE Water Needs Explorer")
@@ -156,14 +166,11 @@ with tab1:
         # Small info button with unique key based on label
         with cols[1]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                anchor = layer_info.get(label)
+                anchor = layer_links.get(label)
                 if anchor:
-                    st.sidebar.markdown(
-                        f"<a href='{anchor}' target='_self'>🔗 Jump to definition</a>",
-                        unsafe_allow_html=True
-                    )
-                else:
-                    st.sidebar.warning(f"No link found for: {label}")
+                    # Set the session state to trigger tab switch
+                    st.session_state["active_tab"] = "Definitions"
+                    st.session_state["jump_to"] = anchor
 
                 # st.sidebar.write(f"**{label}:** {layer_info[label]}")
     
@@ -940,10 +947,14 @@ with tab1:
             st.sidebar.warning("Please select a point on the map before clicking 'Get Data'.")
 
 
-with tab2:
-
-    # Render header with logos
+with tab_map["Definitions"]:
+     # Render header with logos
     render_header()
+    
+    # If redirected, auto-scroll to anchor
+    if "jump_to" in st.session_state:
+        anchor = st.session_state.pop("jump_to")
+        st.markdown(f"<script>location.hash = '{anchor}';</script>", unsafe_allow_html=True)
     
     # Main title and subtitle
     st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
