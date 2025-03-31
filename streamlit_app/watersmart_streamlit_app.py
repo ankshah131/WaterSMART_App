@@ -96,9 +96,6 @@ with tab_map["GDE Explorer"]:
         Furthermore, the model developed here is a simplification of our current understanding of ecosystem processes and may not accurately quantify water use in all cases.*
         """)
 
-        st.sidebar.header("Control Panel")
-        st.sidebar.write("Select your area of interest by clicking on the map below:")
-
         # Initialize a Folium map with a proper basemap
         default_coords = [39.5, -117]
         coords_ee = ee.Geometry.Point(default_coords)
@@ -116,6 +113,8 @@ with tab_map["GDE Explorer"]:
 
         # Embed the map in the sidebar
         with st.sidebar:
+            st.header("Control Panel")
+            st.write("Select your area of interest by clicking on the map below:")
             st.write("### Interactive Map")
             map_data = st_folium(folium_map, width=300, height=500)
 
