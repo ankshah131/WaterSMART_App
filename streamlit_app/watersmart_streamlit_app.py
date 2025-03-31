@@ -34,6 +34,20 @@ def get_auth():
 
 get_auth()
 
+# Add Earth Engine layer support to folium
+def add_ee_layer(self, ee_image_object, vis_params, name):
+    map_id_dict = ee.Image(ee_image_object).getMapId(vis_params)
+    folium.raster_layers.TileLayer(
+        tiles=map_id_dict['tile_fetcher'].url_format,
+        attr='Google Earth Engine',
+        name=name,
+        overlay=True,
+        control=True
+    ).add_to(self)
+
+# Patch the folium.Map class
+folium.Map.add_ee_layer = add_ee_layer
+
 # Set up Streamlit layout
 st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
 
@@ -133,14 +147,6 @@ with tab_map["GDE Explorer"]:
             "Average potential water deficit": None
         }
         
-        # # Define visualization parameters for GEE layers
-        # layer_vis_params = {
-        #     "soil_texture": {
-        #         'min': 1,
-        #         'max': 12,
-        #         'palette': ['blue', 'green', 'yellow', 'orange', 'red']
-        #     }
-        # }
         
         # Define information for each layer
         # Change links accordingly
@@ -158,6 +164,29 @@ with tab_map["GDE Explorer"]:
             "Average potential water deficit": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Water_Deficit_1991_2020",
             "Soil Texture": "projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550",
         }
+
+        layer_vis_params = {
+            "Soil texture": {
+                'min': 1,
+                'max': 12,
+                'palette': ['blue', 'green', 'yellow', 'orange', 'red']
+            },
+            "Average precipitation": {
+                'min': 0,
+                'max': 2500,
+                'palette': ['ffffff', 'blue']
+            },
+            "Average potential evapotranspiration": {
+                'min': 0,
+                'max': 2000,
+                'palette': ['ffffff', 'orange']
+            },
+            "Average potential water deficit": {
+                'min': -1000,
+                'max': 1000,
+                'palette': ['blue', 'white', 'red']
+            }
+        }
         
         # Add checkboxes for each layer with info buttons
         selected_layers = {key: False for key in layer_options.values()}  # Default: No layers selected
@@ -166,6 +195,19 @@ with tab_map["GDE Explorer"]:
         st.sidebar.write("### Visualization Layers:")
         #selected_layers = {}  # Store checkbox states
         selected_layers = {key: False for key in layer_options.keys()}
+
+        #-------
+        # Add selected Earth Engine layers
+        for label, is_checked in selected_layers.items():
+            if is_checked and label in layer_assets:
+                asset_id = layer_assets[label]
+                vis_params = layer_vis_params.get(label, {})
+                ee_image = ee.Image(asset_id)
+                folium_map.add_ee_layer(ee_image, vis_params, label)
+        
+        # Add layer control to toggle layers
+        folium.LayerControl().add_to(folium_map)
+        #-------
         
         for label, key in layer_options.items():
             cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
