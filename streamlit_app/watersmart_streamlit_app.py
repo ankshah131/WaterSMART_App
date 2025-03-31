@@ -1005,17 +1005,19 @@ with tab_map["Definitions"]:
         if jump_to:
             st.markdown(f"""
                 <script>
-                    window.addEventListener("load", function() {{
-                        setTimeout(function() {{
-                            var el = document.getElementById("{jump_to}");
-                            if (el) {{
-                                el.scrollIntoView({{ behavior: "smooth", block: "start" }});
-                                history.replaceState(null, "", window.location.pathname + window.location.search);
-                            }}
-                        }}, 500);
-                    }});
+                    const anchorId = "{jump_to}";
+                    const scrollInterval = setInterval(function() {{
+                        const el = document.getElementById(anchorId);
+                        if (el) {{
+                            el.scrollIntoView({{ behavior: "smooth", block: "start" }});
+                            clearInterval(scrollInterval);
+                            // Optional: clean up the hash from URL
+                            history.replaceState(null, "", window.location.pathname + window.location.search);
+                        }}
+                    }}, 100);
                 </script>
             """, unsafe_allow_html=True)
+
 
         st.markdown('</div>', unsafe_allow_html=True)
         render_footer()
