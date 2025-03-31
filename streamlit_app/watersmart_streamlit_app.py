@@ -828,36 +828,84 @@ with tab1:
         # )
     
         # Function to save plots to PDF with proper title spacing
+        # def save_plots_to_pdf():
+        #     pdf_buffer = io.BytesIO()
+        
+        #     with PdfPages(pdf_buffer) as pdf:
+        #         # List of ggplots to save
+        #         plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
+        #         titles = [
+        #             "Annual Maximum Leaf Area Index (LAI)",
+        #             "Boxplot of Leaf Area Index (LAI)",
+        #             "Annual Actual Evapotranspiration-Total (AET)",
+        #             "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
+        #             "Groundwater Subsidy Time Series",
+        #             "Boxplot of Annual Groundwater Subsidy",
+        #             "Annual Actual Evapotranspiration-Groundwater (mm)",
+        #             "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
+        #         ]
+        
+        #         for plot, title in zip(plots, titles):
+        #             fig = plot.draw()  # Correctly draw ggplot as a figure
+        #             fig.set_size_inches(6, 4)  # Adjust figure size
+                    
+        #             # Adjust title position with more space
+        #             fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
+        #             plt.subplots_adjust(top=0.75)  # Increase top spacing
+        
+        #             pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
+        #             plt.close(fig)  # Close figure to free memory
+        
+        #     pdf_buffer.seek(0)
+        #     return pdf_buffer
+
         def save_plots_to_pdf():
             pdf_buffer = io.BytesIO()
         
             with PdfPages(pdf_buffer) as pdf:
-                # List of ggplots to save
-                plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
-                titles = [
-                    "Annual Maximum Leaf Area Index (LAI)",
-                    "Boxplot of Leaf Area Index (LAI)",
-                    "Annual Actual Evapotranspiration-Total (AET)",
-                    "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
-                    "Groundwater Subsidy Time Series",
-                    "Boxplot of Annual Groundwater Subsidy",
-                    "Annual Actual Evapotranspiration-Groundwater (mm)",
-                    "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
+                # List of ggplots to save, in pairs
+                paired_plots = [
+                    (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
+                    (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
+                    (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
+                    (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
                 ]
         
-                for plot, title in zip(plots, titles):
-                    fig = plot.draw()  # Correctly draw ggplot as a figure
-                    fig.set_size_inches(6, 4)  # Adjust figure size
-                    
-                    # Adjust title position with more space
-                    fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
-                    plt.subplots_adjust(top=0.75)  # Increase top spacing
+                for plot1, title1, plot2, title2 in paired_plots:
+                    # Create a figure with two subplots side-by-side
+                    fig, axes = plt.subplots(1, 2, figsize=(12, 5))  # wider for side-by-side
         
-                    pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
-                    plt.close(fig)  # Close figure to free memory
+                    # Draw the first plot into the first subplot
+                    plot1_fig = plot1.draw()
+                    for ax_child in plot1_fig.axes:
+                        plot1_artists = ax_child.get_children()
+                        for artist in plot1_artists:
+                            try:
+                                artist.figure = fig
+                                axes[0]._add_text(artist)
+                            except:
+                                pass
+        
+                    # Draw the second plot into the second subplot
+                    plot2_fig = plot2.draw()
+                    for ax_child in plot2_fig.axes:
+                        plot2_artists = ax_child.get_children()
+                        for artist in plot2_artists:
+                            try:
+                                artist.figure = fig
+                                axes[1]._add_text(artist)
+                            except:
+                                pass
+        
+                    axes[0].set_title(title1, fontsize=10)
+                    axes[1].set_title(title2, fontsize=10)
+        
+                    pdf.savefig(fig, bbox_inches='tight')
+                    plt.close(fig)
         
             pdf_buffer.seek(0)
             return pdf_buffer
+
         
         # Button to generate and download PDF
         pdf_buffer = save_plots_to_pdf()
