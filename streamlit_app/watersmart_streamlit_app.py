@@ -169,6 +169,8 @@ with tab_map["GDE Explorer"]:
             }
         }
 
+        selected_layers = {key: False for key in layer_options.keys()}
+
         # Embed the map in the sidebar
         with st.sidebar:
             st.header("Control Panel")
@@ -207,7 +209,7 @@ with tab_map["GDE Explorer"]:
          # Add checkboxes for each layer with info buttons
         st.sidebar.write("### Visualization Layers:")
         #selected_layers = {}  # Store checkbox states
-        selected_layers = {key: False for key in layer_options.keys()}
+        #selected_layers = {key: False for key in layer_options.keys()}
         
         for label, key in layer_options.items():
             cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
