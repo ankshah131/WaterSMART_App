@@ -232,6 +232,9 @@ with tab_map["GDE Explorer"]:
             map_data = st_folium(folium_map, width=300, height=500)
 
         
+        if coords_ee is None:
+            st.write("Please select a location on the map.")
+            
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
         #if get_data_btn is not None and coords_ee is not None:
