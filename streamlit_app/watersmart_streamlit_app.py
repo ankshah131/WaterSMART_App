@@ -195,19 +195,6 @@ with tab_map["GDE Explorer"]:
         st.sidebar.write("### Visualization Layers:")
         #selected_layers = {}  # Store checkbox states
         selected_layers = {key: False for key in layer_options.keys()}
-
-        #-------
-        # Add selected Earth Engine layers
-        for label, is_checked in selected_layers.items():
-            if is_checked and label in layer_assets:
-                asset_id = layer_assets[label]
-                vis_params = layer_vis_params.get(label, {})
-                ee_image = ee.Image(asset_id)
-                folium_map.add_ee_layer(ee_image, vis_params, label)
-        
-        # Add layer control to toggle layers
-        folium.LayerControl().add_to(folium_map)
-        #-------
         
         for label, key in layer_options.items():
             cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
@@ -226,8 +213,20 @@ with tab_map["GDE Explorer"]:
                         st.query_params.jump_to = anchor
                         st.rerun()
                 
-                    # st.sidebar.write(f"**{label}:** {layer_info[label]}")
         
+        # display ee layers
+        for label, is_checked in selected_layers.items():
+            if is_checked and label in layer_assets:
+                asset_id = layer_assets[label]
+                vis_params = layer_vis_params.get(label, {})
+                ee_image = ee.Image(asset_id)
+                folium_map.add_ee_layer(ee_image, vis_params, label)
+        
+        # Add layer toggle control
+        folium.LayerControl().add_to(folium_map)
+        
+        # Display the map
+        st_folium(folium_map, width=700, height=500)
         
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
