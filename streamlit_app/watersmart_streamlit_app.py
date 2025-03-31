@@ -997,6 +997,12 @@ with tab_map["Definitions"]:
     if default_tab == "Definitions":
         jump_to = st.query_params.get("jump_to")
 
+        # Optional: Go back button at top
+        if st.button("⬅️ Back to GDE Explorer"):
+            st.query_params.tab = "GDE Explorer"
+            st.query_params.jump_to = None
+            st.rerun()
+
         render_header()
         st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
 
