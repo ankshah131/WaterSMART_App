@@ -76,10 +76,10 @@ tab_map = dict(zip(tab_labels, tabs))
 
 with tab_map["GDE Explorer"]:
     if default_tab == "GDE Explorer":
-        
+
         # Set up Streamlit layout
         st.title("Welcome to the Nevada GDE Water Needs Explorer")
-        
+
         # App description
         st.write("""
         Groundwater-dependent ecosystems (GDEs) in Nevada play a critical role in sustaining biodiversity and supporting ecological balance.
@@ -95,19 +95,21 @@ with tab_map["GDE Explorer"]:
         The soil hydraulic properties, vegetation characteristics and health and groundwater conditions in an actual GDE might differ and could therefore cause actual water use to be substantially different. 
         Furthermore, the model developed here is a simplification of our current understanding of ecosystem processes and may not accurately quantify water use in all cases.*
         """)
-        
+
         st.sidebar.header("Control Panel")
         st.sidebar.write("Select your area of interest by clicking on the map below:")
-        
+
         # Initialize a Folium map with a proper basemap
         default_coords = [39.5, -117]
         coords_ee = ee.Geometry.Point(default_coords)
-        
-        st.session_state.selected_coords = default_coords
+
+        # Initialize session state
+        if "selected_coords" not in st.session_state:
+            st.session_state.selected_coords = default_coords
 
         # Create Folium map
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
-        
+
         # Add initial marker
         marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
         marker.add_to(folium_map)
@@ -117,7 +119,6 @@ with tab_map["GDE Explorer"]:
             st.write("### Interactive Map")
             map_data = st_folium(folium_map, width=300, height=500)
 
-
         # Check for selected coordinates from the map
         if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
             lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
@@ -125,7 +126,6 @@ with tab_map["GDE Explorer"]:
             st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
         else:
             st.sidebar.warning("No point selected on the map yet.")
-
 
         # Add updated marker after user selection
         marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
@@ -224,9 +224,7 @@ with tab_map["GDE Explorer"]:
         
         # Add layer toggle control
         folium.LayerControl().add_to(folium_map)
-        
-        # Display the map
-        st_folium(folium_map, width=700, height=500)
+
         
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
