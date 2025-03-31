@@ -41,7 +41,7 @@ st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
 query_params = st.query_params
 
 # Get the tab name from URL or default to "GDE Explorer"
-selected_tab = query_params.get("tab", "GDE Explorer")
+default_tab = query_params.get("tab", "GDE Explorer")
 
 # Create tabs
 #tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
