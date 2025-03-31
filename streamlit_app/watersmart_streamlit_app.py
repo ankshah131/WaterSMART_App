@@ -156,7 +156,7 @@ with tab1:
         # Small info button with unique key based on label
         with cols[1]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                anchor = layer_links.get(label)
+                anchor = layer_info.get(label)
                 if anchor:
                     st.sidebar.markdown(
                         f"<a href='{anchor}' target='_self'>🔗 Jump to definition</a>",
