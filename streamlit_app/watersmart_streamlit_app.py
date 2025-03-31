@@ -124,11 +124,11 @@ with tab1:
     # Define information for each layer
     # Change links accordingly
     layer_info = {
-        "Administrative groundwater boundaries": "https://watersmartapp-trial.streamlit.app/~/+/#groundwater-boundaries",
-        "Soil texture": "https://watersmartapp-trial.streamlit.app/~/+/#soil-texture",
-        "Average precipitation": "https://watersmartapp-trial.streamlit.app/~/+/#precipitation",
-        "Average potential evapotranspiration": "https://watersmartapp-trial.streamlit.app/~/+/#evapotranspiration",
-        "Average potential water deficit": "https://watersmartapp-trial.streamlit.app/~/+/#water-deficit"
+        "Administrative groundwater boundaries": "#groundwater-boundaries",
+        "Soil texture": "#soil-texture",
+        "Average precipitation": "#precipitation",
+        "Average potential evapotranspiration": "#evapotranspiration",
+        "Average potential water deficit": "#water-deficit"
     }
     
     layer_assets = {
@@ -156,8 +156,15 @@ with tab1:
         # Small info button with unique key based on label
         with cols[1]:
             if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                url = layer_info.get(label, "#")
-                st.sidebar.markdown(f"[More info about {label}]({url})", unsafe_allow_html=True)
+                anchor = layer_links.get(label)
+                if anchor:
+                    st.sidebar.markdown(
+                        f"<a href='{anchor}' target='_self'>🔗 Jump to definition</a>",
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.sidebar.warning(f"No link found for: {label}")
+
                 # st.sidebar.write(f"**{label}:** {layer_info[label]}")
     
     
