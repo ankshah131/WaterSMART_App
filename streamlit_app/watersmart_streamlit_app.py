@@ -118,17 +118,15 @@ with tab_map["GDE Explorer"]:
         #     st.write("### Interactive Map")
         #     map_data = st_folium(folium_map, width=300, height=500)
 
-        # Check for selected coordinates from the map
-        if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-            lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-            coords_ee = ee.Geometry.Point([lon, lat])
-            st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-        else:
-            st.sidebar.warning("No point selected on the map yet.")
+        # # Check for selected coordinates from the map
+        # if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+        #     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+        #     coords_ee = ee.Geometry.Point([lon, lat])
+        #     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+        # else:
+        #     st.sidebar.warning("No point selected on the map yet.")
 
-        # Add updated marker after user selection
-        marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
-        marker.add_to(folium_map)
+    
 
         # Add a "Get Data" button with session state tracking
         if "get_data_clicked" not in st.session_state:
@@ -231,9 +229,15 @@ with tab_map["GDE Explorer"]:
             
             map_data = st_folium(folium_map, width=300, height=500)
 
-        
-        if coords_ee is None:
-            st.write("Please select a location on the map.")
+            # Check for selected coordinates from the map
+            if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+                lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+                coords_ee = ee.Geometry.Point([lon, lat])
+                st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+            else:
+                st.sidebar.warning("No point selected on the map yet.")
+
+    
             
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
