@@ -61,7 +61,7 @@ tabs = st.tabs(tab_labels)
 tab_map = dict(zip(tab_labels, tabs))
 
 with tab_map["GDE Explorer"]:
-    if selected_tab == "GDE Explorer":
+    if default_tab == "GDE Explorer":
         
         # Set up Streamlit layout
         st.title("Welcome to the Nevada GDE Water Needs Explorer")
@@ -960,7 +960,7 @@ with tab_map["GDE Explorer"]:
 
 
 with tab_map["Definitions"]:
-    if selected_tab == "Definitions":
+    if default_tab == "Definitions":
          # Render header with logos
         render_header()
         jump_to = st.query_params.get("jump_to", None)
