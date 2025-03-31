@@ -125,7 +125,7 @@ with tab1:
     # Change links accordingly
     layer_info = {
         "Administrative groundwater boundaries": "https://watersmartapp-trial.streamlit.app/~/+/#groundwater-boundaries",
-        "Soil Texture": "https://watersmartapp-trial.streamlit.app/~/+/#soil-texture",
+        "Soil texture": "https://watersmartapp-trial.streamlit.app/~/+/#soil-texture",
         "Average precipitation": "https://watersmartapp-trial.streamlit.app/~/+/#precipitation",
         "Average potential evapotranspiration": "https://watersmartapp-trial.streamlit.app/~/+/#evapotranspiration",
         "Average potential water deficit": "https://watersmartapp-trial.streamlit.app/~/+/#water-deficit"
