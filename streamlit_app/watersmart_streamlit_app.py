@@ -242,9 +242,10 @@ with tab_map["GDE Explorer"]:
             # Get Data button
             if "get_data_clicked" not in st.session_state:
                 st.session_state.get_data_clicked = False
-
-            if st.button("Get Data!"):
+            
+            if st.button("Get Data!", key="get_data_button"):
                 st.session_state.get_data_clicked = True
+
         
         # Add checkboxes for each layer with info buttons
         #st.sidebar.write("### Visualization Layers:")
