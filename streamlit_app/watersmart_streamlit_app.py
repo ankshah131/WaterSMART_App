@@ -959,36 +959,64 @@ with tab_map["GDE Explorer"]:
                 st.sidebar.warning("Please select a point on the map before clicking 'Get Data'.")
 
 
+# with tab_map["Definitions"]:
+#     if default_tab == "Definitions":
+#          # Render header with logos
+#         render_header()
+        
+#         # Main title and subtitle
+#         st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
+
+#         render_definitions()
+
+#         jump_to = st.query_params.get("jump_to")
+#         if jump_to:
+#             st.markdown(f"""
+#                 <script>
+#                     // Delay scroll to anchor after full render
+#                     window.addEventListener("load", function() {{
+#                         setTimeout(function() {{
+#                             var el = document.getElementById("{jump_to}");
+#                             if (el) {{
+#                                 el.scrollIntoView({{ behavior: "smooth", block: "start" }});
+#                                 // Optional: clean up the hash from the URL
+#                                 history.replaceState(null, "", window.location.pathname + window.location.search);
+#                             }}
+#                         }}, 500);
+#                     }});
+#                 </script>
+#             """, unsafe_allow_html=True)
+        
+#         # Close container
+#         st.markdown('</div>', unsafe_allow_html=True)
+        
+#         # Render footer
+#         render_footer()
+
 with tab_map["Definitions"]:
     if default_tab == "Definitions":
-         # Render header with logos
+        jump_to = st.query_params.get("jump_to")
+
         render_header()
-        
-        # Main title and subtitle
         st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
 
         render_definitions()
 
-        jump_to = st.query_params.get("jump_to")
         if jump_to:
             st.markdown(f"""
                 <script>
-                    // Delay scroll to anchor after full render
                     window.addEventListener("load", function() {{
                         setTimeout(function() {{
                             var el = document.getElementById("{jump_to}");
                             if (el) {{
                                 el.scrollIntoView({{ behavior: "smooth", block: "start" }});
-                                // Optional: clean up the hash from the URL
                                 history.replaceState(null, "", window.location.pathname + window.location.search);
                             }}
                         }}, 500);
                     }});
                 </script>
             """, unsafe_allow_html=True)
-        
-        # Close container
+
         st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Render footer
         render_footer()
+
