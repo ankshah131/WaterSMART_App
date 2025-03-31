@@ -955,7 +955,7 @@ with tab_map["Definitions"]:
     if selected_tab == "Definitions":
          # Render header with logos
         render_header()
-    
+        jump_to = st.query_params.get("jump_to", None)
         if jump_to:
             st.markdown(f"<script>location.hash = '{jump_to}';</script>", unsafe_allow_html=True)
         
