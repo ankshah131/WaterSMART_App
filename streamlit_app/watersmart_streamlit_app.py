@@ -47,6 +47,14 @@ selected_tab = query_params.get("tab", "GDE Explorer")
 #tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
 
 tab_labels = ["GDE Explorer", "Definitions"]
+
+# Reorder tabs so the selected one appears first
+if default_tab == "Definitions":
+    tab_labels = ["Definitions", "GDE Explorer"]
+else:
+    tab_labels = ["GDE Explorer", "Definitions"]
+
+# Create Streamlit tabs
 tabs = st.tabs(tab_labels)
 
 # Get references
