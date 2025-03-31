@@ -818,81 +818,107 @@ with tab_map["GDE Explorer"]:
             with col8:
                 st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                 st.pyplot(ggplot.draw(p_aetgw2))
-        
-            # # Function to save plots to PDF
-            # def save_plots_to_pdf():
-            #     pdf_buffer = io.BytesIO()
-        
-            #     with PdfPages(pdf_buffer) as pdf:
-            #         # List of ggplots to save
-            #         plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
-            #         titles = [
-            #             "Annual Maximum Leaf Area Index (LAI)",
-            #             "Boxplot of Leaf Area Index (LAI)",
-            #             "Annual Actual Evapotranspiration-Total (AET)",
-            #             "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
-            #             "Groundwater Subsidy Time Series",
-            #             "Boxplot of Annual Groundwater Subsidy",
-            #             "Annual Actual Evapotranspiration-Groundwater (mm)",
-            #             "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
-            #         ]
-        
-            #         for plot, title in zip(plots, titles):
-            #             fig = plot.draw()  # Correctly draw ggplot as a figure
-            #             fig.set_size_inches(6, 4)  # Adjust figure size
-            #             fig.suptitle(title)  # Add title
-            #             pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
-            #             plt.close(fig)  # Close figure to free memory
-        
-            #     pdf_buffer.seek(0)
-            #     return pdf_buffer
-        
-            # # Button to generate and download PDF
-            # pdf_buffer = save_plots_to_pdf()
-            # st.download_button(
-            #     label="Download Report as PDF",
-            #     data=pdf_buffer,
-            #     file_name="LAI_AET_Report.pdf",
-            #     mime="application/pdf"
-            # )
-        
-            # Function to save plots to PDF with proper title spacing
+
+            
             # def save_plots_to_pdf():
             #     pdf_buffer = io.BytesIO()
             
             #     with PdfPages(pdf_buffer) as pdf:
-            #         # List of ggplots to save
-            #         plots = [p_lai1, p_lai2, p_aet1, p_aet2, p_gwsubs1, p_gwsubs2, p_aetgw1, p_aetgw2]
-            #         titles = [
-            #             "Annual Maximum Leaf Area Index (LAI)",
-            #             "Boxplot of Leaf Area Index (LAI)",
-            #             "Annual Actual Evapotranspiration-Total (AET)",
-            #             "Boxplot of Annual Actual Evapotranspiration-Total (AET)",
-            #             "Groundwater Subsidy Time Series",
-            #             "Boxplot of Annual Groundwater Subsidy",
-            #             "Annual Actual Evapotranspiration-Groundwater (mm)",
-            #             "Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)"
+            #         # Pair the plots and their titles
+            #         paired_plots = [
+            #             (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
+            #             (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
+            #             (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
+            #             (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
             #         ]
             
-            #         for plot, title in zip(plots, titles):
-            #             fig = plot.draw()  # Correctly draw ggplot as a figure
-            #             fig.set_size_inches(6, 4)  # Adjust figure size
-                        
-            #             # Adjust title position with more space
-            #             fig.suptitle(title, y=1.15, fontsize=14, weight='bold')  # Move title even higher
-            #             plt.subplots_adjust(top=0.75)  # Increase top spacing
+            #         for plot1, title1, plot2, title2 in paired_plots:
+            #             # Draw individual ggplot figures
+            #             fig1 = plot1.draw()
+            #             fig2 = plot2.draw()
             
-            #             pdf.savefig(fig, bbox_inches='tight')  # Save to PDF
-            #             plt.close(fig)  # Close figure to free memory
+            #             fig1.set_size_inches(6, 4)
+            #             fig2.set_size_inches(6, 4)
+            
+            #             # Render both into images
+            #             buf1 = BytesIO()
+            #             buf2 = BytesIO()
+            #             fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
+            #             fig2.savefig(buf2, format='png', dpi=300, bbox_inches='tight')
+            #             plt.close(fig1)
+            #             plt.close(fig2)
+            
+            #             buf1.seek(0)
+            #             buf2.seek(0)
+            
+            #             img1 = Image.open(buf1)
+            #             img2 = Image.open(buf2)
+            
+            #             # Match heights
+            #             h = max(img1.height, img2.height)
+            #             img1 = img1.resize((int(img1.width * h / img1.height), h))
+            #             img2 = img2.resize((int(img2.width * h / img2.height), h))
+            
+            #             # Combine side by side
+            #             combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
+            #             combined.paste(img1, (0, 0))
+            #             combined.paste(img2, (img1.width, 0))
+            
+            #             # Insert combined image into a matplotlib figure
+            #             fig, ax = plt.subplots(figsize=(12, h / 100))  # height in inches
+            #             ax.axis('off')
+            #             ax.imshow(combined)
+            
+            #             pdf.savefig(fig, bbox_inches='tight')
+            #             plt.close(fig)
             
             #     pdf_buffer.seek(0)
             #     return pdf_buffer
-    
-            def save_plots_to_pdf():
+
+            def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soil_string):
                 pdf_buffer = io.BytesIO()
             
                 with PdfPages(pdf_buffer) as pdf:
-                    # Pair the plots and their titles
+                    from PIL import ImageDraw, ImageFont
+            
+                    ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
+                    fig_pwd1 = p_pwd1.draw()
+                    fig_pwd1.set_size_inches(10, 5)
+            
+                    # Save cumulative plot to buffer
+                    buf_pwd1 = BytesIO()
+                    fig_pwd1.savefig(buf_pwd1, format='png', dpi=300, bbox_inches='tight')
+                    plt.close(fig_pwd1)
+                    buf_pwd1.seek(0)
+            
+                    img_pwd1 = Image.open(buf_pwd1)
+            
+                    # Generate info box banner
+                    info_text = f"We've got your data, here is a summary:\nLocation: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"
+                    font_size = 20
+                    try:
+                        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+                    except:
+                        font = ImageFont.load_default()
+            
+                    padding = 20
+                    info_img = Image.new("RGB", (img_pwd1.width, 80), "#c6e2a9")
+                    draw = ImageDraw.Draw(info_img)
+                    draw.text((padding, 10), info_text, font=font, fill="black")
+            
+                    # Combine vertically: info banner + plot
+                    combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
+                    combined_top.paste(info_img, (0, 0))
+                    combined_top.paste(img_pwd1, (0, info_img.height))
+            
+                    # Save page to PDF
+                    fig, ax = plt.subplots(figsize=(12, combined_top.height / 100))
+                    ax.axis('off')
+                    ax.imshow(combined_top)
+                    pdf.savefig(fig, bbox_inches='tight')
+                    plt.close(fig)
+            
+                    ### -------- PAGES 2+: SIDE-BY-SIDE PLOT PAIRS -------- ###
                     paired_plots = [
                         (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
                         (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
@@ -901,14 +927,12 @@ with tab_map["GDE Explorer"]:
                     ]
             
                     for plot1, title1, plot2, title2 in paired_plots:
-                        # Draw individual ggplot figures
                         fig1 = plot1.draw()
                         fig2 = plot2.draw()
             
                         fig1.set_size_inches(6, 4)
                         fig2.set_size_inches(6, 4)
             
-                        # Render both into images
                         buf1 = BytesIO()
                         buf2 = BytesIO()
                         fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
@@ -918,32 +942,26 @@ with tab_map["GDE Explorer"]:
             
                         buf1.seek(0)
                         buf2.seek(0)
-            
                         img1 = Image.open(buf1)
                         img2 = Image.open(buf2)
             
-                        # Match heights
                         h = max(img1.height, img2.height)
                         img1 = img1.resize((int(img1.width * h / img1.height), h))
                         img2 = img2.resize((int(img2.width * h / img2.height), h))
             
-                        # Combine side by side
                         combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
                         combined.paste(img1, (0, 0))
                         combined.paste(img2, (img1.width, 0))
             
-                        # Insert combined image into a matplotlib figure
-                        fig, ax = plt.subplots(figsize=(12, h / 100))  # height in inches
+                        fig, ax = plt.subplots(figsize=(12, h / 100))
                         ax.axis('off')
                         ax.imshow(combined)
-            
                         pdf.savefig(fig, bbox_inches='tight')
                         plt.close(fig)
             
                 pdf_buffer.seek(0)
                 return pdf_buffer
-    
-    
+            
             
             # Button to generate and download PDF
             pdf_buffer = save_plots_to_pdf()
