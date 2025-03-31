@@ -119,13 +119,6 @@ with tab_map["GDE Explorer"]:
         #     map_data = st_folium(folium_map, width=300, height=500)
 
 
-        # Add a "Get Data" button with session state tracking
-        if "get_data_clicked" not in st.session_state:
-            st.session_state.get_data_clicked = False  # Ensure default state is False
-
-        if st.sidebar.button("Get Data!"):
-            st.session_state.get_data_clicked = True  # Update state when button is clicked
-
         # Define layer options
         layer_options = {
             "Administrative groundwater boundaries": None,
@@ -176,27 +169,6 @@ with tab_map["GDE Explorer"]:
             }
         }
 
-         # Add checkboxes for each layer with info buttons
-        st.sidebar.write("### Visualization Layers:")
-        #selected_layers = {}  # Store checkbox states
-        selected_layers = {key: False for key in layer_options.keys()}
-        
-        for label, key in layer_options.items():
-            cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
-            
-            # Checkbox for layer selection
-            with cols[0]:
-                selected_layers[label] = st.checkbox(label, value=False)
-        
-            # Small info button with unique key based on label
-            with cols[1]:
-                if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                    anchor = layer_links.get(label)
-                    if anchor:
-                        # Redirect to Definitions tab with jump target
-                        st.query_params.tab = "Definitions"
-                        st.query_params.jump_to = anchor
-                        st.rerun()
         # Embed the map in the sidebar
         with st.sidebar:
             st.header("Control Panel")
@@ -223,6 +195,36 @@ with tab_map["GDE Explorer"]:
             else:
                 st.sidebar.warning("No point selected on the map yet.")
 
+
+        # Add a "Get Data" button with session state tracking
+        if "get_data_clicked" not in st.session_state:
+            st.session_state.get_data_clicked = False  # Ensure default state is False
+
+        if st.sidebar.button("Get Data!"):
+            st.session_state.get_data_clicked = True  # Update state when button is clicked
+
+
+         # Add checkboxes for each layer with info buttons
+        st.sidebar.write("### Visualization Layers:")
+        #selected_layers = {}  # Store checkbox states
+        selected_layers = {key: False for key in layer_options.keys()}
+        
+        for label, key in layer_options.items():
+            cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+            
+            # Checkbox for layer selection
+            with cols[0]:
+                selected_layers[label] = st.checkbox(label, value=False)
+        
+            # Small info button with unique key based on label
+            with cols[1]:
+                if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
+                    anchor = layer_links.get(label)
+                    if anchor:
+                        # Redirect to Definitions tab with jump target
+                        st.query_params.tab = "Definitions"
+                        st.query_params.jump_to = anchor
+                        st.rerun()
             
         # Ensure the code only runs if the button was clicked
         if st.session_state.get_data_clicked and coords_ee is not None:
