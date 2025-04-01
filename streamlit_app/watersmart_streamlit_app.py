@@ -219,19 +219,16 @@ with tab1:
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
-        # Build base map
-        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+        # Build temporary map just to capture clicks
+        temp_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+        map_data = st_folium(temp_map, width=500, height=700)
     
-        # Display map and capture click
-        map_data = st_folium(folium_map, width=500, height=700)
-    
-        # Update marker coordinates *after* map is drawn
+        # Update marker coordinates if user clicks
         if map_data and map_data.get("last_clicked"):
             clicked = map_data["last_clicked"]
-            if clicked["lat"] != st.session_state.selected_coords[0] or clicked["lng"] != st.session_state.selected_coords[1]:
-                st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
+            st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
     
-        # Rebuild map with updated marker and layers
+        # Now build the final map with updated marker and layers
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
         # Add marker
@@ -249,14 +246,17 @@ with tab1:
                 ee_image = ee.Image(asset_id)
                 folium_map.add_ee_layer(ee_image, vis_params, label)
     
-        # Add layer control and redisplay map (marker is updated now)
+        # Add layer control
         folium.LayerControl().add_to(folium_map)
+    
+        # Show the final map (just once!)
         st_folium(folium_map, width=500, height=700)
     
-        # Display current selected coords
+        # Display current coordinates
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+
     
 
     # # Initialize selected layers dictionary
