@@ -1106,7 +1106,23 @@ with tab1:
                         img_pwd1 = Image.open(buf_pwd1)
                 
                         # Generate info box banner
-                        info_text = f"We've got your data, here is a summary:\nLocation: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"
+                        # info_text = f"Estimated GDE Groundwater Requirements
+                        #             Estimates are based on model estimates but have uncertainty due to 
+                        #             the following simplifications: 1) uniform soil texture in soil column is 
+                        #             assumed; 2) variation in root distribution is not considered; 3) 
+                        #             species-level differences are not accounted for; 4) groundwater 
+                        #             depths are assumed constant over time.
+                        #             We've got your data, here is a summary:\nLocation: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"
+                        info_text = f"""Estimated GDE Groundwater Requirements
+
+                                    Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                                    1) uniform soil texture in soil column is assumed;
+                                    2) variation in root distribution is not considered;
+                                    3) species-level differences are not accounted for;
+                                    4) groundwater depths are assumed constant over time.
+                                    
+                                    Location: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"""
+                        
                         font_size = 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
