@@ -187,7 +187,7 @@ with tab_map["GDE Explorer"]:
             st.header("Control Panel")
             st.write("Select your area of interest by clicking on the map below:")
             st.write("### Interactive Map")
-            map_data = st_folium(folium_map, width=300, height=500)
+            map_data = st_folium(folium_map, width=500, height=700)
         
             # display ee layers
             for label, is_checked in selected_layers.items():
