@@ -286,8 +286,8 @@ with tab_map["GDE Explorer"]:
                         font-family: Arial, sans-serif;">
                         <b>We've got your data, here is a summary:</b><br>
                         <b>Location:</b> {lat:.2f} N, {lon:.2f} W &nbsp;&nbsp;
-                        <b>Soil type:</b> {soil_string}
-                        <b>Annual precipitation:</b> {precip_value:.0f} mm &nbsp;&nbsp;&nbsp;&nbsp;
+                        <b>Soil type:</b> {soil_string} &nbsp;&nbsp;
+                        <b>Annual precipitation:</b> {precip_value:.0f} mm &nbsp;&nbsp;
                         <b>Annual evaporative demand:</b> {eto_value:.0f} mm<br>
                     </div>
                     """,
