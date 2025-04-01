@@ -247,9 +247,14 @@ with tab1:
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
+        st.write("Click on the definitions to learn more about each layer.")
     
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
+
+        # Get Data Button
+        if st.button("Get Data!"):
+            st.session_state.get_data_clicked = True
     
         # Create checkboxes and remember their states
         st.write("### Visualization Layers:")
@@ -295,9 +300,9 @@ with tab1:
         coords_ee = ee.Geometry.Point([lon, lat])
         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
     
-        # Get Data Button
-        if st.button("Get Data!"):
-            st.session_state.get_data_clicked = True
+        # # Get Data Button
+        # if st.button("Get Data!"):
+        #     st.session_state.get_data_clicked = True
 
     # with st.sidebar:
     #     st.header("Control Panel")
