@@ -210,27 +210,38 @@ with tab1:
     #     else:
     #         st.sidebar.warning("No point selected on the map yet.")
 
-    # Embed the map in the sidebar
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
         st.write("### Interactive Map")
     
-        # Update selected coordinates from user click
+        # Setup session state
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
-        # Build base map centered on last selected coordinates
+        # Build base map
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
-        # Add current marker
+        # Display map and capture click
+        map_data = st_folium(folium_map, width=500, height=700)
+    
+        # Update marker coordinates *after* map is drawn
+        if map_data and map_data.get("last_clicked"):
+            clicked = map_data["last_clicked"]
+            if clicked["lat"] != st.session_state.selected_coords[0] or clicked["lng"] != st.session_state.selected_coords[1]:
+                st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
+    
+        # Rebuild map with updated marker and layers
+        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+    
+        # Add marker
         folium.Marker(
             location=st.session_state.selected_coords,
             popup="Selected Location",
             icon=folium.Icon(color="red", icon="info-sign")
         ).add_to(folium_map)
     
-        # Add selected EE layers (if any)
+        # Add EE layers
         for label, is_checked in selected_layers.items():
             if is_checked and label in layer_assets:
                 asset_id = layer_assets[label]
@@ -238,21 +249,15 @@ with tab1:
                 ee_image = ee.Image(asset_id)
                 folium_map.add_ee_layer(ee_image, vis_params, label)
     
-        # Add layer control
+        # Add layer control and redisplay map (marker is updated now)
         folium.LayerControl().add_to(folium_map)
+        st_folium(folium_map, width=500, height=700)
     
-        # Display the map and capture click
-        map_data = st_folium(folium_map, width=500, height=700)
+        # Display current selected coords
+        lat, lon = st.session_state.selected_coords
+        coords_ee = ee.Geometry.Point([lon, lat])
+        st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
     
-        # Update marker on click
-        if map_data and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-            lat = map_data["last_clicked"]["lat"]
-            lon = map_data["last_clicked"]["lng"]
-            st.session_state.selected_coords = [lat, lon]
-            coords_ee = ee.Geometry.Point([lon, lat])
-            st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-        else:
-            st.sidebar.warning("No point selected on the map yet.")
 
     # # Initialize selected layers dictionary
     # selected_layers = {}
