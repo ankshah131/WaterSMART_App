@@ -178,7 +178,7 @@ with tab1:
                 '#aec7e8',  # 11 - silty clay
                 '#98df8a'   # 12 - clay
             ]
-        }
+        },
 
         "Average precipitation": {
             'min': 0,
