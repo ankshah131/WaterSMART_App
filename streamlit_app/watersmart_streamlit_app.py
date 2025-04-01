@@ -180,92 +180,92 @@ with tab_map["GDE Explorer"]:
             }
         }
 
-        # selected_layers = {key: False for key in layer_options.keys()}
+        selected_layers = {key: False for key in layer_options.keys()}
 
-        # # Embed the map in the sidebar
-        # with st.sidebar:
-        #     st.header("Control Panel")
-        #     st.write("Select your area of interest by clicking on the map below:")
-        #     st.write("### Interactive Map")
-        #     map_data = st_folium(folium_map, width=300, height=500)
-        
-        #     # display ee layers
-        #     for label, is_checked in selected_layers.items():
-        #         if is_checked and label in layer_assets:
-        #             asset_id = layer_assets[label]
-        #             vis_params = layer_vis_params.get(label, {})
-        #             ee_image = ee.Image(asset_id)
-        #             folium_map.add_ee_layer(ee_image, vis_params, label)
-            
-        #     # Add layer toggle control
-        #     folium.LayerControl().add_to(folium_map)
-            
-        #     # Check for selected coordinates from the map
-        #     if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-        #         lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-        #         coords_ee = ee.Geometry.Point([lon, lat])
-        #         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-        #     else:
-        #         st.sidebar.warning("No point selected on the map yet.")
-
-        # Initialize selected layers dictionary
-        selected_layers = {}
-        
-        # Collect checkbox states outside the sidebar block
-        for label in layer_options.keys():
-            selected_layers[label] = st.sidebar.checkbox(label, value=False, key=f"layer_{label}")
-        
-            # ℹ️ Info buttons go next to checkboxes
-            if st.sidebar.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                anchor = layer_links.get(label)
-                if anchor:
-                    st.query_params.tab = "Definitions"
-                    st.query_params.jump_to = anchor
-                    st.rerun()
-        
-        # Render the rest of the sidebar in one block for layout control
+        # Embed the map in the sidebar
         with st.sidebar:
             st.header("Control Panel")
             st.write("Select your area of interest by clicking on the map below:")
             st.write("### Interactive Map")
+            map_data = st_folium(folium_map, width=300, height=500)
         
-            # Create Folium map
-            default_coords = st.session_state.get("selected_coords", [39.5, -117])
-            folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="OpenStreetMap")
-        
-            # Add marker
-            folium.Marker(location=default_coords, popup="Selected Location", icon=folium.Icon(color="red")).add_to(folium_map)
-        
-            # Add selected layers
+            # display ee layers
             for label, is_checked in selected_layers.items():
                 if is_checked and label in layer_assets:
                     asset_id = layer_assets[label]
                     vis_params = layer_vis_params.get(label, {})
                     ee_image = ee.Image(asset_id)
                     folium_map.add_ee_layer(ee_image, vis_params, label)
-        
-            # Add layer control
+            
+            # Add layer toggle control
             folium.LayerControl().add_to(folium_map)
-        
-            # Render map
-            map_data = st_folium(folium_map, width=300, height=500)
-        
-            # Show coordinates if selected
-            if map_data and map_data.get("last_clicked"):
-                lat = map_data["last_clicked"]["lat"]
-                lon = map_data["last_clicked"]["lng"]
-                st.session_state.selected_coords = [lat, lon]
-                st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+            
+            # Check for selected coordinates from the map
+            if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
+                lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+                coords_ee = ee.Geometry.Point([lon, lat])
+                st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
             else:
-                st.warning("No point selected on the map yet.")
+                st.sidebar.warning("No point selected on the map yet.")
+
+        # # Initialize selected layers dictionary
+        # selected_layers = {}
         
-            # # "Get Data" button
-            # if st.button("Get Data!"):
-            #     st.session_state.get_data_clicked = True
+        # # Collect checkbox states outside the sidebar block
+        # for label in layer_options.keys():
+        #     selected_layers[label] = st.sidebar.checkbox(label, value=False, key=f"layer_{label}")
         
-            # Visualization Layers title (comes after map!)
-            st.write("### Visualization Layers:")
-            # Already rendered checkboxes above
+        #     # ℹ️ Info buttons go next to checkboxes
+        #     if st.sidebar.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
+        #         anchor = layer_links.get(label)
+        #         if anchor:
+        #             st.query_params.tab = "Definitions"
+        #             st.query_params.jump_to = anchor
+        #             st.rerun()
+        
+        # # Render the rest of the sidebar in one block for layout control
+        # with st.sidebar:
+        #     st.header("Control Panel")
+        #     st.write("Select your area of interest by clicking on the map below:")
+        #     st.write("### Interactive Map")
+        
+        #     # Create Folium map
+        #     default_coords = st.session_state.get("selected_coords", [39.5, -117])
+        #     folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="OpenStreetMap")
+        
+        #     # Add marker
+        #     folium.Marker(location=default_coords, popup="Selected Location", icon=folium.Icon(color="red")).add_to(folium_map)
+        
+        #     # Add selected layers
+        #     for label, is_checked in selected_layers.items():
+        #         if is_checked and label in layer_assets:
+        #             asset_id = layer_assets[label]
+        #             vis_params = layer_vis_params.get(label, {})
+        #             ee_image = ee.Image(asset_id)
+        #             folium_map.add_ee_layer(ee_image, vis_params, label)
+        
+        #     # Add layer control
+        #     folium.LayerControl().add_to(folium_map)
+        
+        #     # Render map
+        #     map_data = st_folium(folium_map, width=300, height=500)
+        
+        #     # Show coordinates if selected
+        #     if map_data and map_data.get("last_clicked"):
+        #         lat = map_data["last_clicked"]["lat"]
+        #         lon = map_data["last_clicked"]["lng"]
+        #         st.session_state.selected_coords = [lat, lon]
+        #         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+        #     else:
+        #         st.warning("No point selected on the map yet.")
+        
+        #     # # "Get Data" button
+        #     # if st.button("Get Data!"):
+        #     #     st.session_state.get_data_clicked = True
+        
+        #     # Visualization Layers title (comes after map!)
+        #     st.write("### Visualization Layers:")
+        #     # Already rendered checkboxes above
 
 
         # Add a "Get Data" button with session state tracking
