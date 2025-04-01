@@ -219,16 +219,7 @@ with tab1:
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
-        # Build temporary map just to capture clicks
-        temp_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
-        map_data = st_folium(temp_map, width=500, height=700)
-    
-        # Update marker coordinates if user clicks
-        if map_data and map_data.get("last_clicked"):
-            clicked = map_data["last_clicked"]
-            st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
-    
-        # Now build the final map with updated marker and layers
+        # Build map with current selected coordinates
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
         # Add marker
@@ -249,15 +240,20 @@ with tab1:
         # Add layer control
         folium.LayerControl().add_to(folium_map)
     
-        # Show the final map (just once!)
-        st_folium(folium_map, width=500, height=700)
+        # Show map (only once!) and capture clicks
+        map_data = st_folium(folium_map, width=500, height=700)
+    
+        # Update marker coordinates if user clicks
+        if map_data and map_data.get("last_clicked"):
+            clicked = map_data["last_clicked"]
+            st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
     
         # Display current coordinates
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-
     
+        
 
     # # Initialize selected layers dictionary
     # selected_layers = {}
