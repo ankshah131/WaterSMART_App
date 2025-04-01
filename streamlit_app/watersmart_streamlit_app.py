@@ -153,18 +153,33 @@ with tab1:
     }
 
     layer_assets = {
+        "Administrative groundwater boundaries": "projects/dri-apps/assets/NVAdminGWBoundaries",
+        "Soil texture": "projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550",
         "Average potential evapotranspiration": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_ETo_1991_2020",
         "Average precipitation": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_Precip_1991_2020",
         "Average potential water deficit": "projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Water_Deficit_1991_2020",
-        "Soil Texture": "projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550",
     }
 
     layer_vis_params = {
         "Soil texture": {
             'min': 1,
             'max': 12,
-            'palette': ['blue', 'green', 'yellow', 'orange', 'red']
-        },
+            'palette': [
+                '#1f77b4',  # 1 - sand
+                '#2ca02c',  # 2 - loamy sand
+                '#ff7f0e',  # 3 - sandy loam
+                '#d62728',  # 4 - loam
+                '#9467bd',  # 5 - silt loam
+                '#8c564b',  # 6 - silt
+                '#e377c2',  # 7 - sandy clay loam
+                '#7f7f7f',  # 8 - clay loam
+                '#bcbd22',  # 9 - silty clay loam
+                '#17becf',  # 10 - sandy clay
+                '#aec7e8',  # 11 - silty clay
+                '#98df8a'   # 12 - clay
+            ]
+        }
+
         "Average precipitation": {
             'min': 0,
             'max': 3,
@@ -232,7 +247,6 @@ with tab1:
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
-        st.write("### Interactive Map")
     
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
@@ -265,6 +279,7 @@ with tab1:
     
         # Add layer control and display map (now includes selected EE layers)
         folium.LayerControl().add_to(folium_map)
+        st.write("### Interactive Map")
         map_data = st_folium(folium_map, width=500, height=700)
     
         # Update selected coords on click
