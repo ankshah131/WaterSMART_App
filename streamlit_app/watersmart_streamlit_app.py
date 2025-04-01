@@ -1081,7 +1081,7 @@ with tab1:
 with tab2:
 # with tab_map["Definitions"]:
 #     if default_tab == "Definitions":
-    jump_to = st.query_params.get("jump_to")
+    #jump_to = st.query_params.get("jump_to")
 
     # Optional: Go back button at top
     # if st.button("⬅️ Back to GDE Explorer"):
@@ -1130,6 +1130,6 @@ with tab2:
     #     """, unsafe_allow_html=True)
 
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    #st.markdown('</div>', unsafe_allow_html=True)
     render_footer()
 
