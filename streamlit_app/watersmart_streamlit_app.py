@@ -86,7 +86,7 @@ with tab_map["GDE Explorer"]:
         if "previous_rooting_depth" not in st.session_state:
             st.session_state.previous_rooting_depth = None
 
-        st.session_state.get_data_clicked = False
+        # st.session_state.get_data_clicked = False
 
         # Set up Streamlit layout
         st.title("Welcome to the Nevada GDE Water Needs Explorer")
