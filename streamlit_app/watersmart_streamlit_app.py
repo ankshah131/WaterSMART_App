@@ -165,17 +165,17 @@ with tab_map["GDE Explorer"]:
             },
             "Average precipitation": {
                 'min': 0,
-                'max': 2500,
+                'max': 3,
                 'palette': ['ffffff', 'blue']
             },
             "Average potential evapotranspiration": {
                 'min': 0,
-                'max': 2000,
+                'max': 2,
                 'palette': ['ffffff', 'orange']
             },
             "Average potential water deficit": {
-                'min': -1000,
-                'max': 1000,
+                'min': -2,
+                'max': 2,
                 'palette': ['blue', 'white', 'red']
             }
         }
@@ -259,9 +259,9 @@ with tab_map["GDE Explorer"]:
             else:
                 st.warning("No point selected on the map yet.")
         
-            # "Get Data" button
-            if st.button("Get Data!"):
-                st.session_state.get_data_clicked = True
+            # # "Get Data" button
+            # if st.button("Get Data!"):
+            #     st.session_state.get_data_clicked = True
         
             # Visualization Layers title (comes after map!)
             st.write("### Visualization Layers:")
