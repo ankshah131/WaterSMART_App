@@ -189,32 +189,52 @@ with tab1:
     #     st.header("Control Panel")
     #     st.write("Select your area of interest by clicking on the map below:")
     #     st.write("### Interactive Map")
-    #     map_data = st_folium(folium_map, width=500, height=700)
     
-    #     # display ee layers
+    #     if "selected_coords" not in st.session_state:
+    #         st.session_state.selected_coords = default_coords
+    
+    #     # Build map with current marker location
+    #     folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+    
+    #     # Add marker
+    #     folium.Marker(
+    #         location=st.session_state.selected_coords,
+    #         popup="Selected Location",
+    #         icon=folium.Icon(color="red", icon="info-sign")
+    #     ).add_to(folium_map)
+    
+    #     # Add EE layers
     #     for label, is_checked in selected_layers.items():
     #         if is_checked and label in layer_assets:
     #             asset_id = layer_assets[label]
     #             vis_params = layer_vis_params.get(label, {})
     #             ee_image = ee.Image(asset_id)
     #             folium_map.add_ee_layer(ee_image, vis_params, label)
-        
-    #     # Add layer toggle control
-    #     folium.LayerControl().add_to(folium_map)
-        
-    #     # Check for selected coordinates from the map
-    #     if map_data is not None and "last_clicked" in map_data and map_data["last_clicked"] is not None:
-    #         lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-    #         coords_ee = ee.Geometry.Point([lon, lat])
-    #         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-    #     else:
-    #         st.sidebar.warning("No point selected on the map yet.")
     
+    #     folium.LayerControl().add_to(folium_map)
+    
+    #     # Display the map and get interaction
+    #     map_data = st_folium(folium_map, width=500, height=700)
+    
+    #     # Detect click and trigger rerun
+    #     if map_data and map_data.get("last_clicked"):
+    #         clicked = map_data["last_clicked"]
+    #         lat, lon = clicked["lat"], clicked["lng"]
+    #         if [lat, lon] != st.session_state.selected_coords:
+    #             st.session_state.selected_coords = [lat, lon]
+    #             st.rerun()
+    
+    #     # Display updated coords
+    #     lat, lon = st.session_state.selected_coords
+    #     coords_ee = ee.Geometry.Point([lon, lat])
+    #     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
         st.write("### Interactive Map")
     
+        # Ensure coordinates exist in session state
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
@@ -228,7 +248,13 @@ with tab1:
             icon=folium.Icon(color="red", icon="info-sign")
         ).add_to(folium_map)
     
-        # Add EE layers
+        # Render layer checkboxes and store selections
+        selected_layers = {}
+        st.write("### Visualization Layers:")
+        for label in layer_options.keys():
+            selected_layers[label] = st.checkbox(label)
+    
+        # Add EE layers if checked
         for label, is_checked in selected_layers.items():
             if is_checked and label in layer_assets:
                 asset_id = layer_assets[label]
@@ -252,7 +278,12 @@ with tab1:
         # Display updated coords
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
-        st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+        st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+    
+        # Get Data Button
+        if st.button("Get Data!"):
+            st.session_state.get_data_clicked = True
+
     
         
         
@@ -315,31 +346,38 @@ with tab1:
     #     st.write("### Visualization Layers:")
     #     # Already rendered checkboxes above
 
-
+    # ////
     # Add a "Get Data" button with session state tracking
-    if "get_data_clicked" not in st.session_state:
-        st.session_state.get_data_clicked = False  # Ensure default state is False
+    # if "get_data_clicked" not in st.session_state:
+    #     st.session_state.get_data_clicked = False  # Ensure default state is False
 
-    if st.sidebar.button("Get Data!"):
-        st.session_state.get_data_clicked = True  # Update state when button is clicked
+    # if st.sidebar.button("Get Data!"):
+    #     st.session_state.get_data_clicked = True  # Update state when button is clicked
 
-
+    # ////
      # Add checkboxes for each layer with info buttons
-    st.sidebar.write("### Visualization Layers:")
+    #st.sidebar.write("### Visualization Layers:")
+
+    # ////
+    
     #selected_layers = {}  # Store checkbox states
     #selected_layers = {key: False for key in layer_options.keys()}
-    
-    for label, key in layer_options.items():
-        cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
+
+    # //////
+    # for label, key in layer_options.items():
+    #     cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
         
-        # Checkbox for layer selection
-        with cols[0]:
-            selected_layers[label] = st.checkbox(label, value=False)
+    #     # Checkbox for layer selection
+    #     with cols[0]:
+    #         selected_layers[label] = st.checkbox(label, value=False)
     
-        # Small info button with unique key based on label
-        with cols[1]:
-            if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-                anchor = layer_links.get(label)
+    #     # Small info button with unique key based on label
+    #     with cols[1]:
+    #         if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
+    #             anchor = layer_links.get(label)
+
+    # /////
+    
                 # if anchor:
                 #     # Redirect to Definitions tab with jump target
                 #     st.query_params.tab = "Definitions"
