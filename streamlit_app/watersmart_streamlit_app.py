@@ -76,6 +76,7 @@ tab_map = dict(zip(tab_labels, tabs))
 
 with tab_map["GDE Explorer"]:
     if default_tab == "GDE Explorer":
+        st.session_state.get_data_clicked = False
 
         # Set up Streamlit layout
         st.title("Welcome to the Nevada GDE Water Needs Explorer")
