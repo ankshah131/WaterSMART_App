@@ -229,62 +229,61 @@ with tab1:
     #     coords_ee = ee.Geometry.Point([lon, lat])
     #     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
 
-    with st.sidebar:
-        st.header("Control Panel")
-        st.write("Select your area of interest by clicking on the map below:")
-        st.write("### Interactive Map")
-    
-        # Ensure coordinates exist in session state
-        if "selected_coords" not in st.session_state:
-            st.session_state.selected_coords = default_coords
-    
-        # Build map with current marker location
-        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
-    
-        # Add marker
-        folium.Marker(
-            location=st.session_state.selected_coords,
-            popup="Selected Location",
-            icon=folium.Icon(color="red", icon="info-sign")
-        ).add_to(folium_map)
-    
-        # Render layer checkboxes and store selections
-        selected_layers = {}
-        st.write("### Visualization Layers:")
-        for label in layer_options.keys():
-            selected_layers[label] = st.checkbox(label)
-    
-        # Add EE layers if checked
-        for label, is_checked in selected_layers.items():
-            if is_checked and label in layer_assets:
-                asset_id = layer_assets[label]
-                vis_params = layer_vis_params.get(label, {})
-                ee_image = ee.Image(asset_id)
-                folium_map.add_ee_layer(ee_image, vis_params, label)
-    
-        folium.LayerControl().add_to(folium_map)
-    
-        # Display the map and get interaction
-        map_data = st_folium(folium_map, width=500, height=700)
-    
-        # Detect click and trigger rerun
-        if map_data and map_data.get("last_clicked"):
-            clicked = map_data["last_clicked"]
-            lat, lon = clicked["lat"], clicked["lng"]
-            if [lat, lon] != st.session_state.selected_coords:
-                st.session_state.selected_coords = [lat, lon]
-                st.rerun()
-    
-        # Display updated coords
-        lat, lon = st.session_state.selected_coords
-        coords_ee = ee.Geometry.Point([lon, lat])
-        st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-    
-        # Get Data Button
-        if st.button("Get Data!"):
-            st.session_state.get_data_clicked = True
+with st.sidebar:
+    st.header("Control Panel")
+    st.write("Select your area of interest by clicking on the map below:")
+    st.write("### Interactive Map")
 
-    
+    if "selected_coords" not in st.session_state:
+        st.session_state.selected_coords = default_coords
+
+    # Create checkboxes and remember their states
+    st.write("### Visualization Layers:")
+    for label in layer_options.keys():
+        key = f"layer_checkbox_{label}"
+        if key not in st.session_state:
+            st.session_state[key] = False
+        st.session_state[key] = st.checkbox(label, value=st.session_state[key])
+
+    # Initialize map
+    folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+
+    # Add marker
+    folium.Marker(
+        location=st.session_state.selected_coords,
+        popup="Selected Location",
+        icon=folium.Icon(color="red", icon="info-sign")
+    ).add_to(folium_map)
+
+    # Add layers based on checkbox state
+    for label in layer_options.keys():
+        if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
+            asset_id = layer_assets[label]
+            vis_params = layer_vis_params.get(label, {})
+            ee_image = ee.Image(asset_id)
+            folium_map.add_ee_layer(ee_image, vis_params, label)
+
+    # Add layer control and display map (now includes selected EE layers)
+    folium.LayerControl().add_to(folium_map)
+    map_data = st_folium(folium_map, width=500, height=700)
+
+    # Update selected coords on click
+    if map_data and map_data.get("last_clicked"):
+        clicked = map_data["last_clicked"]
+        lat, lon = clicked["lat"], clicked["lng"]
+        if [lat, lon] != st.session_state.selected_coords:
+            st.session_state.selected_coords = [lat, lon]
+            st.rerun()
+
+    # Show current coordinates
+    lat, lon = st.session_state.selected_coords
+    coords_ee = ee.Geometry.Point([lon, lat])
+    st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
+
+    # Get Data Button
+    if st.button("Get Data!"):
+        st.session_state.get_data_clicked = True
+
         
         
     # # Initialize selected layers dictionary
