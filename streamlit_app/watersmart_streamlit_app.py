@@ -1171,73 +1171,87 @@ with tab1:
                             pdf.savefig(fig, bbox_inches='tight')
                             plt.close(fig)
 
-                            ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
+        ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
                         definitions_text = """
-                Definitions
+                        DEFINITIONS
+                        
+                        Groundwater Boundaries:
+                        Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. These areas serve as the foundation for water planning, management, and regulation.
+                        Source: Nevada Division of Water Planning, 1999
+                        https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about
+                        
+                        Soil Texture:
+                        Soil texture refers to the proportion of sand, silt, and clay particles in the soil. It affects water retention and movement.
+                        Source: FAO, 2006; Walkinshaw et al. (2020)
+                        
+                        Precipitation:
+                        Average annual precipitation from 1991 to 2020, computed as a long-term mean.
+                        Source: Abatzoglou, 2013
+                        
+                        Evapotranspiration (ET):
+                        Potential ET represents atmospheric moisture demand using the Penman-Monteith method.
+                        
+                        Water Deficit:
+                        Calculated as precipitation minus potential ET. Negative values show unmet demand.
+                        
+                        Soil Texture (Selection):
+                        Different textures affect water retention. Clay holds water tighter, affecting plant access.
+                        
+                        Rooting Depth:
+                        Varies by vegetation type. Grasses: ~2m, Shrubs/Trees: up to 6m.
+                        
+                        Leaf Area Index (LAI):
+                        Ratio of leaf surface area to ground area. Typical LAI: Shrublands ~1, Meadows ~2.
+                        Source: MODIS LAI Dataset
+                        https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H
+                        
+                        ET from Groundwater (ETgw):
+                        Portion of ET sourced from groundwater, varying with depth to water table.
+                        
+                        Groundwater Subsidy:
+                        Extra water available to plants from shallow groundwater, supporting ecosystems.
+                        
+                        DISCLAIMERS:
+                        This modeling tool does not replace field surveys. Non-regulatory. Not legally binding.
+                        Project: Reclamation Applied Science R19AP00278
+                        Overview: Nevada TNC
+                        https://www.groundwaterresourcehub.org
+                        
+                        REFERENCES:
+                        
+                        Abatzoglou, J.T. (2013). Development of gridded surface meteorological data.
+                        https://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full
+                        
+                        Fang, H., Baret, F., et al. (2019). Global Leaf Area Index (LAI) overview.
+                        https://doi.org/10.1029/2018RG000608
+                        
+                        FAO (2006). Soil Texture Guide.
+                        https://www.fao.org/fishery/static/FAO_Training/General/x6706e/x6706e06.htm
+                        
+                        Nevada Division of Water Planning (1999). Nevada State Water Plan.
+                        https://water.nv.gov/library/water-planning-reports
+                        
+                        The Nature Conservancy (2021). Plant Rooting Depth Database.
+                        https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/
+                        
+                        Walkinshaw et al. (2020). California Soil Resource Lab.
+                        https://casoilresource.lawr.ucdavis.edu/soil-properties/
+                                """
                 
-                Groundwater Boundaries:
-                Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. These areas serve as the foundation for water planning, management, and regulation.
-                Source: Nevada Division of Water Planning, 1999
-                https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about
-                
-                Soil Texture:
-                Soil texture refers to the proportion of sand, silt, and clay particles in the soil. It affects water retention and movement.
-                Source: FAO, 2006; Walkinshaw et al. (2020)
-                
-                Precipitation:
-                Average annual precipitation from 1991 to 2020, computed as a long-term mean.
-                Source: Abatzoglou, 2013
-                
-                Evapotranspiration (ET):
-                Potential ET represents atmospheric moisture demand using the Penman-Monteith method.
-                
-                Water Deficit:
-                Calculated as precipitation minus potential ET. Negative values show unmet demand.
-                
-                Soil Texture (Selection):
-                Different textures affect water retention. Clay holds water tighter, affecting plant access.
-                
-                Rooting Depth:
-                Varies by vegetation type. Grasses: ~2m, Shrubs/Trees: up to 6m.
-                
-                Leaf Area Index (LAI):
-                Ratio of leaf surface area to ground area. Typical LAI: Shrublands ~1, Meadows ~2.
-                Source: MODIS LAI Dataset
-                https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H
-                
-                ET from Groundwater (ETgw):
-                Portion of ET sourced from groundwater, varying with depth to water table.
-                
-                Groundwater Subsidy:
-                Extra water available to plants from shallow groundwater, supporting ecosystems.
-                
-                Disclaimers:
-                This modeling tool does not replace field surveys. Non-regulatory. Not legally binding.
-                Project: Reclamation Applied Science R19AP00278
-                Overview: Nevada TNC
-                https://www.groundwaterresourcehub.org
-                
-                References:
-                Abatzoglou, J.T. (2013). Development of gridded surface meteorological data. Int. J. Climatol. https://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full
-                Fang, H. et al. (2019). Overview of global LAI. Rev. Geophys. https://doi.org/10.1029/2018RG000608
-                FAO. (2006). Soil Texture. https://www.fao.org/fishery/static/FAO_Training/General/x6706e/x6706e06.htm
-                Nevada Division of Water Planning. (1999). Nevada State Water Plan. https://water.nv.gov/library/water-planning-reports
-                The Nature Conservancy. (2021). Plant Rooting Depth Database. https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/
-                Walkinshaw M, O'Geen AT, Beaudette DE. (2020). California Soil Resource Lab. https://casoilresource.lawr.ucdavis.edu/soil-properties/
-                """.strip()
-                
-                        lines = definitions_text.split("\n")
+                        from textwrap import wrap
                         wrapped_lines = []
-                        for line in lines:
-                            wrapped_lines.extend(wrap(line, width=110))
-                        chunks = [wrapped_lines[i:i + 55] for i in range(0, len(wrapped_lines), 55)]
+                        for line in definitions_text.strip().split("\n"):
+                            wrapped_lines.extend(wrap(line, width=100))
                 
-                        for chunk in chunks:
+                        # Paginate every ~55 lines to avoid overflow
+                        for i in range(0, len(wrapped_lines), 55):
+                            page_lines = wrapped_lines[i:i+55]
                             fig, ax = plt.subplots(figsize=(8.5, 11))
                             ax.axis('off')
-                            ax.text(0, 1, "\n".join(chunk), va='top', ha='left', fontsize=10, family='monospace')
+                            ax.text(0.05, 0.95, "\n".join(page_lines), va='top', ha='left', fontsize=10, family='monospace', wrap=True)
                             pdf.savefig(fig, bbox_inches='tight')
                             plt.close(fig)
+
                         # /////
                 
                     pdf_buffer.seek(0)
