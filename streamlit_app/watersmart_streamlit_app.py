@@ -209,17 +209,16 @@ with tab1:
     #         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
     #     else:
     #         st.sidebar.warning("No point selected on the map yet.")
-
+    
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
         st.write("### Interactive Map")
     
-        # Setup session state
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
-        # Build map with current selected coordinates
+        # Build map with current marker location
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
         # Add marker
@@ -237,24 +236,26 @@ with tab1:
                 ee_image = ee.Image(asset_id)
                 folium_map.add_ee_layer(ee_image, vis_params, label)
     
-        # Add layer control
         folium.LayerControl().add_to(folium_map)
     
-        # Show map (only once!) and capture clicks
+        # Display the map and get interaction
         map_data = st_folium(folium_map, width=500, height=700)
     
-        # Update marker coordinates if user clicks
+        # Detect click and trigger rerun
         if map_data and map_data.get("last_clicked"):
             clicked = map_data["last_clicked"]
-            st.session_state.selected_coords = [clicked["lat"], clicked["lng"]]
+            lat, lon = clicked["lat"], clicked["lng"]
+            if [lat, lon] != st.session_state.selected_coords:
+                st.session_state.selected_coords = [lat, lon]
+                st.rerun()
     
-        # Display current coordinates
+        # Display updated coords
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
         st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
     
         
-
+        
     # # Initialize selected layers dictionary
     # selected_layers = {}
     
