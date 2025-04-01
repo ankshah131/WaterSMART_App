@@ -245,6 +245,15 @@ with tab_map["GDE Explorer"]:
             st.empty()
 
             try:
+                # Parameters
+                eto_img = ee.Image("projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_ETo_1991_2020")
+                precip_img = ee.Image("projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_Precip_1991_2020")
+                pwd_img = ee.Image("projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Water_Deficit_1991_2020")
+
+                eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_eto')
+                precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_precip')
+                pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_water_deficit')
+
                 # Soil type determination
                 soil = ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550').rename('texture')
                 soil_lu_dict = ee.Dictionary({
@@ -265,7 +274,7 @@ with tab_map["GDE Explorer"]:
                 # Extract soil texture for the point
                 soil_point = soil.reduceRegion(reducer=ee.Reducer.mean(), geometry=coords_ee, scale=30).get('texture')
                 soil_string = soil_lu_dict.get(ee.Number(soil_point).format('%.0f')).getInfo()
-        
+
                 # Display summary box before root depth selector
                 st.markdown(
                     f"""
@@ -278,6 +287,8 @@ with tab_map["GDE Explorer"]:
                         <b>We've got your data, here is a summary:</b><br>
                         <b>Location:</b> {lat:.2f} N, {lon:.2f} W &nbsp;&nbsp;
                         <b>Soil type:</b> {soil_string}
+                        <b>Annual precipitation:</b> {precip_value:.0f} mm &nbsp;&nbsp;&nbsp;&nbsp;
+                        <b>Annual evaporative demand:</b> {eto_value:.0f} mm<br>
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -467,35 +478,6 @@ with tab_map["GDE Explorer"]:
                     # Left join dfclimate and dfcoeffs
                     dfsum = pd.merge(dfclimate, dfcoeffs, left_on='WTD', right_on='WTD', how='left')
                 
-                    # Calculate LAI, AET, AETgw, and GWsubs
-                    # TODO: Have some descriptions and visuals of LAI
-                    # TODO: Have explanation of groundwater subsidy with images
-                    # dfsum['LAIcalc'] = (
-                    #     dfsum['LAIIntercept'] +
-                    #     dfsum['wb'] * dfsum['LAIwbx'] +
-                    #     dfsum['wb2'] * dfsum['LAIwb2x'] +
-                    #     dfsum['wb3'] * dfsum['LAIwb3x']
-                    # )
-                    # dfsum['aetcalc'] = (
-                    #     dfsum['aetIntercept'] +
-                    #     dfsum['wb'] * dfsum['aetwbx'] +
-                    #     dfsum['wb2'] * dfsum['aetwb2x'] +
-                    #     dfsum['wb3'] * dfsum['aetwb3x']
-                    # )
-                    # dfsum['aetgwcalc'] = (
-                    #     dfsum['aetgwIntercept'] +
-                    #     dfsum['wb'] * dfsum['aetgwwbx'] +
-                    #     dfsum['wb2'] * dfsum['aetgwwb2x'] +
-                    #     dfsum['wb3'] * dfsum['aetgwwb3x']
-                    # )
-                    # dfsum['gwsubscalc'] = (
-                    #     dfsum['gwsubsIntercept'] +
-                    #     dfsum['wb'] * dfsum['gwsubswbx'] +
-                    #     dfsum['wb2'] * dfsum['gwsubswb2x'] +
-                    #     dfsum['wb3'] * dfsum['gwsubswb3x']
-                    # )
-                    # # remove remnant error in GW ET calcs
-                    # dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
                 
                     dfsum['LAIcalc'] = (
                         dfsum['LAIIntercept'] +
@@ -894,61 +876,6 @@ with tab_map["GDE Explorer"]:
                         st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                         st.pyplot(ggplot.draw(p_aetgw2))
         
-                    
-                    # def save_plots_to_pdf():
-                    #     pdf_buffer = io.BytesIO()
-                    
-                    #     with PdfPages(pdf_buffer) as pdf:
-                    #         # Pair the plots and their titles
-                    #         paired_plots = [
-                    #             (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
-                    #             (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
-                    #             (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
-                    #             (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
-                    #         ]
-                    
-                    #         for plot1, title1, plot2, title2 in paired_plots:
-                    #             # Draw individual ggplot figures
-                    #             fig1 = plot1.draw()
-                    #             fig2 = plot2.draw()
-                    
-                    #             fig1.set_size_inches(6, 4)
-                    #             fig2.set_size_inches(6, 4)
-                    
-                    #             # Render both into images
-                    #             buf1 = BytesIO()
-                    #             buf2 = BytesIO()
-                    #             fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
-                    #             fig2.savefig(buf2, format='png', dpi=300, bbox_inches='tight')
-                    #             plt.close(fig1)
-                    #             plt.close(fig2)
-                    
-                    #             buf1.seek(0)
-                    #             buf2.seek(0)
-                    
-                    #             img1 = Image.open(buf1)
-                    #             img2 = Image.open(buf2)
-                    
-                    #             # Match heights
-                    #             h = max(img1.height, img2.height)
-                    #             img1 = img1.resize((int(img1.width * h / img1.height), h))
-                    #             img2 = img2.resize((int(img2.width * h / img2.height), h))
-                    
-                    #             # Combine side by side
-                    #             combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
-                    #             combined.paste(img1, (0, 0))
-                    #             combined.paste(img2, (img1.width, 0))
-                    
-                    #             # Insert combined image into a matplotlib figure
-                    #             fig, ax = plt.subplots(figsize=(12, h / 100))  # height in inches
-                    #             ax.axis('off')
-                    #             ax.imshow(combined)
-                    
-                    #             pdf.savefig(fig, bbox_inches='tight')
-                    #             plt.close(fig)
-                    
-                    #     pdf_buffer.seek(0)
-                    #     return pdf_buffer
         
                     def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                         pdf_buffer = io.BytesIO()
@@ -1048,8 +975,8 @@ with tab_map["GDE Explorer"]:
                     )
             
             except Exception as e:
-                st.warning("Choose a location on the map.")
-                st.error(str(e))  # Optional: for debugging
+                st.warning("Please choose a location on the map.")
+                #st.error(str(e))  # Optional: for debugging
             
         else:
             if map_data is None:
