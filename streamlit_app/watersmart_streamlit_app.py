@@ -1143,7 +1143,7 @@ with tab1:
                         combined_top.paste(info_img, (0, 0))
                         combined_top.paste(img_pwd1, (0, info_img.height))
                 
-                        # Resize to fit A4 width if needed
+                        # Resize to fit letter width if needed
                         if combined_top.width > MAX_WIDTH_PX:
                             ratio = MAX_WIDTH_PX / combined_top.width
                             new_height = int(combined_top.height * ratio)
@@ -1167,8 +1167,8 @@ with tab1:
                         for plot1, title1, plot2, title2 in paired_plots:
                             fig1 = plot1.draw()
                             fig2 = plot2.draw()
-                            fig1.set_size_inches(4, 3)
-                            fig2.set_size_inches(4, 3)
+                            fig1.set_size_inches(4, 6)
+                            fig2.set_size_inches(4, 6)
                         
                             buf1 = io.BytesIO()
                             buf2 = io.BytesIO()
