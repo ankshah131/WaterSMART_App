@@ -113,6 +113,7 @@ with tab1:
 
     # Initialize a Folium map with a proper basemap
     default_coords = [39.5, -117]
+    default_coords_ee =  [-117, 39.5]
     coords_ee = ee.Geometry.Point(default_coords)
 
     # Initialize session state
@@ -1429,7 +1430,7 @@ with tab1:
         
         except Exception as e:
             st.warning("Please choose a location on the map.")
-            print(e)
+            st.write(e)
             
     else:
         if map_data is None:
