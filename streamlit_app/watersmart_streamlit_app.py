@@ -1153,7 +1153,8 @@ with tab1:
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(combined_top)
-                        pdf.savefig(fig, bbox_inches='tight')
+                        #pdf.savefig(fig, bbox_inches='tight')
+                        pdf.savefig(fig)
                         plt.close(fig)
                 
                         ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
