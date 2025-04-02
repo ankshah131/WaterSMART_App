@@ -927,7 +927,7 @@ with tab1:
                                     4) groundwater depths are assumed constant over time.
                                     
                                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                                    Annual precipitation: 12 mm    Annual evaporative demand: 100 mm
+                                    Annual precipitation: {str(precip_value)} mm    Annual evaporative demand: {str(eto_value)} mm
                                     Root depth: {rd} m
                                     """
                                                     
@@ -957,8 +957,8 @@ with tab1:
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(combined_top)
-                        #pdf.savefig(fig, bbox_inches='tight')
-                        pdf.savefig(fig)
+                        pdf.savefig(fig, bbox_inches='tight')
+                        #pdf.savefig(fig)
                         plt.close(fig)
                 
                         ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
