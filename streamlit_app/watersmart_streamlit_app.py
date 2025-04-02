@@ -158,9 +158,9 @@ with tab1:
     layer_assets = {
         "Administrative groundwater boundaries": "projects/dri-apps/assets/NVAdminGWBoundaries",
         "Soil texture": "projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550",
-        "Average potential evapotranspiration": "projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_ETo_1991_2020",
-        "Average precipitation": "projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_Precip_1991_2020", 
-        "Average potential water deficit": "projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_Water_Deficit_1991_2020",
+        "Average potential evapotranspiration": "projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_ETo_1991_2020",
+        "Average precipitation": "projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Precip_1991_2020", 
+        "Average potential water deficit": "projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Water_Deficit_1991_2020",
     }
 
     layer_vis_params = {
@@ -266,9 +266,9 @@ with tab1:
 
         try:
             # Parameters
-            eto_img = ee.Image("projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_ETo_1991_2020")
-            precip_img = ee.Image("projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_Precip_1991_2020")
-            pwd_img = ee.Image("projects/localsolve/assets/climate_variables/WaterSMART_App/GRIDMET_Mean_Annual_Water_Deficit_1991_2020")
+            eto_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_ETo_1991_2020")
+            precip_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Precip_1991_2020")
+            pwd_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Water_Deficit_1991_2020")
 
             eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_eto')
             precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_pr')
