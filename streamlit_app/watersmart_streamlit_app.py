@@ -1167,8 +1167,8 @@ with tab1:
                         for plot1, title1, plot2, title2 in paired_plots:
                             fig1 = plot1.draw()
                             fig2 = plot2.draw()
-                            fig1.set_size_inches(3, 4)
-                            fig2.set_size_inches(3, 4)
+                            fig1.set_size_inches(4, 3)
+                            fig2.set_size_inches(4, 3)
                         
                             buf1 = io.BytesIO()
                             buf2 = io.BytesIO()
