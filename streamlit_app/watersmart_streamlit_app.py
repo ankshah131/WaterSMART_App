@@ -1100,7 +1100,7 @@ with tab1:
                 
                         ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
                         fig_pwd1 = p_pwd1.draw()
-                        fig_pwd1.set_size_inches(10, 5)
+                        fig_pwd1.set_size_inches(4, 6)
                 
                         # Save cumulative plot to buffer
                         buf_pwd1 = BytesIO()
@@ -1163,8 +1163,8 @@ with tab1:
                             fig1 = plot1.draw()
                             fig2 = plot2.draw()
                 
-                            fig1.set_size_inches(6, 4)
-                            fig2.set_size_inches(6, 4)
+                            fig1.set_size_inches(3, 4) 
+                            fig2.set_size_inches(3, 4)
                 
                             buf1 = BytesIO()
                             buf2 = BytesIO()
