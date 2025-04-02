@@ -1097,11 +1097,12 @@ with tab1:
                 
                     pdf_buffer = io.BytesIO()
                 
-                    # Constants for A4 size
-                    A4_WIDTH_IN = 8.27
-                    A4_HEIGHT_IN = 11.69
+                    # Constants for US Letter size
+                    LETTER_WIDTH_IN = 8.5
+                    LETTER_HEIGHT_IN = 11
                     DPI = 300
-                    MAX_WIDTH_PX = int(A4_WIDTH_IN * DPI)
+                    MAX_WIDTH_PX = int(LETTER_WIDTH_IN * DPI)
+
                 
                     with PdfPages(pdf_buffer) as pdf:
                         ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
@@ -1114,16 +1115,18 @@ with tab1:
                         img_pwd1 = Image.open(buf_pwd1)
                 
                         # Create info box image
-                        info_text = f"""Estimated GDE Groundwater Requirements
-                
-                Estimates are based on model estimates but have uncertainty due to the following simplifications:
-                1) uniform soil texture in soil column is assumed;
-                2) variation in root distribution is not considered;
-                3) species-level differences are not accounted for;
-                4) groundwater depths are assumed constant over time.
-                
-                Location: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"""
-                
+                        info_text = f"""
+                                    Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                                    1) uniform soil texture in soil column is assumed;
+                                    2) variation in root distribution is not considered;
+                                    3) species-level differences are not accounted for;
+                                    4) groundwater depths are assumed constant over time.
+                                    
+                                    Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
+                                    Annual precipitation: 12 mm    Annual evaporative demand: 100 mm
+                                    Root depth: 2 m
+                                    """
+                                                    
                         font_size = 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
@@ -1131,7 +1134,7 @@ with tab1:
                             font = ImageFont.load_default()
                 
                         padding = 20
-                        info_img = Image.new("RGB", (img_pwd1.width, 200), "#c6e2a9")
+                        info_img = Image.new("RGB", (img_pwd1.width, 250), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
                         draw.text((padding, 10), info_text, font=font, fill="black")
                 
@@ -1147,7 +1150,7 @@ with tab1:
                             combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
                 
                         # Save cover page
-                        fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
+                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(combined_top)
                         pdf.savefig(fig, bbox_inches='tight')
@@ -1193,7 +1196,7 @@ with tab1:
                                 new_height = int(combined.height * ratio)
                                 combined = combined.resize((MAX_WIDTH_PX, new_height))
                 
-                            fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
+                            fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                             ax.axis('off')
                             ax.imshow(combined)
                             pdf.savefig(fig, bbox_inches='tight')
@@ -1207,7 +1210,7 @@ with tab1:
                 
                         for i in range(0, len(wrapped_lines), 50):
                             page = wrapped_lines[i:i + 50]
-                            fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
+                            fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                             ax.axis('off')
                             ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left', family='monospace')
                             pdf.savefig(fig)
