@@ -467,9 +467,14 @@ with tab1:
             precip_img = ee.Image("projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_Annual_Precip_1991_2020")
             pwd_img = ee.Image("projects/nps-waterforecosystems/assets/WaterSMART_App/GRIDMET_Mean_Annual_Water_Deficit_1991_2020")
 
-            eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_eto')
-            precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_precip')
-            pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_water_deficit')
+            # eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_eto')
+            # precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_precip')
+            # pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_water_deficit')
+
+            eto_value = eto_img.sample(region=coords_ee, scale=4000).first().getInfo()['properties']
+            precip_value = precip_img.sample(region=coords_ee, scale=4000).first().getInfo()['properties']
+            pwd_value = pwd_img.sample(region=coords_ee, scale=4000).first().getInfo()['properties']
+
 
             # Soil type determination
             soil = ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550').rename('texture')
