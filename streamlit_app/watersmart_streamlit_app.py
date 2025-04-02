@@ -1186,12 +1186,22 @@ with tab1:
                             canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                             canvas = Image.new("RGB", canvas_px, (255, 255, 255))
                         
-                            # Paste both images centered horizontally
-                            x_margin = int((canvas_px[0] - (img1.width + img2.width)) / 2)
-                            y_margin = int((canvas_px[1] - max(img1.height, img2.height)) / 2)
+                            # # Paste both images centered horizontally
+                            # x_margin = int((canvas_px[0] - (img1.width + img2.width)) / 2)
+                            # y_margin = int((canvas_px[1] - max(img1.height, img2.height)) / 2)
                         
-                            canvas.paste(img1, (x_margin, y_margin))
-                            canvas.paste(img2, (x_margin + img1.width, y_margin))
+                            # canvas.paste(img1, (x_margin, y_margin))
+                            # canvas.paste(img2, (x_margin + img1.width, y_margin))
+
+                            # Paste both images vertically, centered horizontally
+                            x_margin1 = int((canvas_px[0] - img1.width) / 2)
+                            x_margin2 = int((canvas_px[0] - img2.width) / 2)
+                            
+                            total_height = img1.height + img2.height
+                            y_start = int((canvas_px[1] - total_height) / 2)
+                            
+                            canvas.paste(img1, (x_margin1, y_start))
+                            canvas.paste(img2, (x_margin2, y_start + img1.height))
                         
                             # Convert to matplotlib figure
                             fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
