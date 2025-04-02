@@ -1107,7 +1107,7 @@ with tab1:
                     with PdfPages(pdf_buffer) as pdf:
                         ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
                         fig_pwd1 = p_pwd1.draw()
-                        fig_pwd1.set_size_inches(4, 6)
+                        fig_pwd1.set_size_inches(6, 4)
                         buf_pwd1 = io.BytesIO()
                         fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
                         plt.close(fig_pwd1)
