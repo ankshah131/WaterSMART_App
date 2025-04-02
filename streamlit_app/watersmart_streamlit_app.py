@@ -15,6 +15,8 @@ from ee import oauth
 from io import BytesIO
 from io import StringIO
 from PIL import Image
+from PIL import ImageDraw, ImageFont, Image
+from textwrap import wrap
 
 from app_def.components.header import render_header
 from app_def.components.footer import render_footer
@@ -1090,44 +1092,38 @@ with tab1:
                 with col8:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
-    
-    
+
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
+                
                     pdf_buffer = io.BytesIO()
                 
-                    with PdfPages(pdf_buffer) as pdf:
-                        from PIL import ImageDraw, ImageFont
+                    # Constants for A4 size
+                    A4_WIDTH_IN = 8.27
+                    A4_HEIGHT_IN = 11.69
+                    DPI = 300
+                    MAX_WIDTH_PX = int(A4_WIDTH_IN * DPI)
                 
+                    with PdfPages(pdf_buffer) as pdf:
                         ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
                         fig_pwd1 = p_pwd1.draw()
                         fig_pwd1.set_size_inches(4, 6)
-                
-                        # Save cumulative plot to buffer
-                        buf_pwd1 = BytesIO()
-                        fig_pwd1.savefig(buf_pwd1, format='png', dpi=300, bbox_inches='tight')
+                        buf_pwd1 = io.BytesIO()
+                        fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
                         plt.close(fig_pwd1)
                         buf_pwd1.seek(0)
-                
                         img_pwd1 = Image.open(buf_pwd1)
                 
-                        # Generate info box banner
-                        # info_text = f"Estimated GDE Groundwater Requirements
-                        #             Estimates are based on model estimates but have uncertainty due to 
-                        #             the following simplifications: 1) uniform soil texture in soil column is 
-                        #             assumed; 2) variation in root distribution is not considered; 3) 
-                        #             species-level differences are not accounted for; 4) groundwater 
-                        #             depths are assumed constant over time.
-                        #             We've got your data, here is a summary:\nLocation: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"
+                        # Create info box image
                         info_text = f"""Estimated GDE Groundwater Requirements
-
-                                    Estimates are based on model estimates but have uncertainty due to the following simplifications:
-                                    1) uniform soil texture in soil column is assumed;
-                                    2) variation in root distribution is not considered;
-                                    3) species-level differences are not accounted for;
-                                    4) groundwater depths are assumed constant over time.
-                                    
-                                    Location: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"""
-                        
+                
+                Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                1) uniform soil texture in soil column is assumed;
+                2) variation in root distribution is not considered;
+                3) species-level differences are not accounted for;
+                4) groundwater depths are assumed constant over time.
+                
+                Location: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"""
+                
                         font_size = 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
@@ -1135,23 +1131,29 @@ with tab1:
                             font = ImageFont.load_default()
                 
                         padding = 20
-                        info_img = Image.new("RGB", (img_pwd1.width, 80), "#c6e2a9")
+                        info_img = Image.new("RGB", (img_pwd1.width, 200), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
                         draw.text((padding, 10), info_text, font=font, fill="black")
                 
-                        # Combine vertically: info banner + plot
+                        # Combine banner + plot vertically
                         combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
                         combined_top.paste(info_img, (0, 0))
                         combined_top.paste(img_pwd1, (0, info_img.height))
                 
-                        # Save page to PDF
-                        fig, ax = plt.subplots(figsize=(12, combined_top.height / 100))
+                        # Resize to fit A4 width if needed
+                        if combined_top.width > MAX_WIDTH_PX:
+                            ratio = MAX_WIDTH_PX / combined_top.width
+                            new_height = int(combined_top.height * ratio)
+                            combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
+                
+                        # Save cover page
+                        fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(combined_top)
                         pdf.savefig(fig, bbox_inches='tight')
                         plt.close(fig)
                 
-                        ### -------- PAGES 2+: SIDE-BY-SIDE PLOT PAIRS -------- ###
+                        ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
                         paired_plots = [
                             (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
                             (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
@@ -1162,14 +1164,13 @@ with tab1:
                         for plot1, title1, plot2, title2 in paired_plots:
                             fig1 = plot1.draw()
                             fig2 = plot2.draw()
-                
-                            fig1.set_size_inches(3, 4) 
+                            fig1.set_size_inches(3, 4)
                             fig2.set_size_inches(3, 4)
                 
-                            buf1 = BytesIO()
-                            buf2 = BytesIO()
-                            fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
-                            fig2.savefig(buf2, format='png', dpi=300, bbox_inches='tight')
+                            buf1 = io.BytesIO()
+                            buf2 = io.BytesIO()
+                            fig1.savefig(buf1, format='png', dpi=DPI, bbox_inches='tight')
+                            fig2.savefig(buf2, format='png', dpi=DPI, bbox_inches='tight')
                             plt.close(fig1)
                             plt.close(fig2)
                 
@@ -1186,97 +1187,221 @@ with tab1:
                             combined.paste(img1, (0, 0))
                             combined.paste(img2, (img1.width, 0))
                 
-                            fig, ax = plt.subplots(figsize=(12, h / 100))
+                            # Resize to fit A4 width
+                            if combined.width > MAX_WIDTH_PX:
+                                ratio = MAX_WIDTH_PX / combined.width
+                                new_height = int(combined.height * ratio)
+                                combined = combined.resize((MAX_WIDTH_PX, new_height))
+                
+                            fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
                             ax.axis('off')
                             ax.imshow(combined)
                             pdf.savefig(fig, bbox_inches='tight')
                             plt.close(fig)
-
-        ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
-                        definitions_text = """
-                        DEFINITIONS
-                        
-                        Groundwater Boundaries:
-                        Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. These areas serve as the foundation for water planning, management, and regulation.
-                        Source: Nevada Division of Water Planning, 1999
-                        https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about
-                        
-                        Soil Texture:
-                        Soil texture refers to the proportion of sand, silt, and clay particles in the soil. It affects water retention and movement.
-                        Source: FAO, 2006; Walkinshaw et al. (2020)
-                        
-                        Precipitation:
-                        Average annual precipitation from 1991 to 2020, computed as a long-term mean.
-                        Source: Abatzoglou, 2013
-                        
-                        Evapotranspiration (ET):
-                        Potential ET represents atmospheric moisture demand using the Penman-Monteith method.
-                        
-                        Water Deficit:
-                        Calculated as precipitation minus potential ET. Negative values show unmet demand.
-                        
-                        Soil Texture (Selection):
-                        Different textures affect water retention. Clay holds water tighter, affecting plant access.
-                        
-                        Rooting Depth:
-                        Varies by vegetation type. Grasses: ~2m, Shrubs/Trees: up to 6m.
-                        
-                        Leaf Area Index (LAI):
-                        Ratio of leaf surface area to ground area. Typical LAI: Shrublands ~1, Meadows ~2.
-                        Source: MODIS LAI Dataset
-                        https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H
-                        
-                        ET from Groundwater (ETgw):
-                        Portion of ET sourced from groundwater, varying with depth to water table.
-                        
-                        Groundwater Subsidy:
-                        Extra water available to plants from shallow groundwater, supporting ecosystems.
-                        
-                        DISCLAIMERS:
-                        This modeling tool does not replace field surveys. Non-regulatory. Not legally binding.
-                        Project: Reclamation Applied Science R19AP00278
-                        Overview: Nevada TNC
-                        https://www.groundwaterresourcehub.org
-                        
-                        REFERENCES:
-                        
-                        Abatzoglou, J.T. (2013). Development of gridded surface meteorological data.
-                        https://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full
-                        
-                        Fang, H., Baret, F., et al. (2019). Global Leaf Area Index (LAI) overview.
-                        https://doi.org/10.1029/2018RG000608
-                        
-                        FAO (2006). Soil Texture Guide.
-                        https://www.fao.org/fishery/static/FAO_Training/General/x6706e/x6706e06.htm
-                        
-                        Nevada Division of Water Planning (1999). Nevada State Water Plan.
-                        https://water.nv.gov/library/water-planning-reports
-                        
-                        The Nature Conservancy (2021). Plant Rooting Depth Database.
-                        https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/
-                        
-                        Walkinshaw et al. (2020). California Soil Resource Lab.
-                        https://casoilresource.lawr.ucdavis.edu/soil-properties/
-                                """
                 
-                        from textwrap import wrap
+                        ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
+                        definitions_text = """..."""  # Use cleaned plain text block here
                         wrapped_lines = []
                         for line in definitions_text.strip().split("\n"):
-                            wrapped_lines.extend(wrap(line, width=100))
+                            wrapped_lines.extend(wrap(line, width=100) or [""])
                 
-                        # Paginate every ~55 lines to avoid overflow
-                        for i in range(0, len(wrapped_lines), 55):
-                            page_lines = wrapped_lines[i:i+55]
-                            fig, ax = plt.subplots(figsize=(8.5, 11))
+                        for i in range(0, len(wrapped_lines), 50):
+                            page = wrapped_lines[i:i + 50]
+                            fig, ax = plt.subplots(figsize=(A4_WIDTH_IN, A4_HEIGHT_IN))
                             ax.axis('off')
-                            ax.text(0.05, 0.95, "\n".join(page_lines), va='top', ha='left', fontsize=10, family='monospace', wrap=True)
-                            pdf.savefig(fig, bbox_inches='tight')
+                            ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left', family='monospace')
+                            pdf.savefig(fig)
                             plt.close(fig)
-
-                        # /////
                 
                     pdf_buffer.seek(0)
                     return pdf_buffer
+
+    
+        #         def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
+        #             pdf_buffer = io.BytesIO()
+                
+        #             with PdfPages(pdf_buffer) as pdf:
+        #                 from PIL import ImageDraw, ImageFont
+                
+        #                 ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
+        #                 fig_pwd1 = p_pwd1.draw()
+        #                 fig_pwd1.set_size_inches(4, 6)
+                
+        #                 # Save cumulative plot to buffer
+        #                 buf_pwd1 = BytesIO()
+        #                 fig_pwd1.savefig(buf_pwd1, format='png', dpi=300, bbox_inches='tight')
+        #                 plt.close(fig_pwd1)
+        #                 buf_pwd1.seek(0)
+                
+        #                 img_pwd1 = Image.open(buf_pwd1)
+                
+        #                 # Generate info box banner
+        #                 # info_text = f"Estimated GDE Groundwater Requirements
+        #                 #             Estimates are based on model estimates but have uncertainty due to 
+        #                 #             the following simplifications: 1) uniform soil texture in soil column is 
+        #                 #             assumed; 2) variation in root distribution is not considered; 3) 
+        #                 #             species-level differences are not accounted for; 4) groundwater 
+        #                 #             depths are assumed constant over time.
+        #                 #             We've got your data, here is a summary:\nLocation: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"
+        #                 info_text = f"""Estimated GDE Groundwater Requirements
+
+        #                             Estimates are based on model estimates but have uncertainty due to the following simplifications:
+        #                             1) uniform soil texture in soil column is assumed;
+        #                             2) variation in root distribution is not considered;
+        #                             3) species-level differences are not accounted for;
+        #                             4) groundwater depths are assumed constant over time.
+                                    
+        #                             Location: {lat:.2f} N, {lon:.2f} W    Soil type: {soil_string}"""
+                        
+        #                 font_size = 20
+        #                 try:
+        #                     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+        #                 except:
+        #                     font = ImageFont.load_default()
+                
+        #                 padding = 20
+        #                 info_img = Image.new("RGB", (img_pwd1.width, 80), "#c6e2a9")
+        #                 draw = ImageDraw.Draw(info_img)
+        #                 draw.text((padding, 10), info_text, font=font, fill="black")
+                
+        #                 # Combine vertically: info banner + plot
+        #                 combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
+        #                 combined_top.paste(info_img, (0, 0))
+        #                 combined_top.paste(img_pwd1, (0, info_img.height))
+                
+        #                 # Save page to PDF
+        #                 fig, ax = plt.subplots(figsize=(12, combined_top.height / 100))
+        #                 ax.axis('off')
+        #                 ax.imshow(combined_top)
+        #                 pdf.savefig(fig, bbox_inches='tight')
+        #                 plt.close(fig)
+                
+        #                 ### -------- PAGES 2+: SIDE-BY-SIDE PLOT PAIRS -------- ###
+        #                 paired_plots = [
+        #                     (p_lai1, "Annual Maximum Leaf Area Index (LAI)", p_lai2, "Boxplot of Leaf Area Index (LAI)"),
+        #                     (p_aet1, "Annual Actual Evapotranspiration-Total (AET)", p_aet2, "Boxplot of Annual AET-Total"),
+        #                     (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
+        #                     (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
+        #                 ]
+                
+        #                 for plot1, title1, plot2, title2 in paired_plots:
+        #                     fig1 = plot1.draw()
+        #                     fig2 = plot2.draw()
+                
+        #                     fig1.set_size_inches(3, 4) 
+        #                     fig2.set_size_inches(3, 4)
+                
+        #                     buf1 = BytesIO()
+        #                     buf2 = BytesIO()
+        #                     fig1.savefig(buf1, format='png', dpi=300, bbox_inches='tight')
+        #                     fig2.savefig(buf2, format='png', dpi=300, bbox_inches='tight')
+        #                     plt.close(fig1)
+        #                     plt.close(fig2)
+                
+        #                     buf1.seek(0)
+        #                     buf2.seek(0)
+        #                     img1 = Image.open(buf1)
+        #                     img2 = Image.open(buf2)
+                
+        #                     h = max(img1.height, img2.height)
+        #                     img1 = img1.resize((int(img1.width * h / img1.height), h))
+        #                     img2 = img2.resize((int(img2.width * h / img2.height), h))
+                
+        #                     combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
+        #                     combined.paste(img1, (0, 0))
+        #                     combined.paste(img2, (img1.width, 0))
+                
+        #                     fig, ax = plt.subplots(figsize=(12, h / 100))
+        #                     ax.axis('off')
+        #                     ax.imshow(combined)
+        #                     pdf.savefig(fig, bbox_inches='tight')
+        #                     plt.close(fig)
+
+        # ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
+        #                 definitions_text = """
+        #                 DEFINITIONS
+                        
+        #                 Groundwater Boundaries:
+        #                 Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. These areas serve as the foundation for water planning, management, and regulation.
+        #                 Source: Nevada Division of Water Planning, 1999
+        #                 https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about
+                        
+        #                 Soil Texture:
+        #                 Soil texture refers to the proportion of sand, silt, and clay particles in the soil. It affects water retention and movement.
+        #                 Source: FAO, 2006; Walkinshaw et al. (2020)
+                        
+        #                 Precipitation:
+        #                 Average annual precipitation from 1991 to 2020, computed as a long-term mean.
+        #                 Source: Abatzoglou, 2013
+                        
+        #                 Evapotranspiration (ET):
+        #                 Potential ET represents atmospheric moisture demand using the Penman-Monteith method.
+                        
+        #                 Water Deficit:
+        #                 Calculated as precipitation minus potential ET. Negative values show unmet demand.
+                        
+        #                 Soil Texture (Selection):
+        #                 Different textures affect water retention. Clay holds water tighter, affecting plant access.
+                        
+        #                 Rooting Depth:
+        #                 Varies by vegetation type. Grasses: ~2m, Shrubs/Trees: up to 6m.
+                        
+        #                 Leaf Area Index (LAI):
+        #                 Ratio of leaf surface area to ground area. Typical LAI: Shrublands ~1, Meadows ~2.
+        #                 Source: MODIS LAI Dataset
+        #                 https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H
+                        
+        #                 ET from Groundwater (ETgw):
+        #                 Portion of ET sourced from groundwater, varying with depth to water table.
+                        
+        #                 Groundwater Subsidy:
+        #                 Extra water available to plants from shallow groundwater, supporting ecosystems.
+                        
+        #                 DISCLAIMERS:
+        #                 This modeling tool does not replace field surveys. Non-regulatory. Not legally binding.
+        #                 Project: Reclamation Applied Science R19AP00278
+        #                 Overview: Nevada TNC
+        #                 https://www.groundwaterresourcehub.org
+                        
+        #                 REFERENCES:
+                        
+        #                 Abatzoglou, J.T. (2013). Development of gridded surface meteorological data.
+        #                 https://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full
+                        
+        #                 Fang, H., Baret, F., et al. (2019). Global Leaf Area Index (LAI) overview.
+        #                 https://doi.org/10.1029/2018RG000608
+                        
+        #                 FAO (2006). Soil Texture Guide.
+        #                 https://www.fao.org/fishery/static/FAO_Training/General/x6706e/x6706e06.htm
+                        
+        #                 Nevada Division of Water Planning (1999). Nevada State Water Plan.
+        #                 https://water.nv.gov/library/water-planning-reports
+                        
+        #                 The Nature Conservancy (2021). Plant Rooting Depth Database.
+        #                 https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/
+                        
+        #                 Walkinshaw et al. (2020). California Soil Resource Lab.
+        #                 https://casoilresource.lawr.ucdavis.edu/soil-properties/
+        #                         """
+                
+        #                 from textwrap import wrap
+        #                 wrapped_lines = []
+        #                 for line in definitions_text.strip().split("\n"):
+        #                     wrapped_lines.extend(wrap(line, width=100))
+                
+        #                 # Paginate every ~55 lines to avoid overflow
+        #                 for i in range(0, len(wrapped_lines), 55):
+        #                     page_lines = wrapped_lines[i:i+55]
+        #                     fig, ax = plt.subplots(figsize=(8.5, 11))
+        #                     ax.axis('off')
+        #                     ax.text(0.05, 0.95, "\n".join(page_lines), va='top', ha='left', fontsize=10, family='monospace', wrap=True)
+        #                     pdf.savefig(fig, bbox_inches='tight')
+        #                     plt.close(fig)
+
+        #                 # /////
+                
+        #             pdf_buffer.seek(0)
+        #             return pdf_buffer
                 
                 
                 # Button to generate and download PDF
