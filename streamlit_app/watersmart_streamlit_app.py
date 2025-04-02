@@ -1163,44 +1163,43 @@ with tab1:
                             (p_gwsubs1, "Groundwater Subsidy Time Series", p_gwsubs2, "Boxplot of Groundwater Subsidy"),
                             (p_aetgw1, "Annual AET-Groundwater", p_aetgw2, "Boxplot of AET-Groundwater")
                         ]
-                
+
                         for plot1, title1, plot2, title2 in paired_plots:
                             fig1 = plot1.draw()
                             fig2 = plot2.draw()
                             fig1.set_size_inches(3, 4)
                             fig2.set_size_inches(3, 4)
-                
+                        
                             buf1 = io.BytesIO()
                             buf2 = io.BytesIO()
                             fig1.savefig(buf1, format='png', dpi=DPI, bbox_inches='tight')
                             fig2.savefig(buf2, format='png', dpi=DPI, bbox_inches='tight')
                             plt.close(fig1)
                             plt.close(fig2)
-                
+                        
                             buf1.seek(0)
                             buf2.seek(0)
                             img1 = Image.open(buf1)
                             img2 = Image.open(buf2)
-                
-                            h = max(img1.height, img2.height)
-                            img1 = img1.resize((int(img1.width * h / img1.height), h))
-                            img2 = img2.resize((int(img2.width * h / img2.height), h))
-                
-                            combined = Image.new("RGB", (img1.width + img2.width, h), (255, 255, 255))
-                            combined.paste(img1, (0, 0))
-                            combined.paste(img2, (img1.width, 0))
-                
-                            # Resize to fit A4 width
-                            if combined.width > MAX_WIDTH_PX:
-                                ratio = MAX_WIDTH_PX / combined.width
-                                new_height = int(combined.height * ratio)
-                                combined = combined.resize((MAX_WIDTH_PX, new_height))
-                
+                        
+                            # Create a blank white canvas with US Letter size
+                            canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
+                            canvas = Image.new("RGB", canvas_px, (255, 255, 255))
+                        
+                            # Paste both images centered horizontally
+                            x_margin = int((canvas_px[0] - (img1.width + img2.width)) / 2)
+                            y_margin = int((canvas_px[1] - max(img1.height, img2.height)) / 2)
+                        
+                            canvas.paste(img1, (x_margin, y_margin))
+                            canvas.paste(img2, (x_margin + img1.width, y_margin))
+                        
+                            # Convert to matplotlib figure
                             fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                             ax.axis('off')
-                            ax.imshow(combined)
+                            ax.imshow(canvas)
                             pdf.savefig(fig, bbox_inches='tight')
                             plt.close(fig)
+
                 
                         ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
                         definitions_text = """..."""  # Use cleaned plain text block here
