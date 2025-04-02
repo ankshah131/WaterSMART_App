@@ -469,7 +469,7 @@ with tab1:
 
             eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_eto')
             precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_pr')
-            pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_deficit	')
+            pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_deficit')
 
 
             # Soil type determination
