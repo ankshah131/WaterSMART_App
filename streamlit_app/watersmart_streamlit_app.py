@@ -1429,6 +1429,7 @@ with tab1:
         
         except Exception as e:
             st.warning("Please choose a location on the map.")
+            print(e)
             
     else:
         if map_data is None:
