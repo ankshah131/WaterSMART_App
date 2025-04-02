@@ -1124,7 +1124,7 @@ with tab1:
                                     
                                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                                     Annual precipitation: 12 mm    Annual evaporative demand: 100 mm
-                                    Root depth: 2 m
+                                    Root depth: {rd} m
                                     """
                                                     
                         font_size = 20
