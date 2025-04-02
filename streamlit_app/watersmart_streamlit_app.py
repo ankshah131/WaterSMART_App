@@ -97,10 +97,10 @@ with tab1:
 
     # App description
     st.write("""
-    Groundwater-dependent ecosystems (GDEs) in Nevada play a critical role in sustaining biodiversity and supporting ecological balance.
-    These systems rely on stable water levels, making them particularly vulnerable to changes in groundwater availability caused by climate variability and human activities.
+    Groundwater-dependent ecosystems (GDEs) in Nevada play a critical role in sustaining biodiversity and supporting human and nature's water needs.
+    These systems rely on accessible water levels, making them particularly vulnerable to changes in groundwater availability caused by climate variability and human activities.
     
-    This tool allows users to explore the water needs of GDEs in Nevada and how this varies among soil textures, climate, rooting depth, and groundwater depth based on estimates from model output. 
+    This tool allows users to explore the water needs of GDEs in Nevada and how this varies among soil textures, climate, rooting depth, and groundwater depth based on estimates from model output.
     
     Use the control panel on the left to get started to select your area of interest and to pull climate and soils data for this location. Once you have selected your location, click “Get Data.”
     
@@ -202,51 +202,6 @@ with tab1:
 
     selected_layers = {key: False for key in layer_options.keys()}
 
-    # # Embed the map in the sidebar
-    # with st.sidebar:
-    #     st.header("Control Panel")
-    #     st.write("Select your area of interest by clicking on the map below:")
-    #     st.write("### Interactive Map")
-    
-    #     if "selected_coords" not in st.session_state:
-    #         st.session_state.selected_coords = default_coords
-    
-    #     # Build map with current marker location
-    #     folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
-    
-    #     # Add marker
-    #     folium.Marker(
-    #         location=st.session_state.selected_coords,
-    #         popup="Selected Location",
-    #         icon=folium.Icon(color="red", icon="info-sign")
-    #     ).add_to(folium_map)
-    
-    #     # Add EE layers
-    #     for label, is_checked in selected_layers.items():
-    #         if is_checked and label in layer_assets:
-    #             asset_id = layer_assets[label]
-    #             vis_params = layer_vis_params.get(label, {})
-    #             ee_image = ee.Image(asset_id)
-    #             folium_map.add_ee_layer(ee_image, vis_params, label)
-    
-    #     folium.LayerControl().add_to(folium_map)
-    
-    #     # Display the map and get interaction
-    #     map_data = st_folium(folium_map, width=500, height=700)
-    
-    #     # Detect click and trigger rerun
-    #     if map_data and map_data.get("last_clicked"):
-    #         clicked = map_data["last_clicked"]
-    #         lat, lon = clicked["lat"], clicked["lng"]
-    #         if [lat, lon] != st.session_state.selected_coords:
-    #             st.session_state.selected_coords = [lat, lon]
-    #             st.rerun()
-    
-    #     # Display updated coords
-    #     lat, lon = st.session_state.selected_coords
-    #     coords_ee = ee.Geometry.Point([lon, lat])
-    #     st.sidebar.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
@@ -303,159 +258,6 @@ with tab1:
         coords_ee = ee.Geometry.Point([lon, lat])
         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
     
-        # # Get Data Button
-        # if st.button("Get Data!"):
-        #     st.session_state.get_data_clicked = True
-
-    # with st.sidebar:
-    #     st.header("Control Panel")
-    #     st.write("Select your area of interest by clicking on the map below:")
-    
-    #     if "selected_coords" not in st.session_state:
-    #         st.session_state.selected_coords = default_coords
-    
-    #     # Use radio buttons to allow only one selection
-    #     st.write("### Visualization Layers:")
-    #     selected_layer = st.radio("Choose one layer to visualize:", list(layer_options.keys()), index=0)
-    
-    #     # Initialize map
-    #     folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
-    
-    #     # Add marker
-    #     folium.Marker(
-    #         location=st.session_state.selected_coords,
-    #         popup="Selected Location",
-    #         icon=folium.Icon(color="red", icon="info-sign")
-    #     ).add_to(folium_map)
-    
-    #     # Add selected EE layer
-    #     if selected_layer in layer_assets:
-    #         asset_id = layer_assets[selected_layer]
-    #         vis_params = layer_vis_params.get(selected_layer, {})
-    #         ee_image = ee.Image(asset_id)
-    #         folium_map.add_ee_layer(ee_image, vis_params, selected_layer)
-    
-    #     # Add layer control and display map
-    #     folium.LayerControl().add_to(folium_map)
-    #     st.write("### Interactive Map")
-    #     map_data = st_folium(folium_map, width=500, height=700)
-    
-    #     # Update selected coords on click
-    #     if map_data and map_data.get("last_clicked"):
-    #         clicked = map_data["last_clicked"]
-    #         lat, lon = clicked["lat"], clicked["lng"]
-    #         if [lat, lon] != st.session_state.selected_coords:
-    #             st.session_state.selected_coords = [lat, lon]
-    #             st.rerun()
-    
-    #     # Show current coordinates
-    #     lat, lon = st.session_state.selected_coords
-    #     coords_ee = ee.Geometry.Point([lon, lat])
-    #     st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-    
-    #     # Get Data Button
-    #     if st.button("Get Data!"):
-    #         st.session_state.get_data_clicked = True
-    
-
-        
-        
-    # # Initialize selected layers dictionary
-    # selected_layers = {}
-    
-    # # Collect checkbox states outside the sidebar block
-    # for label in layer_options.keys():
-    #     selected_layers[label] = st.sidebar.checkbox(label, value=False, key=f"layer_{label}")
-    
-    #     # ℹ️ Info buttons go next to checkboxes
-    #     if st.sidebar.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-    #         anchor = layer_links.get(label)
-    #         if anchor:
-    #             st.query_params.tab = "Definitions"
-    #             st.query_params.jump_to = anchor
-    #             st.rerun()
-    
-    # # Render the rest of the sidebar in one block for layout control
-    # with st.sidebar:
-    #     st.header("Control Panel")
-    #     st.write("Select your area of interest by clicking on the map below:")
-    #     st.write("### Interactive Map")
-    
-    #     # Create Folium map
-    #     default_coords = st.session_state.get("selected_coords", [39.5, -117])
-    #     folium_map = folium.Map(location=default_coords, zoom_start=7, tiles="OpenStreetMap")
-    
-    #     # Add marker
-    #     folium.Marker(location=default_coords, popup="Selected Location", icon=folium.Icon(color="red")).add_to(folium_map)
-    
-    #     # Add selected layers
-    #     for label, is_checked in selected_layers.items():
-    #         if is_checked and label in layer_assets:
-    #             asset_id = layer_assets[label]
-    #             vis_params = layer_vis_params.get(label, {})
-    #             ee_image = ee.Image(asset_id)
-    #             folium_map.add_ee_layer(ee_image, vis_params, label)
-    
-    #     # Add layer control
-    #     folium.LayerControl().add_to(folium_map)
-    
-    #     # Render map
-    #     map_data = st_folium(folium_map, width=300, height=500)
-    
-    #     # Show coordinates if selected
-    #     if map_data and map_data.get("last_clicked"):
-    #         lat = map_data["last_clicked"]["lat"]
-    #         lon = map_data["last_clicked"]["lng"]
-    #         st.session_state.selected_coords = [lat, lon]
-    #         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-    #     else:
-    #         st.warning("No point selected on the map yet.")
-    
-    #     # # "Get Data" button
-    #     # if st.button("Get Data!"):
-    #     #     st.session_state.get_data_clicked = True
-    
-    #     # Visualization Layers title (comes after map!)
-    #     st.write("### Visualization Layers:")
-    #     # Already rendered checkboxes above
-
-    # ////
-    # Add a "Get Data" button with session state tracking
-    # if "get_data_clicked" not in st.session_state:
-    #     st.session_state.get_data_clicked = False  # Ensure default state is False
-
-    # if st.sidebar.button("Get Data!"):
-    #     st.session_state.get_data_clicked = True  # Update state when button is clicked
-
-    # ////
-     # Add checkboxes for each layer with info buttons
-    #st.sidebar.write("### Visualization Layers:")
-
-    # ////
-    
-    #selected_layers = {}  # Store checkbox states
-    #selected_layers = {key: False for key in layer_options.keys()}
-
-    # //////
-    # for label, key in layer_options.items():
-    #     cols = st.sidebar.columns([0.8, 0.2])  # 80% checkbox, 20% info button
-        
-    #     # Checkbox for layer selection
-    #     with cols[0]:
-    #         selected_layers[label] = st.checkbox(label, value=False)
-    
-    #     # Small info button with unique key based on label
-    #     with cols[1]:
-    #         if st.button("ℹ️", key=f"info_{label.replace(' ', '_')}"):
-    #             anchor = layer_links.get(label)
-
-    # /////
-    
-                # if anchor:
-                #     # Redirect to Definitions tab with jump target
-                #     st.query_params.tab = "Definitions"
-                #     st.query_params.jump_to = anchor
-                #     st.rerun()
         
     # Ensure the code only runs if the button was clicked
     if st.session_state.get_data_clicked and coords_ee is not None:
@@ -605,7 +407,7 @@ with tab1:
             # Soil Type Section with Inline Info Button
             col3, col4 = st.columns([0.012, 0.1])
             with col3:
-                st.subheader("Soil Type")
+                st.subheader("Soil Texture")
             with col4:
                 st.markdown("""
                     <div class="tooltip">
@@ -633,7 +435,7 @@ with tab1:
             default_index = soil_options.index(soil_string) if soil_string in soil_options else 0
             
             soil_type = st.selectbox(
-                "Select soil type:",
+                "Select soil texture:",
                 soil_options,
                 index=default_index
             )
