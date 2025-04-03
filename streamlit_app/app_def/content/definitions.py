@@ -342,8 +342,8 @@ def render_definitions():
     # Administrative groundwater boundaries
     render_definition_section(
         "Administrative Groundwater Boundaries",
-        """Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. 
-        These areas, created in the 1960s, serve as the foundation for water planning, management, and regulation. 
+        """Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. 
+        These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada.  
         <span class="source-text">[Source: Nevada Division of Water Planning, 1999; Data: <a href="https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about" target="_blank">
         Nevada Division of Water Resources</a>]</span>""",
         section_id="groundwater-boundaries"
@@ -352,9 +352,9 @@ def render_definitions():
     # Soil texture
     render_definition_section(
         "Soil Texture",
-        """Soil texture refers to the proportion of sand, silt, and clay particles in the soil. 
-        This affects the soil's ability to hold water, air, and influence the rate at which water moves through it. 
-        <span class="source-text">[Source: FAO, 2006; Data: Walkinshaw et al. (2020)]</span>""",
+        """Soil texture refers to the proportion of sand, silt, and clay particles in the soil.  
+        This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. 
+        <span class="source-text">[Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]</span>""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png", 
         "Soil Texture Example",
         image_size="medium",
@@ -364,8 +364,8 @@ def render_definitions():
     # Precipitation
     render_definition_section(
         "Average Annual Precipitation (1991-2020)",
-        """This is the average yearly precipitation calculated by summing the observed annual precipitation 
-        from 1991 to 2020 and dividing by the number of years with data. 
+        """The average precipitation for the area in question is calculated by summing the observed annual precipitation 
+        over 1991-2020 and dividing by the number of years for which there were observations.
         <span class="source-text">[Source: Abatzoglou, 2013]</span>""",
         section_id="precipitation"
     )
@@ -373,8 +373,9 @@ def render_definitions():
     # Evapotranspiration
     render_definition_section(
         "Average Annual Potential Evapotranspiration (1991-2020)",
-        """Potential evapotranspiration (ET) indicates how much moisture is "demanded" by the atmosphere. 
-        It's represented by ETref, based on the Penman-Monteith method. ETref describes water loss from a well-watered grass surface.""",
+        """Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is.
+        Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method.
+        ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/et_ref.png",
         "ETref Example",
         image_size="small",
@@ -384,8 +385,10 @@ def render_definitions():
     # Water deficit
     render_definition_section(
         "Average Annual Potential Water Deficit (1991-2020)",
-        """This represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). 
-        Negative values show higher demand than available water. It's calculated by subtracting potential evapotranspiration from precipitation.""",
+        """The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand).
+       Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation. 
+       PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area.
+       The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations.""",
         section_id="water-deficit"
     )
     
@@ -403,16 +406,18 @@ def render_definitions():
     # Rooting depth
     render_definition_section(
         "Rooting Depth",
-        """Different types of vegetation have varying rooting depths. Grass typically has roots within 2m, while some shrubs and trees 
-        can reach depths of 6m or more. Choose different depths to see how they influence groundwater usage.""",
+        """Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. 
+        Meadow and rangeland grasses often have roots within 2 m of the ground surface, whereas some phreatophytic shrubs and trees can have roots as deep as 6 m or more (The Nature Conservancy 2021).
+        can reach depths of 6m or more. Choose from 0.5 m for herbaceous meadow root depths, 2 m for grass root depth, and 3.6 m for phreatophyte shrubland root depths.""",
         section_id="rooting-depth"
     )
     
     # Leaf area index
     render_definition_section(
         "Leaf Area Index (LAI)",
-        """Leaf area index (LAI) quantifies the leaf surface area in a given area. It influences photosynthesis, evapotranspiration, and ecosystem productivity. 
-        A typical LAI for phreatophytic shrublands in Nevada is 1, while a meadow could have a typical target LAI of 2. 
+        ""Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest.
+        LAI is the one-sided green leaf area per unit of ground surface area, and its value can be an indication of the health of an ecosystem (Fang et al. 2019).
+        We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below. 
         <span class="source-text">[LAI Data Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H" target="_blank">MODIS</a>]</span>""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/lai_examples1.png",
         "LAI Examples",
@@ -423,8 +428,9 @@ def render_definitions():
     # Groundwater component of evapotranspiration
     render_definition_section(
         "Groundwater Component of Evapotranspiration (ETgw)",
-        """This represents the portion of evapotranspiration that is directly sourced from groundwater, which can vary with depth to the water table. 
-        It's an essential factor in understanding groundwater use by vegetation. If the water table were deeper, the groundwater component might be lower.""",
+        """The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater. 
+        The remainder of transpiration comes from the vadose zone. If the water table were deeper, the groundwater component might be reduced. 
+        The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/dda06340a021b043ac3c74e4b1dace9b375f01e0/streamlit_app/app_def/assets/images/groundwater_et.png",
         "(Modified from Lowry and Loheide, 2010)",
         image_size="small",
@@ -434,8 +440,9 @@ def render_definitions():
     # Groundwater subsidy
     render_definition_section(
         "Groundwater Subsidy",
-        """Groundwater subsidy refers to the additional water available for plant uptake due to shallow groundwater tables. 
-        It is an important indicator for groundwater-dependent ecosystems (GDEs) in water-limited environments, helping reduce water stress on vegetation.""",
+        """Groundwater subsidy is the additional water available for root water uptake resulting from shallow water table conditions.
+        It is a hypothetical quantity that cannot be measured in the field but is a good indicator of how much GDEs in water-limited 
+        environments might benefit from shallow groundwater conditions that reduces the water stress experienced by vegetation.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/groundwater_subsidy.png",
         "(Modified from Lowry and Loheide, 2010)",
         image_size="small",
