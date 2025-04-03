@@ -1021,6 +1021,12 @@ with tab1:
 
                     font_size_px = 28
                     line_height_px = int(font_size_px * 2.2)
+
+                    
+                    try:
+                        font = ImageFont.truetype("arial.ttf", font_size_px)
+                    except:
+                        font = ImageFont.load_default()  # fallback just in case
                 
                     # Pre-format section headers
                     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
