@@ -415,7 +415,7 @@ def render_definitions():
     # Leaf area index
     render_definition_section(
         "Leaf Area Index (LAI)",
-        ""Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest.
+        """Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest.
         LAI is the one-sided green leaf area per unit of ground surface area, and its value can be an indication of the health of an ecosystem (Fang et al. 2019).
         We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below. 
         <span class="source-text">[LAI Data Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H" target="_blank">MODIS</a>]</span>""",
