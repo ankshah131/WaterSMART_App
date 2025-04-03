@@ -312,8 +312,15 @@ with tab1:
         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
 
         st.markdown("### Map Legends")
+        
+        # Add soil texture legend
+        st.image(
+            "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/57bbbf9d71e4ab39bc39f6b86699799a94efc283/streamlit_app/app_def/assets/images/soil_texture_logo.png",
+            use_container_width=True
+        )
 
-        # Add legend image at the bottom of the sidebar
+
+        # Add map legends image at the bottom of the sidebar
         st.image(
             "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png",
             use_container_width=True
