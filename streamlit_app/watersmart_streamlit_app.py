@@ -311,10 +311,12 @@ with tab1:
         coords_ee = ee.Geometry.Point([lon, lat])
         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
 
+        st.markdown("### Map Legends")
+
         # Add legend image at the bottom of the sidebar
         st.image(
             "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png",
-            use_column_width=True
+            use_container_width=True
         )
         
         
