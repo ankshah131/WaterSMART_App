@@ -243,13 +243,17 @@ with tab1:
             st.session_state.get_data_clicked = True
     
         # Create checkboxes and remember their states
+        # st.write("### Visualization Layers:")
+        # for label in layer_options.keys():
+        #     key = f"layer_checkbox_{label}"
+        #     if key not in st.session_state:
+        #         st.session_state[key] = False
+        #     st.session_state[key] = st.checkbox(label, value=st.session_state[key])
+
+        # Create a radio button to allow only one selection
         st.write("### Visualization Layers:")
-        for label in layer_options.keys():
-            key = f"layer_checkbox_{label}"
-            if key not in st.session_state:
-                st.session_state[key] = False
-            st.session_state[key] = st.checkbox(label, value=st.session_state[key])
-    
+        selected_layer = st.radio("Select one layer to display:", list(layer_options.keys()))
+
         # Initialize map
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
@@ -261,21 +265,25 @@ with tab1:
         ).add_to(folium_map)
     
         # Add layers based on checkbox state
-        for label in layer_options.keys():
-            if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
-                asset_id = layer_assets[label]
-                #vis_params = layer_vis_params.get(label, {})
-                vis_params = {**layer_vis_params.get(label, {}), "opacity": 0.5}
+        # for label in layer_options.keys():
+        #     if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
+        
+        # Add only the selected layer
+        if selected_layer in layer_assets:
 
-                if label == "Administrative groundwater boundaries":
-                    # Load as FeatureCollection
-                    ee_fc = ee.FeatureCollection(asset_id)
-                    # Convert to image for Folium
-                    ee_features = ee_fc.style(color='black', width=2)
-                    folium_map.add_ee_layer(ee_features, {}, label)
-                else:
-                    ee_image = ee.Image(asset_id)   
-                    folium_map.add_ee_layer(ee_image, vis_params, label)
+            asset_id = layer_assets[label]
+            #vis_params = layer_vis_params.get(label, {})
+            vis_params = {**layer_vis_params.get(label, {}), "opacity": 0.5}
+
+            if label == "Administrative groundwater boundaries":
+                # Load as FeatureCollection
+                ee_fc = ee.FeatureCollection(asset_id)
+                # Convert to image for Folium
+                ee_features = ee_fc.style(color='black', width=2)
+                folium_map.add_ee_layer(ee_features, {}, label)
+            else:
+                ee_image = ee.Image(asset_id)   
+                folium_map.add_ee_layer(ee_image, vis_params, label)
     
         # Add layer control and display map (now includes selected EE layers)
         folium.LayerControl().add_to(folium_map)
