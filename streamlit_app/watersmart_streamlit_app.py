@@ -1112,45 +1112,47 @@ with tab1:
                         buf_pwd1.seek(0)
                         img_pwd1 = Image.open(buf_pwd1)
                     
-                        # ---- Create improved info box image with wrapping ---- #
-                        font_size = 40
-                        padding = 40
-                        line_spacing = 10
-                        char_limit = 100  # Adjust if needed for longer/shorter lines
-                    
-                        info_text = f"""
-                        Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                        # Info text (no leading spaces!)
+                        info_text = f"""Estimates are based on model estimates but have uncertainty due to the following simplifications:
                         1) uniform soil texture in soil column is assumed;
                         2) variation in root distribution is not considered;
                         3) species-level differences are not accounted for;
                         4) groundwater depths are assumed constant over time.
-                    
+                        
                         Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                         Annual precipitation: {precip_value:.2f} mm    Annual evaporative demand: {eto_value:.2f} mm
-                        Root depth: {rd} m
-                        """
-                    
+                        Root depth: {rd} m"""
+                        
+                        # Font, padding, spacing
+                        font_size = 40
+                        padding = 40
+                        line_spacing = 10
+                        char_limit = 90  # Width of each line in characters
+                        
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
                         except:
                             font = ImageFont.load_default()
-                    
-                        # Word-wrap the info text
+                        
+                        # Proper line wrapping
                         wrapped_lines = []
-                        for paragraph in info_text.strip().split("\n"):
+                        for paragraph in info_text.split("\n"):
                             wrapped_lines.extend(textwrap.wrap(paragraph.strip(), width=char_limit))
-                            wrapped_lines.append("")  # Blank line between paragraphs
-                    
-                        line_height = font.getsize("A")[1] + line_spacing
-                        box_height = padding * 2 + line_height * len(wrapped_lines)
-                    
+                            wrapped_lines.append("")  # Add a blank line between sections
+                        
+                        # Compute height
+                        line_height = font.getsize("Ag")[1] + line_spacing
+                        box_height = padding * 2 + len(wrapped_lines) * line_height
+                        
+                        # Create image
                         info_img = Image.new("RGB", (img_pwd1.width, box_height), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
-                    
+                        
                         y = padding
                         for line in wrapped_lines:
-                            draw.text((padding, y), line, font=font, fill="black")
+                            draw.text((padding, y), line, font=font, fill="black")  # Start all text at left padding
                             y += line_height
+
                     
                         # Combine banner + plot vertically
                         combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
