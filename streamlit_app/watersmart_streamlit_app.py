@@ -49,7 +49,7 @@ def add_ee_layer(self, ee_image_object, vis_params, name):
         name=name,
         overlay=True,
         control=True,
-        opacity=0.5
+        opacity=0.6
     ).add_to(self)
 
 
