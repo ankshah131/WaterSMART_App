@@ -133,7 +133,7 @@ with tab1:
     
     *NOTE: This tool provides estimates of how a GDE would respond IF it existed at the selected location with the chosen characteristics. 
     However, GDEs do not occur at many locations in Nevada and it is your responsibility to understand your results relate to a hypothetical system at the location you specify. 
-    Estimates of GDE water needs are based on what water a hypothetical GDE might use under the climate conditions associated with the location on a map and the soil, vegetation, and groundwater depth characteristics you define.  
+    Estimates of GDE water needs are based on what water a hypothetical GDE might use under the climate conditions associated with the location on a map and the soil, vegetation, and groundwater depth characteristics you define. 
     The soil hydraulic properties, vegetation characteristics and health and groundwater conditions in an actual GDE might differ and could therefore cause actual water use to be substantially different. 
     Furthermore, the model developed here is a simplification of our current understanding of ecosystem processes and may not accurately quantify water use in all cases.*
     """)
@@ -1271,7 +1271,7 @@ with tab1:
                         #     plt.close(fig)
                 
                     pdf_buffer.seek(0)
-                    return crop_pdf_to_letter(pdf_buffer)
+                    return pdf_buffer
                 
                 
                 # Button to generate and download PDF
