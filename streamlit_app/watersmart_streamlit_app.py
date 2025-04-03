@@ -947,18 +947,18 @@ with tab1:
                         combined_top.paste(info_img, (0, 0))
                         combined_top.paste(img_pwd1, (0, info_img.height))
 
-                        # Resize to fit letter width if needed
-                        # if combined_top.width > MAX_WIDTH_PX:
-                        #     ratio = MAX_WIDTH_PX / combined_top.width
-                        #     new_height = int(combined_top.height * ratio)
-                        #     combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
-
                         # --- Use SAME method as later pages: fixed canvas, centered image ---
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
                         
+                        # x_offset = (canvas_px[0] - combined_top.width) // 2
+                        # y_offset = (canvas_px[1] - combined_top.height) // 2
+                        # canvas.paste(combined_top, (x_offset, y_offset))
+
+                        # Horizontally center the image, align to top
                         x_offset = (canvas_px[0] - combined_top.width) // 2
-                        y_offset = (canvas_px[1] - combined_top.height) // 2
+                        y_offset = 50  # Optional small top margin (can be 0)
+                        
                         canvas.paste(combined_top, (x_offset, y_offset))
                         
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
