@@ -954,15 +954,76 @@ with tab1:
                 #         pdf.savefig(fig, bbox_inches=None)
                 #         plt.close(fig)
 
+                # def add_definitions_to_pdf(pdf, definitions_text):
+                #     DPI = 300
+                
+                #     # Pre-format section headers
+                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
+                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
+                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
+                
+                #     # Apply bold formatting using **...** for later rendering in matplotlib
+                #     replacements = [
+                #         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
+                #         ("Soil Texture:", "**Soil Texture:**"),
+                #         ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
+                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
+                #         ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
+                #         ("Rooting Depth:", "**Rooting Depth:**"),
+                #         ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
+                #         ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
+                #         ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
+                #     ]
+                #     for old, new in replacements:
+                #         formatted_text = formatted_text.replace(old, new)
+                
+                #     # Line wrapping
+                #     wrapped_lines = []
+                #     for line in formatted_text.strip().split("\n"):
+                #         # Manually preserve bold headers in wrapped text
+                #         if line.strip().startswith("**") and line.strip().endswith("**"):
+                #             wrapped_lines.append(line)
+                #         else:
+                #             wrapped = wrap(line, width=92)
+                #             wrapped_lines.extend(wrapped if wrapped else [""])
+                
+                #     # Paginate and draw
+                #     lines_per_page = 52
+                #     for i in range(0, len(wrapped_lines), lines_per_page):
+                #         page = wrapped_lines[i:i + lines_per_page]
+                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                #         ax.axis('off')
+                #         # fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                #         # ax = fig.add_axes([0, 0, 1, 1])
+                #         # ax.axis('off')
+                
+                #         y = 0.96
+                #         line_height = 0.018  # space per line
+                
+                #         for line in page:
+                #             if line.startswith("**") and line.endswith("**"):
+                #                 ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
+                #             else:
+                #                 ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
+                #             y -= line_height
+                
+                #         pdf.savefig(fig)
+                #         plt.close(fig)
+
+
                 def add_definitions_to_pdf(pdf, definitions_text):
+                
                     DPI = 300
+                    LETTER_WIDTH_IN = 8.5
+                    LETTER_HEIGHT_IN = 11
+                    PAGE_WIDTH_PX = int(LETTER_WIDTH_IN * DPI)
+                    PAGE_HEIGHT_PX = int(LETTER_HEIGHT_IN * DPI)
                 
                     # Pre-format section headers
                     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
                     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
                     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
                 
-                    # Apply bold formatting using **...** for later rendering in matplotlib
                     replacements = [
                         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
                         ("Soil Texture:", "**Soil Texture:**"),
@@ -977,37 +1038,41 @@ with tab1:
                     for old, new in replacements:
                         formatted_text = formatted_text.replace(old, new)
                 
-                    # Line wrapping
+                    # Wrap lines
                     wrapped_lines = []
                     for line in formatted_text.strip().split("\n"):
-                        # Manually preserve bold headers in wrapped text
                         if line.strip().startswith("**") and line.strip().endswith("**"):
                             wrapped_lines.append(line)
                         else:
-                            wrapped = wrap(line, width=92)
-                            wrapped_lines.extend(wrapped if wrapped else [""])
+                            wrapped_lines.extend(wrap(line, width=92) or [""])
                 
-                    # Paginate and draw
+                    # Lines per page
                     lines_per_page = 52
+                    line_height_px = 40
+                    top_margin = 50
+                    left_margin = 100
+                
                     for i in range(0, len(wrapped_lines), lines_per_page):
-                        page = wrapped_lines[i:i + lines_per_page]
-                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                        ax.axis('off')
-                        # fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                        # ax = fig.add_axes([0, 0, 1, 1])
-                        # ax.axis('off')
+                        lines = wrapped_lines[i:i + lines_per_page]
                 
-                        y = 0.96
-                        line_height = 0.018  # space per line
+                        # Create fixed-size image canvas
+                        canvas = Image.new("RGB", (PAGE_WIDTH_PX, PAGE_HEIGHT_PX), "white")
+                        draw = ImageDraw.Draw(canvas)
                 
-                        for line in page:
+                        y = top_margin
+                        for line in lines:
                             if line.startswith("**") and line.endswith("**"):
-                                ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
+                                draw.text((left_margin, y), line[2:-2], fill="black")  # Bold hint, no actual bold
                             else:
-                                ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
-                            y -= line_height
+                                draw.text((left_margin, y), line, fill="black")
+                            y += line_height_px
                 
-                        pdf.savefig(fig)
+                        # Convert image to matplotlib figure
+                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                        ax.axis("off")
+                        ax.imshow(canvas)
+                
+                        pdf.savefig(fig)  # No bbox_inches here!
                         plt.close(fig)
 
 
