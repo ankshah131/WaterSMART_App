@@ -405,16 +405,18 @@ def render_definitions():
     # Rooting depth
     render_definition_section(
         "Rooting Depth",
-        """Different types of vegetation have varying rooting depths. Grass typically has roots within 2m, while some shrubs and trees 
-        can reach depths of 6m or more. Choose different depths to see how they influence groundwater usage.""",
+        """Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. 
+        Meadow and rangeland grasses often have roots within 2 m of the ground surface, whereas some phreatophytic shrubs and trees can have roots as deep as 6 m or more (The Nature Conservancy 2021).
+        can reach depths of 6m or more. Choose from 0.5 m for herbaceous meadow root depths, 2 m for grass root depth, and 3.6 m for phreatophyte shrubland root depths.""",
         section_id="rooting-depth"
     )
     
     # Leaf area index
     render_definition_section(
         "Leaf Area Index (LAI)",
-        """Leaf area index (LAI) quantifies the leaf surface area in a given area. It influences photosynthesis, evapotranspiration, and ecosystem productivity. 
-        A typical LAI for phreatophytic shrublands in Nevada is 1, while a meadow could have a typical target LAI of 2. 
+        """Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest.
+        LAI is the one-sided green leaf area per unit of ground surface area, and its value can be an indication of the health of an ecosystem (Fang et al. 2019).
+        We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below. 
         <span class="source-text">[LAI Data Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H" target="_blank">MODIS</a>]</span>""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/lai_examples1.png",
         "LAI Examples",
@@ -425,9 +427,10 @@ def render_definitions():
     # Groundwater component of evapotranspiration
     render_definition_section(
         "Groundwater Component of Evapotranspiration (ETgw)",
-        """This represents the portion of evapotranspiration that is directly sourced from groundwater, which can vary with depth to the water table. 
-        It's an essential factor in understanding groundwater use by vegetation. If the water table were deeper, the groundwater component might be lower.""",
-         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/dda06340a021b043ac3c74e4b1dace9b375f01e0/streamlit_app/app_def/assets/images/groundwater_et.png",
+        """The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater. 
+        The remainder of transpiration comes from the vadose zone. If the water table were deeper, the groundwater component might be reduced. 
+        The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.""",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/dda06340a021b043ac3c74e4b1dace9b375f01e0/streamlit_app/app_def/assets/images/groundwater_et.png",
         "(Modified from Lowry and Loheide, 2010)",
         image_size="small",
         section_id="etgw"
