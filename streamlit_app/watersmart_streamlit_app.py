@@ -212,18 +212,18 @@ with tab1:
 
         "Average precipitation": {
             'min': 0,
-            'max': 300,
+            'max': 500,
             'palette': ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]
         },
         "Average potential evapotranspiration": {
-            'min': 700,
-            'max': 1500,
-            'palette': ["#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c", "#b10026"]
+            'min': 0,
+            'max': 2500,
+            'palette': ['#ffffcc', '#ffe692', '#febf5a', '#fd8d3c', '#f43d25', '#ca0923', '#800026']
         },
         "Average potential water deficit": {
-            'min': 900,
-            'max': 1300,
-            'palette': ["#081d58", "#253494", "#225ea8", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffcc"]
+            'min': -2500,
+            'max': 0,
+            'palette': ['#ffffd9', '#e0f3b2', '#97d6b9', '#41b6c4', '#1f80b8', '#24429b', '#081d58']
         }
     }
 
