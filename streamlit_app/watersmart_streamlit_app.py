@@ -991,10 +991,11 @@ with tab1:
                     lines_per_page = 52
                     for i in range(0, len(wrapped_lines), lines_per_page):
                         page = wrapped_lines[i:i + lines_per_page]
-                
-                        fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                        ax = fig.add_axes([0, 0, 1, 1])
+                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
                         ax.axis('off')
+                        # fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                        # ax = fig.add_axes([0, 0, 1, 1])
+                        # ax.axis('off')
                 
                         y = 0.96
                         line_height = 0.018  # space per line
