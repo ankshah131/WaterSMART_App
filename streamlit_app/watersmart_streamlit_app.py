@@ -952,14 +952,31 @@ with tab1:
                             ratio = MAX_WIDTH_PX / combined_top.width
                             new_height = int(combined_top.height * ratio)
                             combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
-                
-                        # Save cover page
+
+
+                        # Create a blank white canvas with US Letter dimensions
+                        canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
+                        canvas = Image.new("RGB", canvas_px, (255, 255, 255))
+                        
+                        # Center combined_top image on canvas
+                        x_margin = (canvas_px[0] - combined_top.width) // 2
+                        y_margin = (canvas_px[1] - combined_top.height) // 2
+                        canvas.paste(combined_top, (x_margin, y_margin))
+                        
+                        # Save to PDF
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
-                        ax.imshow(combined_top)
-                        #pdf.savefig(fig)
-                        pdf.savefig(fig)  #  Don't use bbox_inches='tight' here
+                        ax.imshow(canvas)
+                        pdf.savefig(fig)
                         plt.close(fig)
+                
+                        # # Save cover page
+                        # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                        # ax.axis('off')
+                        # ax.imshow(combined_top)
+                        # #pdf.savefig(fig)
+                        # pdf.savefig(fig)  #  Don't use bbox_inches='tight' here
+                        # plt.close(fig)
 
                 
                         ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
