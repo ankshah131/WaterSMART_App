@@ -175,35 +175,35 @@ with tab1:
             'min': 1,
             'max': 12,
             'palette': [
-                '#1f77b4',  # 1 - sand
-                '#2ca02c',  # 2 - loamy sand
-                '#ff7f0e',  # 3 - sandy loam
-                '#d62728',  # 4 - loam
-                '#9467bd',  # 5 - silt loam
-                '#8c564b',  # 6 - silt
-                '#e377c2',  # 7 - sandy clay loam
-                '#7f7f7f',  # 8 - clay loam
-                '#bcbd22',  # 9 - silty clay loam
-                '#17becf',  # 10 - sandy clay
-                '#aec7e8',  # 11 - silty clay
-                '#98df8a'   # 12 - clay
+                '#BEBEBE',  # 1 - sand
+                '#FDFD9E',  # 2 - loamy sand
+                '#ebd834',  # 3 - sandy loam
+                '#307431',  # 4 - loam
+                '#CD94EA',  # 5 - silt loam
+                '#546BC3',  # 6 - silt
+                '#92C158',  # 7 - sandy clay loam
+                '#EA6996',  # 8 - clay loam
+                '#6D94E5',  # 9 - silty clay loam
+                '#4C5323',  # 10 - sandy clay
+                '#E93F4A',  # 11 - silty clay
+                '#AF4732'   # 12 - clay
             ]
         },
 
         "Average precipitation": {
             'min': 0,
-            'max': 3,
-            'palette': ['ffffff', 'blue']
+            'max': 300,
+            'palette': ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"]
         },
         "Average potential evapotranspiration": {
-            'min': 0,
-            'max': 2,
-            'palette': ['ffffff', 'orange']
+            'min': 700,
+            'max': 1500,
+            'palette': ["#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c", "#b10026"]
         },
         "Average potential water deficit": {
-            'min': -2,
-            'max': 2,
-            'palette': ['blue', 'white', 'red']
+            'min': 900,
+            'max': 1300,
+            'palette': ["#081d58", "#253494", "#225ea8", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffcc"]
         }
     }
 
