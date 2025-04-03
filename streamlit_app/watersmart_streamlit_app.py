@@ -1045,14 +1045,16 @@ with tab1:
                 
                         # Create info box image
                         info_text = f"""
-                                    Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                                    Estimates are based on model estimates but have 
+                                    uncertainty due to the following simplifications:
                                     1) uniform soil texture in soil column is assumed;
                                     2) variation in root distribution is not considered;
                                     3) species-level differences are not accounted for;
                                     4) groundwater depths are assumed constant over time.
                                     
                                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                                    Annual precipitation: {str(precip_value)} mm    Annual evaporative demand: {str(eto_value)} mm
+                                    Annual precipitation: {str(precip_value)} mm    
+                                    Annual evaporative demand: {str(eto_value)} mm
                                     Root depth: {rd} m
                                     """
                                                     
@@ -1076,7 +1078,7 @@ with tab1:
                             font = ImageFont.load_default()
                         
                         # Increase height of info box to fit bigger text
-                        info_box_height = 500  # was 250
+                        info_box_height = 520  # was 250
                         padding = 40  # Optional: increase padding too for cleaner layout
                         
                         info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
