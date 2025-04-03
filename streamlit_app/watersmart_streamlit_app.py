@@ -19,6 +19,7 @@ from io import StringIO
 from PIL import Image
 from PIL import ImageDraw, ImageFont, Image
 from textwrap import wrap
+from PyPDF2 import PdfReader, PdfWriter
 
 from app_def.components.header import render_header
 from app_def.components.footer import render_footer
@@ -49,6 +50,21 @@ def add_ee_layer(self, ee_image_object, vis_params, name):
         overlay=True,
         control=True
     ).add_to(self)
+
+
+def crop_pdf_to_letter(pdf_buffer):
+    reader = PdfReader(pdf_buffer)
+    writer = PdfWriter()
+    for page in reader.pages:
+        # Force exact US Letter size in points (8.5 x 11 inches)
+        page.mediabox.lower_left = (0, 0)
+        page.mediabox.upper_right = (612, 792)
+        writer.add_page(page)
+
+    output = BytesIO()
+    writer.write(output)
+    output.seek(0)
+    return output
 
 # Text control
 # Set monospaced font globally
@@ -1255,7 +1271,7 @@ with tab1:
                         #     plt.close(fig)
                 
                     pdf_buffer.seek(0)
-                    return pdf_buffer
+                    return crop_pdf_to_letter(pdf_buffer)
                 
                 
                 # Button to generate and download PDF
