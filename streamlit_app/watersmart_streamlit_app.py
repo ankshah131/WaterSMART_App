@@ -225,7 +225,7 @@ with tab1:
         "Average potential water deficit": {
             'min': 0,
             'max': 2000,
-            'palette': ['#ffffd9', '#e0f3b2', '#97d6b9', '#41b6c4', '#1f80b8', '#24429b', '#081d58']
+            'palette': ['#081d58', '#24429b', '#1f80b8', '#41b6c4', '#97d6b9', '#e0f3b2', '#ffffd9']
         }
     }
 
