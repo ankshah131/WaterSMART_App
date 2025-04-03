@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import base64
 import io
+import imgkit
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
