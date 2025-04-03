@@ -52,7 +52,7 @@ def add_ee_layer(self, ee_image_object, vis_params, name):
 
 # Text control
 # Set monospaced font globally
-rcParams['font.family'] = 'monospace'
+rcParams['font.family'] = 'arial'
 
 # Patch the folium.Map class
 folium.Map.add_ee_layer = add_ee_layer
@@ -248,8 +248,15 @@ with tab1:
             if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
                 asset_id = layer_assets[label]
                 vis_params = layer_vis_params.get(label, {})
-                ee_image = ee.Image(asset_id)
-                folium_map.add_ee_layer(ee_image, vis_params, label)
+
+                if label == "Administrative groundwater boundaries":
+                    # Load as FeatureCollection
+                    ee_fc = ee.FeatureCollection(asset_id)
+                    # Convert to image for Folium
+                    ee_image = ee_fc.style(color='black', width=2)
+                else:
+                    ee_image = ee.Image(asset_id)
+                    folium_map.add_ee_layer(ee_image, vis_params, label)
     
         # Add layer control and display map (now includes selected EE layers)
         folium.LayerControl().add_to(folium_map)
