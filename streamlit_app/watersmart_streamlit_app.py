@@ -915,44 +915,7 @@ with tab1:
                 with col8:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
-
-                # def add_definitions_to_pdf(pdf, definitions_text):
-                #     # Pre-format for cleaner section spacing and simulated bold headers
-                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS\n")
-                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:\n")
-                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:\n")
-                
-                #     # Optional: simulate bold headers by making them uppercase and spacing them
-                #     replacements = [
-                #         ("Groundwater Boundaries:", "\nADMINISTRATIVE GROUNDWATER BOUNDARIES:\n"),
-                #         ("Soil Texture:", "\nSOIL TEXTURE:\n"),
-                #         ("Average annual precipitation (1991-2020) (P):", "\nAVERAGE ANNUAL PRECIPITATION (1991-2020) (P):\n"),
-                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "\nAVERAGE ANNUAL POTENTIAL EVAPOTRANSPIRATION (1991-2020) (PET):\n"),
-                #         ("Average annual potential water deficit (1991-2020) (PWD)", "\nAVERAGE ANNUAL POTENTIAL WATER DEFICIT (1991-2020) (PWD):\n"),
-                #         ("Rooting Depth:", "\nROOTING DEPTH:\n"),
-                #         ("Leaf Area Index (LAI)", "\nLEAF AREA INDEX (LAI):\n"),
-                #         ("ET from Groundwater (ETgw):", "\nET FROM GROUNDWATER (ETGW):\n"),
-                #         ("Groundwater Subsidy:", "\nGROUNDWATER SUBSIDY:\n"),
-                #     ]
-                #     for old, new in replacements:
-                #         formatted_text = formatted_text.replace(old, new)
-                
-                #     # Line wrapping
-                #     wrapped_lines = []
-                #     for line in formatted_text.strip().split("\n"):
-                #         wrapped = wrap(line, width=92)  # better for right margin
-                #         wrapped_lines.extend(wrapped if wrapped else [""])
-                
-                #     # Paginate and draw to PDF
-                #     lines_per_page = 52  # Adjusted to fit letter size with margin
-                #     for i in range(0, len(wrapped_lines), lines_per_page):
-                #         page = wrapped_lines[i:i + lines_per_page]
-                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
-                #         ax.axis('off')
-                #         ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left')
-                #         #pdf.savefig(fig)
-                #         pdf.savefig(fig, bbox_inches=None)
-                #         plt.close(fig)
+                    
 
                 
                 # def add_definitions_to_pdf(pdf, definitions_text):
@@ -1012,21 +975,84 @@ with tab1:
                 #         plt.close(fig)
 
 
-                def add_definitions_to_pdf(pdf, definitions_text):
+                # def add_definitions_to_pdf(pdf, definitions_text):
 
+                #     DPI = 300
+                #     LETTER_WIDTH_IN = 8.5
+                #     LETTER_HEIGHT_IN = 11
+                #     canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
+
+                #     font_size_px = 28
+                #     line_height_px = int(font_size_px * 2.2)
+
+                    
+                #     try:
+                #         font = ImageFont.truetype("arial.ttf", font_size_px)
+                #     except:
+                #         font = ImageFont.load_default()  # fallback just in case
+                
+                #     # Pre-format section headers
+                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
+                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
+                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
+                
+                #     replacements = [
+                #         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
+                #         ("Soil Texture:", "**Soil Texture:**"),
+                #         ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
+                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
+                #         ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
+                #         ("Rooting Depth:", "**Rooting Depth:**"),
+                #         ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
+                #         ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
+                #         ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
+                #     ]
+                #     for old, new in replacements:
+                #         formatted_text = formatted_text.replace(old, new)
+                
+                #     # Wrap lines
+                #     wrapped_lines = []
+                #     for line in formatted_text.strip().split("\n"):
+                #         if line.strip().startswith("**") and line.strip().endswith("**"):
+                #             wrapped_lines.append(line)
+                #         else:
+                #             wrapped_lines.extend(wrap(line, width=92) or [""])
+                
+                #     # Draw text directly on a fixed canvas just like your plot pages
+                #     lines_per_page = 52
+                #     left_margin = 100
+                #     top_margin = 50
+                
+                #     for i in range(0, len(wrapped_lines), lines_per_page):
+                #         lines = wrapped_lines[i:i + lines_per_page]
+                
+                #         canvas = Image.new("RGB", canvas_px, "white")
+                #         draw = ImageDraw.Draw(canvas)
+                
+                #         y = top_margin
+                #         for line in lines:
+                #             # Just draw bold-looking text for headers (we're assuming Arial is globally set)
+                #             if line.startswith("**") and line.endswith("**"):
+                #                 draw.text((left_margin, y), line[2:-2], fill="black", font=font)
+                #             else:
+                #                 draw.text((left_margin, y), line, fill="black", font=font)
+                #             y += line_height_px
+                
+                #         # Now embed canvas into fixed-size figure
+                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                #         ax.axis("off")
+                #         ax.imshow(canvas)
+                
+                #         # Save like you do for all previous pages
+                #         pdf.savefig(fig, bbox_inches="tight")
+                #         plt.close(fig)
+
+
+
+                def add_definitions_to_pdf(pdf, definitions_text):
                     DPI = 300
                     LETTER_WIDTH_IN = 8.5
                     LETTER_HEIGHT_IN = 11
-                    canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
-
-                    font_size_px = 28
-                    line_height_px = int(font_size_px * 2.2)
-
-                    
-                    try:
-                        font = ImageFont.truetype("arial.ttf", font_size_px)
-                    except:
-                        font = ImageFont.load_default()  # fallback just in case
                 
                     # Pre-format section headers
                     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
@@ -1047,7 +1073,7 @@ with tab1:
                     for old, new in replacements:
                         formatted_text = formatted_text.replace(old, new)
                 
-                    # Wrap lines
+                    # Line wrapping
                     wrapped_lines = []
                     for line in formatted_text.strip().split("\n"):
                         if line.strip().startswith("**") and line.strip().endswith("**"):
@@ -1055,33 +1081,26 @@ with tab1:
                         else:
                             wrapped_lines.extend(wrap(line, width=92) or [""])
                 
-                    # Draw text directly on a fixed canvas just like your plot pages
+                    # Paginate and draw using pure matplotlib
                     lines_per_page = 52
-                    left_margin = 100
-                    top_margin = 50
-                
                     for i in range(0, len(wrapped_lines), lines_per_page):
-                        lines = wrapped_lines[i:i + lines_per_page]
+                        page = wrapped_lines[i:i + lines_per_page]
                 
-                        canvas = Image.new("RGB", canvas_px, "white")
-                        draw = ImageDraw.Draw(canvas)
+                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                        ax.axis('off')
                 
-                        y = top_margin
-                        for line in lines:
-                            # Just draw bold-looking text for headers (we're assuming Arial is globally set)
+                        y = 0.96
+                        line_height = 0.018
+                
+                        for line in page:
                             if line.startswith("**") and line.endswith("**"):
-                                draw.text((left_margin, y), line[2:-2], fill="black", font=font)
+                                ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
                             else:
-                                draw.text((left_margin, y), line, fill="black", font=font)
-                            y += line_height_px
+                                ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
+                            y -= line_height
                 
-                        # Now embed canvas into fixed-size figure
-                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
-                        ax.axis("off")
-                        ax.imshow(canvas)
-                
-                        # Save like you do for all previous pages
-                        pdf.savefig(fig, bbox_inches="tight")
+                        # Page size preservation
+                        pdf.savefig(fig)  # ← page size preserved
                         plt.close(fig)
 
 
