@@ -1018,6 +1018,9 @@ with tab1:
                     LETTER_WIDTH_IN = 8.5
                     LETTER_HEIGHT_IN = 11
                     canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
+
+                    font_size_px = 28
+                    line_height_px = int(font_size_px * 2.2)
                 
                     # Pre-format section headers
                     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
@@ -1048,7 +1051,6 @@ with tab1:
                 
                     # Draw text directly on a fixed canvas just like your plot pages
                     lines_per_page = 52
-                    line_height_px = 40
                     left_margin = 100
                     top_margin = 50
                 
@@ -1061,7 +1063,10 @@ with tab1:
                         y = top_margin
                         for line in lines:
                             # Just draw bold-looking text for headers (we're assuming Arial is globally set)
-                            draw.text((left_margin, y), line[2:-2] if line.startswith("**") else line, fill="black")
+                            if line.startswith("**") and line.endswith("**"):
+                                draw.text((left_margin, y), line[2:-2], fill="black", font=font)
+                            else:
+                                draw.text((left_margin, y), line, fill="black", font=font)
                             y += line_height_px
                 
                         # Now embed canvas into fixed-size figure
