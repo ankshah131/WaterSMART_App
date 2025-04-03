@@ -68,6 +68,10 @@ def crop_pdf_to_letter(pdf_buffer):
     output.seek(0)
     return output
 
+def save_folium_map_as_image(fmap, output_path="image.png"):
+    fmap.save("temp_map.html")
+    imgkit.from_file("temp_map.html", output_path)
+    
 # Text control
 # Set monospaced font globally
 
@@ -258,6 +262,9 @@ with tab1:
             popup="Selected Location",
             icon=folium.Icon(color="red", icon="info-sign")
         ).add_to(folium_map)
+
+        # Save folium map as image
+        save_folium_map_as_image(folium_map, "image.png")
     
         # Add layers based on checkbox state
         for label in layer_options.keys():
