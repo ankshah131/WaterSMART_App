@@ -341,8 +341,8 @@ def render_definitions():
     # Administrative groundwater boundaries
     render_definition_section(
         "Administrative Groundwater Boundaries",
-        """Nevada has 256 hydrographic areas defined by the State Engineer's Office for groundwater management. 
-        These areas, created in the 1960s, serve as the foundation for water planning, management, and regulation. 
+        """Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. 
+        These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada.  
         <span class="source-text">[Source: Nevada Division of Water Planning, 1999; Data: <a href="https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about" target="_blank">
         Nevada Division of Water Resources</a>]</span>""",
         section_id="groundwater-boundaries"
