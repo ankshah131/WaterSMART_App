@@ -60,6 +60,10 @@ folium.Map.add_ee_layer = add_ee_layer
 # Set up Streamlit layout
 st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
 
+# Constants for US Letter size
+LETTER_WIDTH_IN = 8.5
+LETTER_HEIGHT_IN = 11
+
 # Get current query params
 query_params = st.query_params
 
@@ -945,9 +949,6 @@ with tab1:
                 
                     pdf_buffer = io.BytesIO()
                 
-                    # Constants for US Letter size
-                    LETTER_WIDTH_IN = 8.5
-                    LETTER_HEIGHT_IN = 11
                     DPI = 300
                     MAX_WIDTH_PX = int(LETTER_WIDTH_IN * DPI)
 
