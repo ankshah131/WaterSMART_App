@@ -267,23 +267,37 @@ with tab1:
         # Add layers based on checkbox state
         # for label in layer_options.keys():
         #     if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
+        #         asset_id = layer_assets[label]
+        #         #vis_params = layer_vis_params.get(label, {})
+        #         vis_params = {**layer_vis_params.get(label, {}), "opacity": 0.5}
+    
+        #         if label == "Administrative groundwater boundaries":
+        #             # Load as FeatureCollection
+        #             ee_fc = ee.FeatureCollection(asset_id)
+        #             # Convert to image for Folium
+        #             ee_features = ee_fc.style(color='black', width=2)
+        #             folium_map.add_ee_layer(ee_features, {}, label)
+        #         else:
+        #             ee_image = ee.Image(asset_id)   
+        #             folium_map.add_ee_layer(ee_image, vis_params, label)
+
         
         # Add only the selected layer
         if selected_layer in layer_assets:
-
-            asset_id = layer_assets[label]
-            #vis_params = layer_vis_params.get(label, {})
-            vis_params = {**layer_vis_params.get(label, {}), "opacity": 0.5}
-
-            if label == "Administrative groundwater boundaries":
+        
+            asset_id = layer_assets[selected_layer]
+            vis_params = {**layer_vis_params.get(selected_layer, {}), "opacity": 0.5}
+        
+            if selected_layer == "Administrative groundwater boundaries":
                 # Load as FeatureCollection
                 ee_fc = ee.FeatureCollection(asset_id)
                 # Convert to image for Folium
                 ee_features = ee_fc.style(color='black', width=2)
-                folium_map.add_ee_layer(ee_features, {}, label)
+                folium_map.add_ee_layer(ee_features, {}, selected_layer)
             else:
                 ee_image = ee.Image(asset_id)   
-                folium_map.add_ee_layer(ee_image, vis_params, label)
+                folium_map.add_ee_layer(ee_image, vis_params, selected_layer)
+
     
         # Add layer control and display map (now includes selected EE layers)
         folium.LayerControl().add_to(folium_map)
