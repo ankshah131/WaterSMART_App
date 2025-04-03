@@ -69,7 +69,7 @@ def crop_pdf_to_letter(pdf_buffer):
 
 # Text control
 # Set monospaced font globally
-rcParams['font.family'] = 'arial'
+#rcParams['font.family'] = 'arial'
 
 # Patch the folium.Map class
 folium.Map.add_ee_layer = add_ee_layer
