@@ -242,24 +242,11 @@ with tab1:
         # Get Data Button
         if st.button("Get Data!"):
             st.session_state.get_data_clicked = True
-    
-        # Create checkboxes and remember their states
-        # st.write("### Visualization Layers:")
-        # for label in layer_options.keys():
-        #     key = f"layer_checkbox_{label}"
-        #     if key not in st.session_state:
-        #         st.session_state[key] = False
-        #     st.session_state[key] = st.checkbox(label, value=st.session_state[key])
 
         # Sidebar checkbox selector
         st.write("### Visualization Layers:")
         for label in layer_options.keys():
             st.checkbox(label, key=f"layer_checkbox_{label}")
-
-
-        # Create a radio button to allow only one selection
-        # st.write("### Visualization Layers:")
-        # selected_layer = st.radio("Select one layer to display:", list(layer_options.keys()))
 
         # Initialize map
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
@@ -323,7 +310,13 @@ with tab1:
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
         st.write(f"**Selected Coordinates:** ({lat:.4f}, {lon:.4f})")
-    
+
+        # Add legend image at the bottom of the sidebar
+        st.image(
+            "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png",
+            use_column_width=True
+        )
+        
         
     # Ensure the code only runs if the button was clicked
     if st.session_state.get_data_clicked and coords_ee is not None:
