@@ -69,7 +69,8 @@ def crop_pdf_to_letter(pdf_buffer):
 
 # Text control
 # Set monospaced font globally
-#rcParams['font.family'] = 'arial'
+
+rcParams['font.family'] = 'arial'
 
 # Patch the folium.Map class
 folium.Map.add_ee_layer = add_ee_layer
@@ -1033,77 +1034,7 @@ with tab1:
 
                 
                     with PdfPages(pdf_buffer) as pdf:
-                        # ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
-                        # fig_pwd1 = p_pwd1.draw()
-                        # fig_pwd1.set_size_inches(6, 4)
-                        # buf_pwd1 = io.BytesIO()
-                        # fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
-                        # plt.close(fig_pwd1)
-                        # buf_pwd1.seek(0)
-                        # img_pwd1 = Image.open(buf_pwd1)
-                
-                        # # Create info box image
-                        # info_text = f"""
-                        #             Estimates are based on model estimates but have uncertainty due to the following simplifications:
-                        #             1) uniform soil texture in soil column is assumed;
-                        #             2) variation in root distribution is not considered;
-                        #             3) species-level differences are not accounted for;
-                        #             4) groundwater depths are assumed constant over time.
-                                    
-                        #             Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                        #             Annual precipitation: {str(precip_value)} mm    Annual evaporative demand: {str(eto_value)} mm
-                        #             Root depth: {rd} m
-                        #             """
-                                                    
-                        # # font_size = 20
-                        # # try:
-                        # #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
-                        # # except:
-                        # #     font = ImageFont.load_default()
-                
-                        # # padding = 20
-                        # # info_img = Image.new("RGB", (img_pwd1.width, 250), "#c6e2a9")
-                        # # draw = ImageDraw.Draw(info_img)
-                        # # draw.text((padding, 10), info_text, font=font, fill="black")
-
-
-                        # # Double the font size
-                        # font_size = 40  # was 20
-                        # try:
-                        #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
-                        # except:
-                        #     font = ImageFont.load_default()
-                        
-                        # # Increase height of info box to fit bigger text
-                        # info_box_height = 500  # was 250
-                        # padding = 40  # Optional: increase padding too for cleaner layout
-                        
-                        # info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
-                        # draw = ImageDraw.Draw(info_img)
-                        # draw.text((padding, 20), info_text, font=font, fill="black")
-
-                        # # Combine banner + plot vertically
-                        # combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
-                        # combined_top.paste(info_img, (0, 0))
-                        # combined_top.paste(img_pwd1, (0, info_img.height))
-
-                        # # --- Use SAME method as later pages: fixed canvas, centered image ---
-                        # canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
-                        # canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-
-                        # # Horizontally center the image, align to top
-                        # x_offset = (canvas_px[0] - combined_top.width) // 2
-                        # y_offset = 50  # Optional small top margin (can be 0)
-                        
-                        # canvas.paste(combined_top, (x_offset, y_offset))
-                        
-                        # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
-                        # ax.axis('off')
-                        # ax.imshow(canvas)
-                        # pdf.savefig(fig, bbox_inches='tight')  # Keep this to trim outer whitespace, since canvas is fixed
-                        # plt.close(fig)
-
-                            ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
+                        ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
                         fig_pwd1 = p_pwd1.draw()
                         fig_pwd1.set_size_inches(6, 4)
                         buf_pwd1 = io.BytesIO()
@@ -1111,70 +1042,140 @@ with tab1:
                         plt.close(fig_pwd1)
                         buf_pwd1.seek(0)
                         img_pwd1 = Image.open(buf_pwd1)
-                    
-                        # Info text (no leading spaces!)
-                        info_text = f"""Estimates are based on model estimates but have uncertainty due to the following simplifications:
-                        1) uniform soil texture in soil column is assumed;
-                        2) variation in root distribution is not considered;
-                        3) species-level differences are not accounted for;
-                        4) groundwater depths are assumed constant over time.
-                        
-                        Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                        Annual precipitation: {precip_value:.2f} mm    Annual evaporative demand: {eto_value:.2f} mm
-                        Root depth: {rd} m"""
-                        
-                        # Font, padding, spacing
-                        font_size = 40
-                        padding = 40
-                        line_spacing = 10
-                        char_limit = 90  # Width of each line in characters
-                        
+                
+                        # Create info box image
+                        info_text = f"""
+                                    Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                                    1) uniform soil texture in soil column is assumed;
+                                    2) variation in root distribution is not considered;
+                                    3) species-level differences are not accounted for;
+                                    4) groundwater depths are assumed constant over time.
+                                    
+                                    Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
+                                    Annual precipitation: {str(precip_value)} mm    Annual evaporative demand: {str(eto_value)} mm
+                                    Root depth: {rd} m
+                                    """
+                                                    
+                        # font_size = 20
+                        # try:
+                        #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+                        # except:
+                        #     font = ImageFont.load_default()
+                
+                        # padding = 20
+                        # info_img = Image.new("RGB", (img_pwd1.width, 250), "#c6e2a9")
+                        # draw = ImageDraw.Draw(info_img)
+                        # draw.text((padding, 10), info_text, font=font, fill="black")
+
+
+                        # Double the font size
+                        font_size = 40  # was 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
                         except:
                             font = ImageFont.load_default()
                         
-                        # Proper line wrapping
-                        wrapped_lines = []
-                        for paragraph in info_text.split("\n"):
-                            wrapped_lines.extend(textwrap.wrap(paragraph.strip(), width=char_limit))
-                            wrapped_lines.append("")  # Add a blank line between sections
+                        # Increase height of info box to fit bigger text
+                        info_box_height = 500  # was 250
+                        padding = 40  # Optional: increase padding too for cleaner layout
                         
-                        # Compute height
-                        line_height = font.getsize("Ag")[1] + line_spacing
-                        box_height = padding * 2 + len(wrapped_lines) * line_height
-                        
-                        # Create image
-                        info_img = Image.new("RGB", (img_pwd1.width, box_height), "#c6e2a9")
+                        info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
-                        
-                        y = padding
-                        for line in wrapped_lines:
-                            draw.text((padding, y), line, font=font, fill="black")  # Start all text at left padding
-                            y += line_height
+                        draw.text((padding, 20), info_text, font=font, fill="black")
 
-                    
                         # Combine banner + plot vertically
                         combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
                         combined_top.paste(info_img, (0, 0))
                         combined_top.paste(img_pwd1, (0, info_img.height))
-                    
-                        # Create canvas, expand if necessary
-                        canvas_height = combined_top.height + 50 + 50  # top + bottom margin
-                        canvas_px = (int(LETTER_WIDTH_IN * DPI), max(canvas_height, int(LETTER_HEIGHT_IN * DPI)))
+
+                        # --- Use SAME method as later pages: fixed canvas, centered image ---
+                        canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-                    
-                        # Center horizontally, top-align vertically with margin
+
+                        # Horizontally center the image, align to top
                         x_offset = (canvas_px[0] - combined_top.width) // 2
-                        y_offset = 50
+                        y_offset = 50  # Optional small top margin (can be 0)
+                        
                         canvas.paste(combined_top, (x_offset, y_offset))
-                    
-                        # Render to PDF
+                        
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(canvas)
-                        pdf.savefig(fig, bbox_inches='tight')
+                        pdf.savefig(fig, bbox_inches='tight')  # Keep this to trim outer whitespace, since canvas is fixed
                         plt.close(fig)
+
+                        #     ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
+                        # fig_pwd1 = p_pwd1.draw()
+                        # fig_pwd1.set_size_inches(6, 4)
+                        # buf_pwd1 = io.BytesIO()
+                        # fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
+                        # plt.close(fig_pwd1)
+                        # buf_pwd1.seek(0)
+                        # img_pwd1 = Image.open(buf_pwd1)
+                    
+                        # # Info text (no leading spaces!)
+                        # info_text = f"""Estimates are based on model estimates but have uncertainty due to the following simplifications:
+                        # 1) uniform soil texture in soil column is assumed;
+                        # 2) variation in root distribution is not considered;
+                        # 3) species-level differences are not accounted for;
+                        # 4) groundwater depths are assumed constant over time.
+                        
+                        # Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
+                        # Annual precipitation: {precip_value:.2f} mm    Annual evaporative demand: {eto_value:.2f} mm
+                        # Root depth: {rd} m"""
+                        
+                        # # Font, padding, spacing
+                        # font_size = 40
+                        # padding = 40
+                        # line_spacing = 10
+                        # char_limit = 90  # Width of each line in characters
+                        
+                        # try:
+                        #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+                        # except:
+                        #     font = ImageFont.load_default()
+                        
+                        # # Proper line wrapping
+                        # wrapped_lines = []
+                        # for paragraph in info_text.split("\n"):
+                        #     wrapped_lines.extend(textwrap.wrap(paragraph.strip(), width=char_limit))
+                        #     wrapped_lines.append("")  # Add a blank line between sections
+                        
+                        # # Compute height
+                        # line_height = font.getsize("Ag")[1] + line_spacing
+                        # box_height = padding * 2 + len(wrapped_lines) * line_height
+                        
+                        # # Create image
+                        # info_img = Image.new("RGB", (img_pwd1.width, box_height), "#c6e2a9")
+                        # draw = ImageDraw.Draw(info_img)
+                        
+                        # y = padding
+                        # for line in wrapped_lines:
+                        #     draw.text((padding, y), line, font=font, fill="black")  # Start all text at left padding
+                        #     y += line_height
+
+                    
+                        # Combine banner + plot vertically
+                        # combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
+                        # combined_top.paste(info_img, (0, 0))
+                        # combined_top.paste(img_pwd1, (0, info_img.height))
+                    
+                        # # Create canvas, expand if necessary
+                        # canvas_height = combined_top.height + 50 + 50  # top + bottom margin
+                        # canvas_px = (int(LETTER_WIDTH_IN * DPI), max(canvas_height, int(LETTER_HEIGHT_IN * DPI)))
+                        # canvas = Image.new("RGB", canvas_px, (255, 255, 255))
+                    
+                        # # Center horizontally, top-align vertically with margin
+                        # x_offset = (canvas_px[0] - combined_top.width) // 2
+                        # y_offset = 50
+                        # canvas.paste(combined_top, (x_offset, y_offset))
+                    
+                        # # Render to PDF
+                        # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                        # ax.axis('off')
+                        # ax.imshow(canvas)
+                        # pdf.savefig(fig, bbox_inches='tight')
+                        # plt.close(fig)
                                         
                         # # Save cover page
                         # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
