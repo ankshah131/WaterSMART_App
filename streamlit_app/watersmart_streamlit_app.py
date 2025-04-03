@@ -263,7 +263,8 @@ with tab1:
         for label in layer_options.keys():
             if st.session_state.get(f"layer_checkbox_{label}") and label in layer_assets:
                 asset_id = layer_assets[label]
-                vis_params = layer_vis_params.get(label, {})
+                #vis_params = layer_vis_params.get(label, {})
+                vis_params = {**layer_vis_params.get(label, {}), "opacity": 0.5}
 
                 if label == "Administrative groundwater boundaries":
                     # Load as FeatureCollection
