@@ -932,7 +932,7 @@ with tab1:
                     # Line wrapping
                     wrapped_lines = []
                     for line in formatted_text.strip().split("\n"):
-                        wrapped = wrap(line, width=100)
+                        wrapped = wrap(line, width=92)  # better for right margin
                         wrapped_lines.extend(wrapped if wrapped else [""])
                 
                     # Paginate and draw to PDF
@@ -942,7 +942,8 @@ with tab1:
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left')
-                        pdf.savefig(fig)
+                        #pdf.savefig(fig)
+                        pdf.savefig(fig, bbox_inches=None)
                         plt.close(fig)
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
