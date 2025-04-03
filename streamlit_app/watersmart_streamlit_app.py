@@ -954,6 +954,7 @@ with tab1:
                 #         pdf.savefig(fig, bbox_inches=None)
                 #         plt.close(fig)
 
+                
                 # def add_definitions_to_pdf(pdf, definitions_text):
                 #     DPI = 300
                 
@@ -1012,12 +1013,11 @@ with tab1:
 
 
                 def add_definitions_to_pdf(pdf, definitions_text):
-                
+
                     DPI = 300
                     LETTER_WIDTH_IN = 8.5
                     LETTER_HEIGHT_IN = 11
-                    PAGE_WIDTH_PX = int(LETTER_WIDTH_IN * DPI)
-                    PAGE_HEIGHT_PX = int(LETTER_HEIGHT_IN * DPI)
+                    canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                 
                     # Pre-format section headers
                     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
@@ -1046,33 +1046,31 @@ with tab1:
                         else:
                             wrapped_lines.extend(wrap(line, width=92) or [""])
                 
-                    # Lines per page
+                    # Draw text directly on a fixed canvas just like your plot pages
                     lines_per_page = 52
                     line_height_px = 40
-                    top_margin = 50
                     left_margin = 100
+                    top_margin = 50
                 
                     for i in range(0, len(wrapped_lines), lines_per_page):
                         lines = wrapped_lines[i:i + lines_per_page]
                 
-                        # Create fixed-size image canvas
-                        canvas = Image.new("RGB", (PAGE_WIDTH_PX, PAGE_HEIGHT_PX), "white")
+                        canvas = Image.new("RGB", canvas_px, "white")
                         draw = ImageDraw.Draw(canvas)
                 
                         y = top_margin
                         for line in lines:
-                            if line.startswith("**") and line.endswith("**"):
-                                draw.text((left_margin, y), line[2:-2], fill="black")  # Bold hint, no actual bold
-                            else:
-                                draw.text((left_margin, y), line, fill="black")
+                            # Just draw bold-looking text for headers (we're assuming Arial is globally set)
+                            draw.text((left_margin, y), line[2:-2] if line.startswith("**") else line, fill="black")
                             y += line_height_px
                 
-                        # Convert image to matplotlib figure
-                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                        # Now embed canvas into fixed-size figure
+                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis("off")
                         ax.imshow(canvas)
                 
-                        pdf.savefig(fig)  # No bbox_inches here!
+                        # Save like you do for all previous pages
+                        pdf.savefig(fig, bbox_inches="tight")
                         plt.close(fig)
 
 
@@ -1126,10 +1124,6 @@ with tab1:
                         # --- Use SAME method as later pages: fixed canvas, centered image ---
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-                        
-                        # x_offset = (canvas_px[0] - combined_top.width) // 2
-                        # y_offset = (canvas_px[1] - combined_top.height) // 2
-                        # canvas.paste(combined_top, (x_offset, y_offset))
 
                         # Horizontally center the image, align to top
                         x_offset = (canvas_px[0] - combined_top.width) // 2
