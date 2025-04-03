@@ -384,8 +384,10 @@ def render_definitions():
     # Water deficit
     render_definition_section(
         "Average Annual Potential Water Deficit (1991-2020)",
-        """This represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). 
-        Negative values show higher demand than available water. It's calculated by subtracting potential evapotranspiration from precipitation.""",
+        """The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand).
+       Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation. 
+       PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area.
+       The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations.""",
         section_id="water-deficit"
     )
     
@@ -399,7 +401,7 @@ def render_definitions():
         image_size="small",
         section_id="soil-texture-selection"
     )
-
+    
     # Rooting depth
     render_definition_section(
         "Rooting Depth",
