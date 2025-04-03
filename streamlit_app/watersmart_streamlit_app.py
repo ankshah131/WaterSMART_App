@@ -1129,17 +1129,33 @@ with tab1:
                                     Root depth: {rd} m
                                     """
                                                     
-                        font_size = 20
+                        # font_size = 20
+                        # try:
+                        #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+                        # except:
+                        #     font = ImageFont.load_default()
+                
+                        # padding = 20
+                        # info_img = Image.new("RGB", (img_pwd1.width, 250), "#c6e2a9")
+                        # draw = ImageDraw.Draw(info_img)
+                        # draw.text((padding, 10), info_text, font=font, fill="black")
+
+
+                        # Double the font size
+                        font_size = 40  # was 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
                         except:
                             font = ImageFont.load_default()
-                
-                        padding = 20
-                        info_img = Image.new("RGB", (img_pwd1.width, 250), "#c6e2a9")
+                        
+                        # Increase height of info box to fit bigger text
+                        info_box_height = 500  # was 250
+                        padding = 40  # Optional: increase padding too for cleaner layout
+                        
+                        info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
-                        draw.text((padding, 10), info_text, font=font, fill="black")
-                
+                        draw.text((padding, 20), info_text, font=font, fill="black")
+
                         # Combine banner + plot vertically
                         combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
                         combined_top.paste(info_img, (0, 0))
@@ -1256,8 +1272,8 @@ with tab1:
                 )
         
         except Exception as e:
-            st.warning("Please choose a location on the map.")
-            st.write(e)
+            st.warning("Please choose another location on the map.")
+            #st.write(e)
             
     else:
         if map_data is None:
