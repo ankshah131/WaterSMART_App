@@ -931,64 +931,6 @@ with tab1:
                 with col8:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
-                    
-
-                
-                # def add_definitions_to_pdf(pdf, definitions_text):
-                #     DPI = 300
-                
-                #     # Pre-format section headers
-                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
-                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
-                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
-                
-                #     # Apply bold formatting using **...** for later rendering in matplotlib
-                #     replacements = [
-                #         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
-                #         ("Soil Texture:", "**Soil Texture:**"),
-                #         ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
-                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
-                #         ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
-                #         ("Rooting Depth:", "**Rooting Depth:**"),
-                #         ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
-                #         ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
-                #         ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
-                #     ]
-                #     for old, new in replacements:
-                #         formatted_text = formatted_text.replace(old, new)
-                
-                #     # Line wrapping
-                #     wrapped_lines = []
-                #     for line in formatted_text.strip().split("\n"):
-                #         # Manually preserve bold headers in wrapped text
-                #         if line.strip().startswith("**") and line.strip().endswith("**"):
-                #             wrapped_lines.append(line)
-                #         else:
-                #             wrapped = wrap(line, width=92)
-                #             wrapped_lines.extend(wrapped if wrapped else [""])
-                
-                #     # Paginate and draw
-                #     lines_per_page = 52
-                #     for i in range(0, len(wrapped_lines), lines_per_page):
-                #         page = wrapped_lines[i:i + lines_per_page]
-                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                #         ax.axis('off')
-                #         # fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                #         # ax = fig.add_axes([0, 0, 1, 1])
-                #         # ax.axis('off')
-                
-                #         y = 0.96
-                #         line_height = 0.018  # space per line
-                
-                #         for line in page:
-                #             if line.startswith("**") and line.endswith("**"):
-                #                 ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
-                #             else:
-                #                 ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
-                #             y -= line_height
-                
-                #         pdf.savefig(fig)
-                #         plt.close(fig)
 
                 
 
@@ -1122,7 +1064,7 @@ with tab1:
                             
 
                         # Page size preservation
-                        pdf.savefig(fig)  # ← page size preserved
+                        pdf.savefig(fig, bbox_inches='tight')  # ← page size preserved
                         plt.close(fig)
 
 
