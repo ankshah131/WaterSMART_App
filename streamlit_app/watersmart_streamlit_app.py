@@ -253,9 +253,10 @@ with tab1:
                     # Load as FeatureCollection
                     ee_fc = ee.FeatureCollection(asset_id)
                     # Convert to image for Folium
-                    ee_image = ee_fc.style(color='black', width=2)
+                    ee_features = ee_fc.style(color='black', width=2)
+                    folium_map.add_ee_layer(ee_features, {}, label)
                 else:
-                    ee_image = ee.Image(asset_id)
+                    ee_image = ee.Image(asset_id)   
                     folium_map.add_ee_layer(ee_image, vis_params, label)
     
         # Add layer control and display map (now includes selected EE layers)
