@@ -1045,17 +1045,17 @@ with tab1:
                 
                         # Create info box image
                         info_text = f"""
-                            Estimates are based on model estimates but have 
-                            uncertainty due to the following simplifications:
-                            1) uniform soil texture in soil column is assumed;
-                            2) variation in root distribution is not considered;
-                            3) species-level differences are not accounted for;
-                            4) groundwater depths are assumed constant over time.
-                            
-                            Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                            Annual precipitation: {str(precip_value)} mm    
-                            Annual evaporative demand: {str(eto_value)} mm
-                            Root depth: {rd} m
+                        Estimates are based on model estimates but have 
+                        uncertainty due to the following simplifications:
+                        1) uniform soil texture in soil column is assumed;
+                        2) variation in root distribution is not considered;
+                        3) species-level differences are not accounted for;
+                        4) groundwater depths are assumed constant over time.
+                        
+                        Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
+                        Annual precipitation: {precip_value:.2f} mm    
+                        Annual evaporative demand: {eto_value:.2f} mm
+                        Root depth: {rd} m
                                     """
 
 
