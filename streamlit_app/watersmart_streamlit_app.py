@@ -974,6 +974,7 @@ with tab1:
                 #         pdf.savefig(fig)
                 #         plt.close(fig)
 
+                
 
                 # def add_definitions_to_pdf(pdf, definitions_text):
 
@@ -1088,6 +1089,10 @@ with tab1:
                 
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
                         ax.axis('off')
+                        
+                        # Add invisible rect to force fixed size
+                        ax.add_patch(plt.Rectangle((0, 0), 1, 1, transform=ax.transAxes,
+                                                   linewidth=0, edgecolor='none', facecolor='none'))
                 
                         y = 0.96
                         line_height = 0.018
@@ -1098,7 +1103,8 @@ with tab1:
                             else:
                                 ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
                             y -= line_height
-                
+                            
+
                         # Page size preservation
                         pdf.savefig(fig)  # ← page size preserved
                         plt.close(fig)
