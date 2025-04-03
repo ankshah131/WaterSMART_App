@@ -71,6 +71,7 @@ def crop_pdf_to_letter(pdf_buffer):
 def save_folium_map_as_image(fmap, output_path="image.png"):
     fmap.save("temp_map.html")
     imgkit.from_file("temp_map.html", output_path)
+    print("Image Saved")
     
 # Text control
 # Set monospaced font globally
@@ -324,7 +325,7 @@ with tab1:
         # Add soil texture legend
         st.image(
             "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/57bbbf9d71e4ab39bc39f6b86699799a94efc283/streamlit_app/app_def/assets/images/soil_texture_logo.png",
-            use_container_width=True
+            use_container_width=False
         )
 
 
