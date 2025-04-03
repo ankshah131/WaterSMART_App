@@ -948,28 +948,42 @@ with tab1:
                         combined_top.paste(img_pwd1, (0, info_img.height))
                 
                         # Resize to fit letter width if needed
-                        if combined_top.width > MAX_WIDTH_PX:
-                            ratio = MAX_WIDTH_PX / combined_top.width
-                            new_height = int(combined_top.height * ratio)
-                            combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
+                        # if combined_top.width > MAX_WIDTH_PX:
+                        #     ratio = MAX_WIDTH_PX / combined_top.width
+                        #     new_height = int(combined_top.height * ratio)
+                        #     combined_top = combined_top.resize((MAX_WIDTH_PX, new_height))
 
 
-                        # Create a blank white canvas with US Letter dimensions
+                        # Resize combined_top to fit within US Letter canvas with padding
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
-                        canvas = Image.new("RGB", canvas_px, (255, 255, 255))
+                        max_width = canvas_px[0] - 100  # 50px padding each side
+                        max_height = canvas_px[1] - 100
                         
-                        # Center combined_top image on canvas
-                        x_margin = (canvas_px[0] - combined_top.width) // 2
-                        y_margin = (canvas_px[1] - combined_top.height) // 2
-                        canvas.paste(combined_top, (x_margin, y_margin))
+                        img_ratio = combined_top.width / combined_top.height
+                        canvas_ratio = max_width / max_height
                         
-                        # Save to PDF
+                        if img_ratio > canvas_ratio:
+                            new_width = max_width
+                            new_height = int(max_width / img_ratio)
+                        else:
+                            new_height = max_height
+                            new_width = int(max_height * img_ratio)
+                        
+                        resized_img = combined_top.resize((new_width, new_height), Image.LANCZOS)
+                        
+                        # Create final blank canvas and center resized image
+                        canvas = Image.new("RGB", canvas_px, "white")
+                        x_offset = (canvas_px[0] - new_width) // 2
+                        y_offset = (canvas_px[1] - new_height) // 2
+                        canvas.paste(resized_img, (x_offset, y_offset))
+                        
+                        # Save to PDF with correct size
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(canvas)
                         pdf.savefig(fig)
                         plt.close(fig)
-                
+                                        
                         # # Save cover page
                         # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         # ax.axis('off')
