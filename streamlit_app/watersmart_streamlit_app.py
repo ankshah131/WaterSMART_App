@@ -908,23 +908,63 @@ with tab1:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
 
-                def add_definitions_to_pdf(pdf, definitions_text):
-                    # Pre-format for cleaner section spacing and simulated bold headers
-                    formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS\n")
-                    formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:\n")
-                    formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:\n")
+                # def add_definitions_to_pdf(pdf, definitions_text):
+                #     # Pre-format for cleaner section spacing and simulated bold headers
+                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS\n")
+                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:\n")
+                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:\n")
                 
-                    # Optional: simulate bold headers by making them uppercase and spacing them
+                #     # Optional: simulate bold headers by making them uppercase and spacing them
+                #     replacements = [
+                #         ("Groundwater Boundaries:", "\nADMINISTRATIVE GROUNDWATER BOUNDARIES:\n"),
+                #         ("Soil Texture:", "\nSOIL TEXTURE:\n"),
+                #         ("Average annual precipitation (1991-2020) (P):", "\nAVERAGE ANNUAL PRECIPITATION (1991-2020) (P):\n"),
+                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "\nAVERAGE ANNUAL POTENTIAL EVAPOTRANSPIRATION (1991-2020) (PET):\n"),
+                #         ("Average annual potential water deficit (1991-2020) (PWD)", "\nAVERAGE ANNUAL POTENTIAL WATER DEFICIT (1991-2020) (PWD):\n"),
+                #         ("Rooting Depth:", "\nROOTING DEPTH:\n"),
+                #         ("Leaf Area Index (LAI)", "\nLEAF AREA INDEX (LAI):\n"),
+                #         ("ET from Groundwater (ETgw):", "\nET FROM GROUNDWATER (ETGW):\n"),
+                #         ("Groundwater Subsidy:", "\nGROUNDWATER SUBSIDY:\n"),
+                #     ]
+                #     for old, new in replacements:
+                #         formatted_text = formatted_text.replace(old, new)
+                
+                #     # Line wrapping
+                #     wrapped_lines = []
+                #     for line in formatted_text.strip().split("\n"):
+                #         wrapped = wrap(line, width=92)  # better for right margin
+                #         wrapped_lines.extend(wrapped if wrapped else [""])
+                
+                #     # Paginate and draw to PDF
+                #     lines_per_page = 52  # Adjusted to fit letter size with margin
+                #     for i in range(0, len(wrapped_lines), lines_per_page):
+                #         page = wrapped_lines[i:i + lines_per_page]
+                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                #         ax.axis('off')
+                #         ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left')
+                #         #pdf.savefig(fig)
+                #         pdf.savefig(fig, bbox_inches=None)
+                #         plt.close(fig)
+
+                def add_definitions_to_pdf(pdf, definitions_text):
+                    DPI = 300
+                
+                    # Pre-format section headers
+                    formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
+                    formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
+                    formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
+                
+                    # Apply bold formatting using **...** for later rendering in matplotlib
                     replacements = [
-                        ("Groundwater Boundaries:", "\nADMINISTRATIVE GROUNDWATER BOUNDARIES:\n"),
-                        ("Soil Texture:", "\nSOIL TEXTURE:\n"),
-                        ("Average annual precipitation (1991-2020) (P):", "\nAVERAGE ANNUAL PRECIPITATION (1991-2020) (P):\n"),
-                        ("Average annual potential evapotranspiration (1991-2020) (PET)", "\nAVERAGE ANNUAL POTENTIAL EVAPOTRANSPIRATION (1991-2020) (PET):\n"),
-                        ("Average annual potential water deficit (1991-2020) (PWD)", "\nAVERAGE ANNUAL POTENTIAL WATER DEFICIT (1991-2020) (PWD):\n"),
-                        ("Rooting Depth:", "\nROOTING DEPTH:\n"),
-                        ("Leaf Area Index (LAI)", "\nLEAF AREA INDEX (LAI):\n"),
-                        ("ET from Groundwater (ETgw):", "\nET FROM GROUNDWATER (ETGW):\n"),
-                        ("Groundwater Subsidy:", "\nGROUNDWATER SUBSIDY:\n"),
+                        ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
+                        ("Soil Texture:", "**Soil Texture:**"),
+                        ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
+                        ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
+                        ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
+                        ("Rooting Depth:", "**Rooting Depth:**"),
+                        ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
+                        ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
+                        ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
                     ]
                     for old, new in replacements:
                         formatted_text = formatted_text.replace(old, new)
@@ -932,19 +972,35 @@ with tab1:
                     # Line wrapping
                     wrapped_lines = []
                     for line in formatted_text.strip().split("\n"):
-                        wrapped = wrap(line, width=92)  # better for right margin
-                        wrapped_lines.extend(wrapped if wrapped else [""])
+                        # Manually preserve bold headers in wrapped text
+                        if line.strip().startswith("**") and line.strip().endswith("**"):
+                            wrapped_lines.append(line)
+                        else:
+                            wrapped = wrap(line, width=92)
+                            wrapped_lines.extend(wrapped if wrapped else [""])
                 
-                    # Paginate and draw to PDF
-                    lines_per_page = 52  # Adjusted to fit letter size with margin
+                    # Paginate and draw
+                    lines_per_page = 52
                     for i in range(0, len(wrapped_lines), lines_per_page):
                         page = wrapped_lines[i:i + lines_per_page]
-                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                
+                        fig = plt.figure(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                        ax = fig.add_axes([0, 0, 1, 1])
                         ax.axis('off')
-                        ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left')
-                        #pdf.savefig(fig)
-                        pdf.savefig(fig, bbox_inches=None)
+                
+                        y = 0.96
+                        line_height = 0.018  # space per line
+                
+                        for line in page:
+                            if line.startswith("**") and line.endswith("**"):
+                                ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
+                            else:
+                                ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
+                            y -= line_height
+                
+                        pdf.savefig(fig)
                         plt.close(fig)
+
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
