@@ -48,7 +48,8 @@ def add_ee_layer(self, ee_image_object, vis_params, name):
         attr='Google Earth Engine',
         name=name,
         overlay=True,
-        control=True
+        control=True,
+        opacity=0.5
     ).add_to(self)
 
 
