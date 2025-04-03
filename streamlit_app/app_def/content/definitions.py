@@ -363,8 +363,8 @@ def render_definitions():
     # Precipitation
     render_definition_section(
         "Average Annual Precipitation (1991-2020)",
-        """This is the average yearly precipitation calculated by summing the observed annual precipitation 
-        from 1991 to 2020 and dividing by the number of years with data. 
+        """The average precipitation for the area in question is calculated by summing the observed annual precipitation 
+        over 1991-2020 and dividing by the number of years for which there were observations.
         <span class="source-text">[Source: Abatzoglou, 2013]</span>""",
         section_id="precipitation"
     )
@@ -372,9 +372,10 @@ def render_definitions():
     # Evapotranspiration
     render_definition_section(
         "Average Annual Potential Evapotranspiration (1991-2020)",
-        """Potential evapotranspiration (ET) indicates how much moisture is "demanded" by the atmosphere. 
-        It's represented by ETref, based on the Penman-Monteith method. ETref describes water loss from a well-watered grass surface.""",
-        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png",
+        """Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is.
+        Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method.
+        ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface.""",
+        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/et_ref.png",
         "ETref Example",
         image_size="small",
         section_id="evapotranspiration"
