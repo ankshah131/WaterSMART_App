@@ -571,13 +571,48 @@ with tab1:
                 dfsum = pd.merge(dfclimate, dfcoeffs, left_on='WTD', right_on='WTD', how='left')
             
             
+                # dfsum['LAIcalc'] = (
+                #     dfsum['LAIIntercept'] +
+                #     dfsum['pr'] * dfsum['LAIPx'] +
+                #     dfsum['eto2'] * dfsum['LAIPETx'] +
+                #     dfsum['pr2'] * dfsum['LAIP2x']+
+                #     dfsum['pet2'] * dfsum['LAIPET2x']
+                #     )
+                # dfsum['aetcalc'] = (
+                #     dfsum['aetIntercept'] +
+                #     dfsum['pr'] * dfsum['aetPx'] +
+                #     dfsum['eto2'] * dfsum['aetPETx'] +
+                #     dfsum['pr2'] * dfsum['aetP2x'] +
+                #     dfsum['pet2'] * dfsum['aetPET2x']
+                # )
+                # dfsum['aetgwcalc'] = (
+                #     dfsum['aetgwIntercept'] +
+                #     dfsum['pr'] * dfsum['aetgwPx'] +
+                #     dfsum['eto2'] * dfsum['aetgwPETx'] +
+                #     dfsum['pr2'] * dfsum['aetgwP2x'] +
+                #     dfsum['pet2'] * dfsum['aetgwPET2x']
+                # )
+                # dfsum['gwsubscalc'] = (
+                #     dfsum['gwsubsIntercept'] +
+                #     dfsum['pr'] * dfsum['gwsubsPx'] +
+                #     dfsum['eto2'] * dfsum['gwsubsPETx'] +
+                #     dfsum['pr2'] * dfsum['gwsubsP2x'] +
+                #     dfsum['pet2'] * dfsum['gwsubsPET2x']
+                # )
+                # # remove remnant error in GW ET calcs
+                # dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
+                # dfsum["LAIcalc"]=dfsum["LAIcalc"].apply(lambda x: 0 if x <1 else x)
+                # dfsum["aetcalc"]=dfsum["aetcalc"].apply(lambda x: 0 if x <1 else x)
+                # dfsum["gwsubscalc"]=dfsum["gwsubscalc"].apply(lambda x: 0 if x <1 else x)
+
                 dfsum['LAIcalc'] = (
-                    dfsum['LAIIntercept'] +
-                    dfsum['pr'] * dfsum['LAIPx'] +
-                    dfsum['eto2'] * dfsum['LAIPETx'] +
-                    dfsum['pr2'] * dfsum['LAIP2x']+
-                    dfsum['pet2'] * dfsum['LAIPET2x']
-                    )
+                dfsum['LAIIntercept'] +
+                dfsum['pr'] * dfsum['LAIPx'] +
+                dfsum['eto2'] * dfsum['LAIPETx'] +
+                dfsum['pr2'] * dfsum['LAIP2x']+
+                dfsum['pet2'] * dfsum['LAIPET2x']
+                )
+                    
                 dfsum['aetcalc'] = (
                     dfsum['aetIntercept'] +
                     dfsum['pr'] * dfsum['aetPx'] +
@@ -592,18 +627,21 @@ with tab1:
                     dfsum['pr2'] * dfsum['aetgwP2x'] +
                     dfsum['pet2'] * dfsum['aetgwPET2x']
                 )
-                dfsum['gwsubscalc'] = (
-                    dfsum['gwsubsIntercept'] +
-                    dfsum['pr'] * dfsum['gwsubsPx'] +
-                    dfsum['eto2'] * dfsum['gwsubsPETx'] +
-                    dfsum['pr2'] * dfsum['gwsubsP2x'] +
-                    dfsum['pet2'] * dfsum['gwsubsPET2x']
-                )
-                # remove remnant error in GW ET calcs
+                
+                # calculate GW subsidy based on AET differences rather than using equation
+                etabase = dfsum[(dfsum["wtd2"] == "Free Drain")]
+                etabase['aetcalc2'] = etabase['aetcalc']
+                etabase2 = etabase[['wy','aetcalc2']]
+                dfsum = pd.merge(dfsum, etabase2, on="wy", how="left")
+                dfsum['gwsubscalc'] = (dfsum['aetcalc'] - dfsum['aetcalc2'])
+                dfsum['gwsubscalcratio'] = (dfsum['gwsubscalc'] / dfsum['aetcalc'])
+                
+                # remove remnant error in calcs
                 dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
-                dfsum["LAIcalc"]=dfsum["LAIcalc"].apply(lambda x: 0 if x <1 else x)
+                dfsum["LAIcalc"]=dfsum["LAIcalc"].apply(lambda x: 0 if x <0 else x)
                 dfsum["aetcalc"]=dfsum["aetcalc"].apply(lambda x: 0 if x <1 else x)
                 dfsum["gwsubscalc"]=dfsum["gwsubscalc"].apply(lambda x: 0 if x <1 else x)
+                dfsum["gwsubscalc"]=dfsum[["gwsubscalcratio","gwsubscalc","aetcalc"]].apply(lambda x: x["aetcalc"] if x["gwsubscalcratio"] > 1 else x["gwsubscalc"], axis=1)
                 # # Display results
                 # st.markdown("### We’ve got your data, here is a summary:")
                 # st.markdown(f"""
