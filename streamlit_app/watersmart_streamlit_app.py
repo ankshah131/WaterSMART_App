@@ -123,7 +123,7 @@ with tab1:
     # st.session_state.get_data_clicked = False
 
     # Set up Streamlit layout
-    st.title("Welcome to the Nevada GDE Water Needs Explorer")
+    st.title("Welcome to the Nevada GDE Water Needs Explorer (Draft)")
 
     # App description
     st.write("""
