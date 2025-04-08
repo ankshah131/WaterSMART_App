@@ -77,7 +77,7 @@ rcParams['font.family'] = 'arial'
 folium.Map.add_ee_layer = add_ee_layer
 
 # Set up Streamlit layout
-st.set_page_config(page_title="Nevada GDE Water Needs Explorer", layout="wide")
+st.set_page_config(page_title="Nevada GDE Water Needs Explorer (Draft)", layout="wide")
 
 # Constants for US Letter size
 LETTER_WIDTH_IN = 8.5
