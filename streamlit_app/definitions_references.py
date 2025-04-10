@@ -1,6 +1,6 @@
 definitions_text = """\
 
-DEFINITIONS - DRAFT
+DEFINITIONS
 
 Groundwater Boundaries:
 Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. 
