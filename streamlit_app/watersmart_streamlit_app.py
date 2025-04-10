@@ -1014,7 +1014,7 @@ with tab1:
                     LETTER_HEIGHT_IN = 11
                 
                     # Pre-format section headers
-                    formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS")
+                    formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS - DRAFT")
                     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
                     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
                 
