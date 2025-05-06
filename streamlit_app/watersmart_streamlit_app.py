@@ -1225,14 +1225,18 @@ with tab1:
                     file_name="LAI_AET_Report.pdf",
                     mime="application/pdf"
                 )
+
+            render_footer()
         
         except Exception as e:
             st.warning("Please choose another location on the map.")
+            render_footer()
             #st.write(e)
             
     else:
         if map_data is None:
             st.sidebar.warning("Please select a point on the map before clicking 'Get Data'.")
+            render_footer()
             #st.error(str(e))  # Optional: for debugging    
 
 
