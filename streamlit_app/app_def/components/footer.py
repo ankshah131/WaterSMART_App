@@ -6,8 +6,8 @@ def render_footer():
     st.markdown(
         """
         <div class="footer">
-            <p>© 2025 Nevada GDE Water Needs Explorer. A collaboration between The Nature Conservancy, 
-            University of Nevada, and the Bureau of Reclamation.</p>
+            <p>© Nevada GDE Water Needs Explorer. A collaboration between Desert Research Institute, University of Wisconsin, The Nature Conservancy, 
+            and the Bureau of Reclamation.</p>
         </div>
         """, 
         unsafe_allow_html=True
