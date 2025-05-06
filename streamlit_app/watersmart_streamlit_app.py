@@ -27,6 +27,11 @@ from app_def.components.footer import render_footer
 from app_def.content.definitions import render_definitions
 from definitions_references import definitions_text
 
+# GLOBAL PATHS
+PATH_COEFFICIENTS = 'https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_ppetquad.csv'
+PATH_SOIL_TEXTURE_LEGEND = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/57bbbf9d71e4ab39bc39f6b86699799a94efc283/streamlit_app/app_def/assets/images/soil_texture_logo.png"
+PATH_MAP_LEGENDS = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png"
+
 # Earth Engine Setup
 def get_auth():
     service_account_keys = st.secrets["GEE_CREDS"]['settings']
@@ -317,7 +322,7 @@ with tab1:
         
         # Add soil texture legend
         st.image(
-            "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/57bbbf9d71e4ab39bc39f6b86699799a94efc283/streamlit_app/app_def/assets/images/soil_texture_logo.png",
+            PATH_SOIL_TEXTURE_LEGEND,
             width = 150
             #use_container_width=False
         )
@@ -325,7 +330,7 @@ with tab1:
 
         # Add map legends image at the bottom of the sidebar
         st.image(
-            "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png",
+            PATH_MAP_LEGENDS,
             use_container_width=True
         )
         
@@ -381,7 +386,7 @@ with tab1:
                     <b>Soil type:</b> {soil_string} &nbsp;&nbsp;
                     <b>Annual precipitation:</b> {precip_value:.2f} mm &nbsp;&nbsp;
                     <b>Annual evaporative demand:</b> {eto_value:.2f} mm &nbsp;&nbsp;
-                    <b>Rooting Depth:</b> 2 mm<br>;
+                    <b>Rooting Depth:</b> 2 mm<br>
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -546,9 +551,8 @@ with tab1:
             # Rename dfee as dfclimate
             dfclimate = dfee
         
-            # Load the dataset
-            #dfcoeffs = pd.read_csv('/content/MixedEffectsModelCoefficients102924_LAI_AET_AETG_GWsubs.csv')
-            dfcoeffs = pd.read_csv('https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_ppetquad.csv')
+            # Load the dataset - ensure paths are correct at the top
+            dfcoeffs = pd.read_csv(PATH_COEFFICIENTS)
             dfcoeffs['wtd2'] = dfcoeffs['WTD'].apply(lambda x: "Free Drain" if x == 12 else f"{x} m")
             # print(dfcoeffs)
         
@@ -571,40 +575,6 @@ with tab1:
                 # Left join dfclimate and dfcoeffs
                 dfsum = pd.merge(dfclimate, dfcoeffs, left_on='WTD', right_on='WTD', how='left')
             
-            
-                # dfsum['LAIcalc'] = (
-                #     dfsum['LAIIntercept'] +
-                #     dfsum['pr'] * dfsum['LAIPx'] +
-                #     dfsum['eto2'] * dfsum['LAIPETx'] +
-                #     dfsum['pr2'] * dfsum['LAIP2x']+
-                #     dfsum['pet2'] * dfsum['LAIPET2x']
-                #     )
-                # dfsum['aetcalc'] = (
-                #     dfsum['aetIntercept'] +
-                #     dfsum['pr'] * dfsum['aetPx'] +
-                #     dfsum['eto2'] * dfsum['aetPETx'] +
-                #     dfsum['pr2'] * dfsum['aetP2x'] +
-                #     dfsum['pet2'] * dfsum['aetPET2x']
-                # )
-                # dfsum['aetgwcalc'] = (
-                #     dfsum['aetgwIntercept'] +
-                #     dfsum['pr'] * dfsum['aetgwPx'] +
-                #     dfsum['eto2'] * dfsum['aetgwPETx'] +
-                #     dfsum['pr2'] * dfsum['aetgwP2x'] +
-                #     dfsum['pet2'] * dfsum['aetgwPET2x']
-                # )
-                # dfsum['gwsubscalc'] = (
-                #     dfsum['gwsubsIntercept'] +
-                #     dfsum['pr'] * dfsum['gwsubsPx'] +
-                #     dfsum['eto2'] * dfsum['gwsubsPETx'] +
-                #     dfsum['pr2'] * dfsum['gwsubsP2x'] +
-                #     dfsum['pet2'] * dfsum['gwsubsPET2x']
-                # )
-                # # remove remnant error in GW ET calcs
-                # dfsum["aetgwcalc"]=dfsum["aetgwcalc"].apply(lambda x: 0 if x <1 else x)
-                # dfsum["LAIcalc"]=dfsum["LAIcalc"].apply(lambda x: 0 if x <1 else x)
-                # dfsum["aetcalc"]=dfsum["aetcalc"].apply(lambda x: 0 if x <1 else x)
-                # dfsum["gwsubscalc"]=dfsum["gwsubscalc"].apply(lambda x: 0 if x <1 else x)
 
                 dfsum['LAIcalc'] = (
                 dfsum['LAIIntercept'] +
