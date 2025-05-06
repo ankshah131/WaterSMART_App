@@ -235,7 +235,7 @@ with tab1:
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
-        st.write("Click on the 'Definitions' tab to learn more about each layer.")
+        st.write("Click on the ‘Definitions’ tab to learn more about each layer and other terminology used in the GDE Explorer.")
     
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
