@@ -424,41 +424,41 @@ with tab1:
             allowed_values = [0.5, 2, 3.6]
         
             # Custom CSS for hoverable tooltips
-            st.markdown("""
-                <style>
-                .info-icon {
-                    display: inline-block;
-                    font-size: 18px;
-                    margin-left: 8px;
-                    cursor: pointer;
-                    color: #4F8BF9;
-                }
-                .tooltip {
-                    position: relative;
-                    display: inline-block;
-                }
-                .tooltip .tooltiptext {
-                    visibility: hidden;
-                    width: 300px;
-                    background-color: #555;
-                    color: #fff;
-                    text-align: left;
-                    border-radius: 5px;
-                    padding: 8px;
-                    position: absolute;
-                    z-index: 1;
-                    bottom: 125%; /* Position above the icon */
-                    left: 50%;
-                    transform: translateX(-50%);
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                }
-                .tooltip:hover .tooltiptext {
-                    visibility: visible;
-                    opacity: 1;
-                }
-                </style>
-            """, unsafe_allow_html=True)
+            # st.markdown("""
+            #     <style>
+            #     .info-icon {
+            #         display: inline-block;
+            #         font-size: 18px;
+            #         margin-left: 8px;
+            #         cursor: pointer;
+            #         color: #4F8BF9;
+            #     }
+            #     .tooltip {
+            #         position: relative;
+            #         display: inline-block;
+            #     }
+            #     .tooltip .tooltiptext {
+            #         visibility: hidden;
+            #         width: 300px;
+            #         background-color: #555;
+            #         color: #fff;
+            #         text-align: left;
+            #         border-radius: 5px;
+            #         padding: 8px;
+            #         position: absolute;
+            #         z-index: 1;
+            #         bottom: 125%; /* Position above the icon */
+            #         left: 50%;
+            #         transform: translateX(-50%);
+            #         opacity: 0;
+            #         transition: opacity 0.3s;
+            #     }
+            #     .tooltip:hover .tooltiptext {
+            #         visibility: visible;
+            #         opacity: 1;
+            #     }
+            #     </style>
+            # """, unsafe_allow_html=True)
             
             # Rooting Depth Section with Inline Info Button
             # col1, col2 = st.columns([0.012, 0.1])  # Adjust column widths to keep icon close
