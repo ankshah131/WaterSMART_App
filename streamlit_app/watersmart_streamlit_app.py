@@ -461,41 +461,42 @@ with tab1:
             """, unsafe_allow_html=True)
             
             # Rooting Depth Section with Inline Info Button
-            col1, col2 = st.columns([0.012, 0.1])  # Adjust column widths to keep icon close
-            with col1:
-                st.subheader("Rooting Depth")
-            with col2:
-                st.markdown("""
-                    <div class="tooltip">
-                        <span class="info-icon">ℹ️</span>
-                        <span class="tooltiptext">
-                            Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. 
-                            Meadow and rangeland grasses often have roots within 2m of the ground surface, whereas some phreatophytic shrubs and trees 
-                            can have roots as deep as 6m or more (The Nature Conservancy 2021).
-                            Choose from 0.5m for herbaceous meadow root depths, 2m for grass root depth, and 3.6m for phreatophyte shrubland root depths.
-                        </span>
-                    </div>
-                """, unsafe_allow_html=True)
+            # col1, col2 = st.columns([0.012, 0.1])  # Adjust column widths to keep icon close
+            # with col1:
+            st.subheader("Rooting Depth")
+            # with col2:
+            #     st.markdown("""
+            #         <div class="tooltip">
+            #             <span class="info-icon">ℹ️</span>
+            #             <span class="tooltiptext">
+            #                 Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. 
+            #                 Meadow and rangeland grasses often have roots within 2m of the ground surface, whereas some phreatophytic shrubs and trees 
+            #                 can have roots as deep as 6m or more (The Nature Conservancy 2021).
+            #                 Choose from 0.5m for herbaceous meadow root depths, 2m for grass root depth, and 3.6m for phreatophyte shrubland root depths.
+            #             </span>
+            #         </div>
+            #     """, unsafe_allow_html=True)
             
             # Rooting Depth Slider
             rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=2)
             st.write(f"Selected Rooting Depth: {rooting_depth} m")
             
             # Soil Type Section with Inline Info Button
-            col3, col4 = st.columns([0.012, 0.1])
-            with col3:
-                st.subheader("Soil Texture")
-            with col4:
-                st.markdown("""
-                    <div class="tooltip">
-                        <span class="info-icon">ℹ️</span>
-                        <span class="tooltiptext">
-                            The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question.
-                            Soils with different amounts of sand, silt, and clay have differing abilities to retain water.
-                            Some drain away instantly, and some also hold onto it more tightly when dry, like a clay, which can limit plant access to that water.
-                        </span>
-                    </div>
-                """, unsafe_allow_html=True)
+            # col3, col4 = st.columns([0.012, 0.1])
+            # with col3:
+            st.subheader("Soil Texture")
+            # with col4:
+            #     st.markdown("""
+            #         <div class="tooltip">
+            #             <span class="info-icon">ℹ️</span>
+            #             <span class="tooltiptext">
+            #                 The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question.
+            #                 Soils with different amounts of sand, silt, and clay have differing abilities to retain water.
+            #                 Some drain away instantly, and some also hold onto it more tightly when dry, like a clay, which can limit plant access to that water.
+            #             </span>
+            #         </div>
+            #     """, unsafe_allow_html=True)
+
             
             # Soil Type Dropdown
             # soil_type = st.selectbox(
