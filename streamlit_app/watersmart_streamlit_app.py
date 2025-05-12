@@ -158,6 +158,17 @@ with tab1:
     # Create Folium map
     folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
 
+    # Add Esri Satellite basemap
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attr="Esri",
+        name="Esri Satellite",
+        overlay=False,
+        control=True
+    ).add_to(folium_map)
+
+    folium.LayerControl().add_to(folium_map)
+
     # Add initial marker
     marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
     marker.add_to(folium_map)
