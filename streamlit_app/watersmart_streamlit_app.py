@@ -280,7 +280,7 @@ with tab1:
                     # ee_features = ee_fc.style(color='black', width=1)
                     # folium_map.add_ee_layer(ee_features, {}, label)
                     styled = ee_fc.style(color='black', width=2)
-                    styled_image = styled.visualize(**{"opacity": 0.1})
+                    styled_image = styled.visualize(**{"opacity": 0.4})
                     folium_map.add_ee_layer(styled_image, {}, label)
                 else:
                     ee_image = ee.Image(asset_id)   
