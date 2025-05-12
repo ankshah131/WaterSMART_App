@@ -277,8 +277,11 @@ with tab1:
                     # Load as FeatureCollection
                     ee_fc = ee.FeatureCollection(asset_id)
                     # Convert to image for Folium
-                    ee_features = ee_fc.style(color='black', width=1)
-                    folium_map.add_ee_layer(ee_features, {}, label)
+                    # ee_features = ee_fc.style(color='black', width=1)
+                    # folium_map.add_ee_layer(ee_features, {}, label)
+                    styled = ee_fc.style(color='black', width=2)
+                    styled_image = styled.visualize(**{"opacity": 0.1})
+                    folium_map.add_ee_layer(styled_image, {}, label)
                 else:
                     ee_image = ee.Image(asset_id)   
                     folium_map.add_ee_layer(ee_image, vis_params, label)
@@ -288,7 +291,7 @@ with tab1:
         # Add layer control and display map (now includes selected EE layers)
         folium.LayerControl().add_to(folium_map)
         st.write("### Interactive Map")
-        map_data = st_folium(folium_map, width=500, height=700)
+        map_data = st_folium(folium_map, width=700, height=900)
     
         # Update selected coords on click
         if map_data and map_data.get("last_clicked"):
