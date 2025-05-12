@@ -283,22 +283,6 @@ with tab1:
                     ee_image = ee.Image(asset_id)   
                     folium_map.add_ee_layer(ee_image, vis_params, label)
 
-        
-        # Add only the selected layer
-        # if selected_layer in layer_assets:
-        
-        #     asset_id = layer_assets[selected_layer]
-        #     vis_params = {**layer_vis_params.get(selected_layer, {}), "opacity": 0.5}
-        
-        #     if selected_layer == "Administrative groundwater boundaries":
-        #         # Load as FeatureCollection
-        #         ee_fc = ee.FeatureCollection(asset_id)
-        #         # Convert to image for Folium
-        #         ee_features = ee_fc.style(color='black', width=2)
-        #         folium_map.add_ee_layer(ee_features, {}, selected_layer)
-        #     else:
-        #         ee_image = ee.Image(asset_id)   
-        #         folium_map.add_ee_layer(ee_image, vis_params, selected_layer)
 
     
         # Add layer control and display map (now includes selected EE layers)
@@ -477,9 +461,18 @@ with tab1:
             #             </span>
             #         </div>
             #     """, unsafe_allow_html=True)
+            # Define options with descriptive labels
+            depth_options = {
+                "0.5 m – meadow": 0.5,
+                "2 m – grassland": 2,
+                "3.6 m – shrubland": 3.6
+            }
+
+            # Create dropdown using selectbox
+            selected_label = st.selectbox("Select rooting depth:", options=list(depth_options.keys()), index=1)
             
-            # Rooting Depth Slider
-            rooting_depth = st.select_slider("Select rooting depth (m):", options=allowed_values, value=2)
+            # Retrieve numeric value
+            rooting_depth = depth_options[selected_label]
             st.write(f"Selected Rooting Depth: {rooting_depth} m")
             
             # Soil Type Section with Inline Info Button
