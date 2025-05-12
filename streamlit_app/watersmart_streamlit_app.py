@@ -240,7 +240,6 @@ with tab1:
     with st.sidebar:
         st.header("Control Panel")
         st.write("Select your area of interest by clicking on the map below:")
-        st.write("Click on the ‘Definitions’ tab to learn more about each layer and other terminology used in the GDE Explorer.")
     
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
@@ -248,6 +247,8 @@ with tab1:
         # Get Data Button
         if st.button("Get Data!"):
             st.session_state.get_data_clicked = True
+        
+        st.write("Click on the ‘Definitions’ tab to learn more about each layer and other terminology used in the GDE Explorer.")
 
         # Sidebar checkbox selector
         st.write("### Visualization Layers:")
@@ -1193,7 +1194,7 @@ with tab1:
                 st.download_button(
                     label="Download Report as PDF",
                     data=pdf_buffer,
-                    file_name="LAI_AET_Report.pdf",
+                    file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
 
