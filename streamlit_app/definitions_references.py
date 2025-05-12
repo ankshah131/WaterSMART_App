@@ -29,10 +29,10 @@ Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is 
 We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below (LAI data source: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H)
 
 ET from Groundwater (ETgw):
-The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted directly from groundwater. The remainder of transpiration comes from the vadose zone. If the water table were deeper, the groundwater component might be reduced. The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.
+The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater (i.e., the saturated zone). The remainder of transpiration comes from the vadose (i.e., the unsaturated) zone. If the water table were deeper, the groundwater component might be reduced. The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system. 
 
 Groundwater Subsidy:
-Groundwater subsidy is the additional water available for root water uptake resulting from shallow water table conditions. It is a hypothetical quantity that cannot be measured in the field but is a good indicator of how much GDEs in water-limited environments might benefit from shallow groundwater conditions that reduces the water stress experienced by vegetation.
+Groundwater subsidy is the additional water available in the vadose (i.e., unsaturated) zone for root water uptake resulting from shallow water table conditions. It is a hypothetical quantity that cannot be measured in the field but is a good indicator of how much GDEs in water-limited environments might benefit from shallow groundwater conditions that reduces the water stress experienced by vegetation. 
 
 DISCLAIMERS:
 
