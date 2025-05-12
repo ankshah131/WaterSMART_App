@@ -427,8 +427,8 @@ def render_definitions():
     # Groundwater component of evapotranspiration
     render_definition_section(
         "Groundwater Component of Evapotranspiration (ETgw)",
-        """The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater. 
-        The remainder of transpiration comes from the vadose zone. If the water table were deeper, the groundwater component might be reduced. 
+        """The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater (i.e., the saturated zone). 
+        The remainder of transpiration comes from the vadose (i.e., the unsaturated) zone. If the water table were deeper, the groundwater component might be reduced. 
         The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/dda06340a021b043ac3c74e4b1dace9b375f01e0/streamlit_app/app_def/assets/images/groundwater_et.png",
         "(Modified from Lowry and Loheide, 2010)",
@@ -439,7 +439,7 @@ def render_definitions():
     # Groundwater subsidy
     render_definition_section(
         "Groundwater Subsidy",
-        """Groundwater subsidy is the additional water available for root water uptake resulting from shallow water table conditions.
+        """Groundwater subsidy is the additional water available in the vadose (i.e., unsaturated) zone for root water uptake resulting from shallow water table conditions.
         It is a hypothetical quantity that cannot be measured in the field but is a good indicator of how much GDEs in water-limited 
         environments might benefit from shallow groundwater conditions that reduces the water stress experienced by vegetation.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/2a98d82114927e7ebd5facfbf7b0351a88d6ae64/streamlit_app/app_def/assets/images/groundwater_subsidy.png",
