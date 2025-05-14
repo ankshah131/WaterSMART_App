@@ -57,7 +57,7 @@ Food and Agriculture Organization. 2006. Soil Texture. https://www.fao.org/fishe
 
 Nevada Division of Water Planning. 1999. Nevada State Water Plan. Carson City: Department of Conservation and Natural Resources, Nevada Division of Water Planning. Available at https://water.nv.gov/library/water-planning-reports.
 
-The Nature Conservancy. 2021. Plant Rooting Depth Database. Available at https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/.
+The Nature Conservancy. 2021. Plant Rooting Depth Database. Available at https://www.groundwaterresourcehub.org/where-we-work/california/plant-rooting-depth-database/
 
 Walkinshaw M, O’Geen AT, Beaudette DE. 2020. Soil Properties. California Soil Resource Lab. Available at https://casoilresource.lawr.ucdavis.edu/soil-properties/
 
