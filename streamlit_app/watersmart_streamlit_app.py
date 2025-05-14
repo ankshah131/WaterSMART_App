@@ -250,10 +250,15 @@ with tab1:
 
     with st.sidebar:
         st.header("Control Panel")
-        st.write("Select your area of interest by clicking on the map below:")
+        st.write("Select your area of interest by clicking on the map below or  enter coordinates here:")
     
+        # Set defaults
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
+    
+        # Text inputs for latitude and longitude
+        lat_input = st.text_input("Latitude (-90 to 90)")
+        lon_input = st.text_input("Longitude (-180 to 180)")
 
         # Get Data Button
         if st.button("Get Data!"):
