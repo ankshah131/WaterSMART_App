@@ -256,9 +256,23 @@ with tab1:
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
     
-        # Text inputs for latitude and longitude
+    # Coordinate inputs
         lat_input = st.text_input("Latitude (-90 to 90)")
         lon_input = st.text_input("Longitude (-180 to 180)")
+    
+        # Update coords from user input
+        if lat_input and lon_input:
+            try:
+                lat = float(lat_input)
+                lon = float(lon_input)
+                if -90 <= lat <= 90 and -180 <= lon <= 180:
+                    st.session_state.selected_coords = [lat, lon]
+                    st.success(f"Map centered at: ({lat}, {lon})")
+                else:
+                    st.error("Latitude must be between -90 and 90, and longitude between -180 and 180.")
+            except ValueError:
+                st.error("Please enter valid numeric values.")
+
 
         # Get Data Button
         if st.button("Get Data!"):
