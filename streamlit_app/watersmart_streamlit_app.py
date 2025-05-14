@@ -173,14 +173,6 @@ with tab1:
     marker = folium.Marker(location=st.session_state.selected_coords, popup="Selected Location", icon=folium.Icon(color="red"))
     marker.add_to(folium_map)
 
-    # # Embed the map in the sidebar
-    # with st.sidebar:
-    #     st.header("Control Panel")
-    #     st.write("Select your area of interest by clicking on the map below:")
-    #     st.write("### Interactive Map")
-    #     map_data = st_folium(folium_map, width=300, height=500)
-
-
     # Define layer options
     layer_options = {
         "Administrative groundwater boundaries": None,
@@ -295,7 +287,7 @@ with tab1:
             st.checkbox(label, key=f"layer_checkbox_{label}")
 
         # Initialize map
-        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
+        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=9, tiles="OpenStreetMap")
     
         # Add marker
         folium.Marker(
