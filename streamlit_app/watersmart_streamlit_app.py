@@ -255,13 +255,22 @@ with tab1:
         # Set defaults
         if "selected_coords" not in st.session_state:
             st.session_state.selected_coords = default_coords
-    
+
+        if "lat_input_val" not in st.session_state:
+            st.session_state.lat_input_val = str(st.session_state.selected_coords[0])
+            
+        if "lon_input_val" not in st.session_state:
+            st.session_state.lon_input_val = str(st.session_state.selected_coords[1])
+        
+            
         #Coordinate inputs
-        lat_input = st.text_input("Latitude (-90 to 90)")
-        lon_input = st.text_input("Longitude (-180 to 180)")
-    
+        # lat_input = st.text_input("Latitude (-90 to 90)")
+        # lon_input = st.text_input("Longitude (-180 to 180)")
+        lat_input = st.text_input("Latitude (-90 to 90)", value=st.session_state.lat_input_val)
+        lon_input = st.text_input("Longitude (-180 to 180)", value=st.session_state.lon_input_val)
+
         # Update coords from user input
-        if lat_input and lon_input:
+        if lat_input and lon_input and ([float(lat_input), float(lon_input)] != st.session_state.selected_coords):
             try:
                 lat = float(lat_input)
                 lon = float(lon_input)
