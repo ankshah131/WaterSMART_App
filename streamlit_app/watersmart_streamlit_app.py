@@ -262,18 +262,36 @@ with tab1:
         lon_input = st.text_input("Longitude (-180 to 180)", value=st.session_state.lon_input_val)
 
         # Update coords from user input
-        if lat_input and lon_input and ([float(lat_input), float(lon_input)] != st.session_state.selected_coords):
-            try:
-                lat = float(lat_input)
-                lon = float(lon_input)
-                if -90 <= lat <= 90 and -180 <= lon <= 180:
+        # if lat_input and lon_input and ([float(lat_input), float(lon_input)] != st.session_state.selected_coords):
+        #     try:
+        #         lat = float(lat_input)
+        #         lon = float(lon_input)
+        #         if -90 <= lat <= 90 and -180 <= lon <= 180:
+        #             st.session_state.selected_coords = [lat, lon]
+        #             st.success(f"Map centered at: ({lat}, {lon})")
+        #         else:
+        #             st.error("Latitude must be between -90 and 90, and longitude between -180 and 180.")
+        #     except ValueError:
+        #         st.error("Please enter valid numeric values.")
+
+        # Validate and update coordinates only if both inputs are valid floats or integers
+        try:
+            lat = float(lat_input.strip())
+            lon = float(lon_input.strip())
+            is_valid_number = True
+        except ValueError:
+            is_valid_number = False
+        
+        if is_valid_number:
+            if -90 <= lat <= 90 and -180 <= lon <= 180:
+                if [lat, lon] != st.session_state.selected_coords:
                     st.session_state.selected_coords = [lat, lon]
                     st.success(f"Map centered at: ({lat}, {lon})")
-                else:
-                    st.error("Latitude must be between -90 and 90, and longitude between -180 and 180.")
-            except ValueError:
-                st.error("Please enter valid numeric values.")
-
+            else:
+                st.error("Latitude must be between -90 and 90, and longitude between -180 and 180.")
+        elif lat_input or lon_input:
+            st.error("Please enter valid numeric values (float or integer only).")
+        
 
         # Get Data Button
         if st.button("Get Data!"):
