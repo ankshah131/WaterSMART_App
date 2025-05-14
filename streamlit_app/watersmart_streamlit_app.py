@@ -322,14 +322,6 @@ with tab1:
         folium.LayerControl().add_to(folium_map)
         st.write("### Interactive Map")
         map_data = st_folium(folium_map, width=700, height=900)
-
-        # Add marker
-        folium.Marker(
-            location=st.session_state.selected_coords,
-            popup="Selected Location",
-            icon=folium.Icon(color="red", icon="info-sign")
-        ).add_to(folium_map)
-
     
         # Update selected coords on click
         if map_data and map_data.get("last_clicked"):
@@ -337,6 +329,13 @@ with tab1:
             lat, lon = clicked["lat"], clicked["lng"]
             if [lat, lon] != st.session_state.selected_coords:
                 st.session_state.selected_coords = [lat, lon]
+
+                # Add marker
+                folium.Marker(
+                    location=st.session_state.selected_coords,
+                    popup="Selected Location",
+                    icon=folium.Icon(color="red", icon="info-sign")
+                ).add_to(folium_map)
                 #st.rerun()
     
         # Show current coordinates
