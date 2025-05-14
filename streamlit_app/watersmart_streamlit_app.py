@@ -288,12 +288,12 @@ with tab1:
         # Initialize map
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=7, tiles="OpenStreetMap")
     
-        # # Add marker
-        # folium.Marker(
-        #     location=st.session_state.selected_coords,
-        #     popup="Selected Location",
-        #     icon=folium.Icon(color="red", icon="info-sign")
-        # ).add_to(folium_map)
+        # Add marker
+        folium.Marker(
+            location=st.session_state.selected_coords,
+            popup="Selected Location",
+            icon=folium.Icon(color="red", icon="info-sign")
+        ).add_to(folium_map)
 
 
         # Add layers based on checkbox state
@@ -323,21 +323,16 @@ with tab1:
         st.write("### Interactive Map")
         map_data = st_folium(folium_map, width=700, height=900)
     
-        # Update selected coords on click
+        # Update selected coords after map is clicked
         if map_data and map_data.get("last_clicked"):
             clicked = map_data["last_clicked"]
-            lat, lon = clicked["lat"], clicked["lng"]
+            lat, lon = round(clicked["lat"], 4), round(clicked["lng"], 4)
             if [lat, lon] != st.session_state.selected_coords:
                 st.session_state.selected_coords = [lat, lon]
-
-                # Add marker
-                folium.Marker(
-                    location=st.session_state.selected_coords,
-                    popup="Selected Location",
-                    icon=folium.Icon(color="red", icon="info-sign")
-                ).add_to(folium_map)
-                #st.rerun()
-    
+                st.session_state["lat_input_val"] = str(lat)
+                st.session_state["lon_input_val"] = str(lon)
+                st.rerun()
+        
         # Show current coordinates
         lat, lon = st.session_state.selected_coords
         coords_ee = ee.Geometry.Point([lon, lat])
