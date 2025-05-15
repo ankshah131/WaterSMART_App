@@ -390,8 +390,8 @@ with tab1:
             pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_deficit')
 
             # BasinID and Basin Name
-            basin_id = admin_gw.filterBounds(coords_ee).getInfo().get('BasinID')
-            basin_name = admin_gw.filterBounds(coords_ee).getInfo().get('BasinName')
+            basin_id = admin_gw.filterBounds(coords_ee).getInfo()['features'][0]['properties']['BasinID']
+            basin_name = admin_gw.filterBounds(coords_ee).getInfo()['features'][0]['properties']['BasinName']
 
             # Soil type determination
             soil = ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550').rename('texture')
