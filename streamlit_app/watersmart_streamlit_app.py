@@ -1087,8 +1087,7 @@ with tab1:
                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                     Annual precipitation: {precip_value:.2f} mm    
                     Annual evaporative demand: {eto_value:.2f} mm
-                    Root depth: {rd} m
-                    Admin Basin ID: {basin_id}
+                    Root depth: {rd} m     Admin Basin ID: {basin_id}
                     Admin Basin Name: {basin_name}
                                     """
 
