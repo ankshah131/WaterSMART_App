@@ -38,4 +38,4 @@ images:
 - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY/$_IMAGE:$SHORT_SHA"
 
 options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  logging: REGIONAL_USER_OWNED_BUCKET
