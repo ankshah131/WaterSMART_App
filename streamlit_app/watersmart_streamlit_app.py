@@ -1085,7 +1085,6 @@ with tab1:
                     4) groundwater depths are assumed constant 
                     over time.
                     
-                    
                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                     Annual precipitation: {precip_value:.2f} mm    
                     Annual evaporative demand: {eto_value:.2f} mm
@@ -1102,7 +1101,7 @@ with tab1:
                             font = ImageFont.load_default()
                         
                         # Increase height of info box to fit bigger text
-                        info_box_height = 720  # was 250
+                        info_box_height = 730  # was 250
                         padding = 75  # Optional: increase padding too for cleaner layout
                         
                         info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
