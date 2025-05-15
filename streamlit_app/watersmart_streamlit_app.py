@@ -429,8 +429,8 @@ with tab1:
                     <b>Annual precipitation:</b> {precip_value:.2f} mm &nbsp;&nbsp;
                     <b>Annual evaporative demand:</b> {eto_value:.2f} mm &nbsp;&nbsp;
                     <b>Rooting Depth:</b> 2 mm &nbsp;&nbsp;
-                    <b>Basin ID:</b>{basin_id} &nbsp;&nbsp;
-                    <b>Basin Name:</b>{basin_name} <br>
+                    <b>Admin Basin ID:</b> {basin_id} &nbsp;&nbsp;
+                    <b>Admin Basin Name:</b> {basin_name} <br>
                 </div>
                 """,
                 unsafe_allow_html=True
