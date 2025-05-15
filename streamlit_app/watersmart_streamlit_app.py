@@ -1088,19 +1088,21 @@ with tab1:
                     Annual precipitation: {precip_value:.2f} mm    
                     Annual evaporative demand: {eto_value:.2f} mm
                     Root depth: {rd} m
+                    Admin Basin ID: {basin_id}
+                    Admin Basin Name: {basin_name}
                                     """
 
 
                         # Double the font size
-                        font_size = 40  # was 20
+                        font_size = 48  # was 20
                         try:
                             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
                         except:
                             font = ImageFont.load_default()
                         
                         # Increase height of info box to fit bigger text
-                        info_box_height = 520  # was 250
-                        padding = 40  # Optional: increase padding too for cleaner layout
+                        info_box_height = 700  # was 250
+                        padding = 60  # Optional: increase padding too for cleaner layout
                         
                         info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
                         draw = ImageDraw.Draw(info_img)
