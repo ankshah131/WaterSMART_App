@@ -384,11 +384,15 @@ with tab1:
             eto_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_ETo_1991_2020")
             precip_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Precip_1991_2020")
             pwd_img = ee.Image("projects/localsolve/assets/climate_variables/GRIDMET_Mean_Annual_Water_Deficit_1991_2020")
+            admin_gw = ee.FeatureCollection('projects/dri-apps/assets/NVAdminGWBoundaries')
 
             eto_value = eto_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_eto')
             precip_value = precip_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_pr')
             pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_deficit')
 
+            # BasinID and Basin Name
+            basin_id = admin_gw.filterBounds(coords_ee).get('BasinID')
+            basin_name = admin_gw.filterBounds(coords_ee).get('BasinName')
 
             # Soil type determination
             soil = ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550').rename('texture')
@@ -425,6 +429,8 @@ with tab1:
                     <b>Soil type:</b> {soil_string} &nbsp;&nbsp;
                     <b>Annual precipitation:</b> {precip_value:.2f} mm &nbsp;&nbsp;
                     <b>Annual evaporative demand:</b> {eto_value:.2f} mm &nbsp;&nbsp;
+                    <b>Basin ID:</b>{basin_id} &nbsp;&nbsp;
+                    <b>Basin Name:</b>{basin_name} &nbsp;&nbsp;
                     <b>Rooting Depth:</b> 2 mm<br>
                 </div>
                 """,
