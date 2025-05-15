@@ -1082,7 +1082,9 @@ with tab1:
                     1) uniform soil texture in soil column is assumed;
                     2) variation in root distribution is not considered;
                     3) species-level differences are not accounted for;
-                    4) groundwater depths are assumed constant over time.
+                    4) groundwater depths are assumed constant 
+                    over time.
+                    
                     
                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                     Annual precipitation: {precip_value:.2f} mm    
