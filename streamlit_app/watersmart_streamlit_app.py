@@ -366,7 +366,6 @@ with tab1:
             #use_container_width=False
         )
 
-
         # Add map legends image at the bottom of the sidebar
         st.image(
             PATH_MAP_LEGENDS,
@@ -391,8 +390,8 @@ with tab1:
             pwd_value = pwd_img.reduceRegion(ee.Reducer.mean(), coords_ee, 4000).getInfo().get('mean_annual_deficit')
 
             # BasinID and Basin Name
-            basin_id = admin_gw.filterBounds(coords_ee).get('BasinID')
-            basin_name = admin_gw.filterBounds(coords_ee).get('BasinName')
+            basin_id = admin_gw.filterBounds(coords_ee).get('BasinID').getInfo()
+            basin_name = admin_gw.filterBounds(coords_ee).get('BasinName').getInfo()
 
             # Soil type determination
             soil = ee.Image('projects/sat-io/open-datasets/CSRL_soil_properties/physical/soil_texture_profile/texture_2550').rename('texture')
