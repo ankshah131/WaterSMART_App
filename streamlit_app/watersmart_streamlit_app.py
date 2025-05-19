@@ -36,19 +36,19 @@ PATH_MAP_LEGENDS = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/
 # Earth Engine Setup
 def get_auth():
     
-    # service_account_keys = st.secrets["GEE_CREDS"]['settings']
-    # credentials = service_account.Credentials.from_service_account_info(
-    #     service_account_keys,
-    #     scopes=oauth.SCOPES
-    # )
+    service_account_keys = st.secrets["GEE_CREDS"]['settings']
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_keys,
+        scopes=oauth.SCOPES
+    )
 
-    with open("/secrets/watersmart-gee-creds", "r") as f:
-        creds = json.load(f)
+    # with open("/secrets/watersmart-gee-creds", "r") as f:
+    #     creds = json.load(f)
 
-    credentials = ee.ServiceAccountCredentials(
-        email=creds["client_email"],
-        key_data=json.dumps(creds)
-        )
+    # credentials = ee.ServiceAccountCredentials(
+    #     email=creds["client_email"],
+    #     key_data=json.dumps(creds)
+    #     )
     
     ee.Initialize(credentials)
     success = 'Successfully synced to GEE!'
