@@ -1013,65 +1013,131 @@ with tab1:
 
                 
 
-                def add_definitions_to_pdf(pdf, definitions_text):
-                    DPI = 300
-                    LETTER_WIDTH_IN = 8.5
-                    LETTER_HEIGHT_IN = 11
+                # def add_definitions_to_pdf(pdf, definitions_text):
+                #     DPI = 300
+                #     LETTER_WIDTH_IN = 8.5
+                #     LETTER_HEIGHT_IN = 11
+
+                #     story = []
                 
-                    # Pre-format section headers
-                    formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS:")
-                    formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
-                    formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
+                #     # Pre-format section headers
+                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS:")
+                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
+                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
                 
-                    replacements = [
-                        ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
-                        ("Soil Texture:", "**Soil Texture:**"),
-                        ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
-                        ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
-                        ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
-                        ("Rooting Depth:", "**Rooting Depth:**"),
-                        ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
-                        ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
-                        ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
-                    ]
-                    for old, new in replacements:
-                        formatted_text = formatted_text.replace(old, new)
+                #     replacements = [
+                #         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
+                #         ("Soil Texture:", "**Soil Texture:**"),
+                #         ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
+                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
+                #         ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
+                #         ("Rooting Depth:", "**Rooting Depth:**"),
+                #         ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
+                #         ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
+                #         ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
+                #     ]
+                #     for old, new in replacements:
+                #         formatted_text = formatted_text.replace(old, new)
                 
-                    # Line wrapping
-                    wrapped_lines = []
-                    for line in formatted_text.strip().split("\n"):
-                        if line.strip().startswith("**") and line.strip().endswith("**"):
-                            wrapped_lines.append(line)
-                        else:
-                            wrapped_lines.extend(wrap(line, width=92) or [""])
+                #     # Line wrapping
+                #     wrapped_lines = []
+                #     for line in formatted_text.strip().split("\n"):
+                #         if line.strip().startswith("**") and line.strip().endswith("**"):
+                #             wrapped_lines.append(line)
+                #         else:
+                #             wrapped_lines.extend(wrap(line, width=92) or [""])
                 
-                    # Paginate and draw using pure matplotlib
-                    lines_per_page = 52
-                    for i in range(0, len(wrapped_lines), lines_per_page):
-                        page = wrapped_lines[i:i + lines_per_page]
+                #     # Paginate and draw using pure matplotlib
+                #     lines_per_page = 52
+                #     for i in range(0, len(wrapped_lines), lines_per_page):
+                #         page = wrapped_lines[i:i + lines_per_page]
                 
-                        fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                        ax.axis('off')
+                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
+                #         ax.axis('off')
                         
-                        # Add invisible rect to force fixed size
-                        ax.add_patch(plt.Rectangle((0, 0), 1, 1, transform=ax.transAxes,
-                                                   linewidth=0, edgecolor='none', facecolor='none'))
+                #         # Add invisible rect to force fixed size
+                #         ax.add_patch(plt.Rectangle((0, 0), 1, 1, transform=ax.transAxes,
+                #                                    linewidth=0, edgecolor='none', facecolor='none'))
                 
-                        y = 0.96
-                        line_height = 0.018
+                #         y = 0.96
+                #         line_height = 0.018
                 
-                        for line in page:
-                            if line.startswith("**") and line.endswith("**"):
-                                ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
-                            else:
-                                ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
-                            y -= line_height
+                #         for line in page:
+                #             if line.startswith("**") and line.endswith("**"):
+                #                 ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
+                #             else:
+                #                 ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
+                #             y -= line_height
                             
 
-                        # Page size preservation
-                        pdf.savefig(fig, bbox_inches='tight')  # ← page size preserved
-                        plt.close(fig)
+                #         # Page size preservation
+                #         pdf.savefig(fig, bbox_inches='tight')  # ← page size preserved
+                #         plt.close(fig)
 
+
+                def add_definitions_to_pdf(pdf_buffer, definitions_text):
+                    doc = SimpleDocTemplate(pdf_buffer, pagesize=LETTER,
+                                            rightMargin=72, leftMargin=72,
+                                            topMargin=72, bottomMargin=72)
+                    styles = getSampleStyleSheet()
+                    normal_style = styles["Normal"]
+                    normal_style.fontSize = 10
+                    normal_style.leading = 13
+                
+                    # Custom bold style
+                    bold_style = ParagraphStyle(
+                        'Bold',
+                        parent=normal_style,
+                        fontName='Helvetica-Bold',
+                        alignment=TA_LEFT
+                    )
+                
+                    story = []
+                
+                    # Split sections explicitly
+                    sections = definitions_text.split("__")  # Use "__" as a divider for multiple sections
+                
+                    for section in sections:
+                        section = section.strip()
+                        if not section:
+                            continue
+                
+                        # Identify if section has headers like DEFINITIONS, DISCLAIMERS, REFERENCES
+                        if section.startswith("DEFINITIONS:"):
+                            story.append(Paragraph("<b>DEFINITIONS:</b>", bold_style))
+                            story.append(Spacer(1, 0.1 * inch))
+                            section = section.replace("DEFINITIONS:", "").strip()
+                
+                        elif section.startswith("DISCLAIMERS:"):
+                            story.append(Paragraph("<b>DISCLAIMERS:</b>", bold_style))
+                            story.append(Spacer(1, 0.1 * inch))
+                            section = section.replace("DISCLAIMERS:", "").strip()
+                
+                        elif section.startswith("REFERENCES:"):
+                            story.append(Paragraph("<b>REFERENCES:</b>", bold_style))
+                            story.append(Spacer(1, 0.1 * inch))
+                            section = section.replace("REFERENCES:", "").strip()
+                
+                        # Convert plain URLs to clickable anchor tags
+                        import re
+                        url_pattern = re.compile(r'(https?://[^\s]+)')
+                        section = re.sub(url_pattern, r'<a href="\1" color="blue">\1</a>', section)
+                
+                        # Replace basic markdown-like bold indicators
+                        section = section.replace("**", "<b>").replace("**", "</b>")
+                
+                        # Wrap each paragraph
+                        for para in section.split("\n"):
+                            para = para.strip()
+                            if para:
+                                story.append(Paragraph(para, normal_style))
+                                story.append(Spacer(1, 0.1 * inch))
+                
+                        story.append(Spacer(1, 0.2 * inch))  # Section spacing
+                
+                    doc.build(story)
+                    pdf_buffer.seek(0)
+                    return pdf_buffer
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
