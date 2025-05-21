@@ -14,3 +14,4 @@ pillow==10.2.0
 watchdog==3.0.0
 PyPDF2
 imgkit
+reportlab
