@@ -25,8 +25,9 @@ from PyPDF2 import PdfReader, PdfWriter
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.pagesizes import LETTER
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
+from reportlab.lib.enums import TA_LEFT
 
 from app_def.components.header import render_header
 from app_def.components.footer import render_footer
@@ -1079,12 +1080,12 @@ with tab1:
                     doc = SimpleDocTemplate(pdf_buffer, pagesize=LETTER,
                                             rightMargin=72, leftMargin=72,
                                             topMargin=72, bottomMargin=72)
+                
                     styles = getSampleStyleSheet()
                     normal_style = styles["Normal"]
                     normal_style.fontSize = 10
                     normal_style.leading = 13
                 
-                    # Custom bold style
                     bold_style = ParagraphStyle(
                         'Bold',
                         parent=normal_style,
@@ -1094,48 +1095,41 @@ with tab1:
                 
                     story = []
                 
-                    # Split sections explicitly
-                    sections = definitions_text.split("__")  # Use "__" as a divider for multiple sections
+                    # Fix invalid spacing in href (due to newline wrapping or hard-coded line breaks)
+                    # And preserve hyperlinks
+                    def fix_href_spacing(text):
+                        return re.sub(r'href="([^"]+)\s+([^"]+)"', lambda m: f'href="{m.group(1)}{m.group(2)}"', text)
                 
-                    for section in sections:
-                        section = section.strip()
-                        if not section:
-                            continue
+                    # Split at section headers
+                    split_defs = definitions_text.split("<b>DISCLAIMERS:</b>")
+                    definitions_part = split_defs[0].strip()
+                    remaining = split_defs[1] if len(split_defs) > 1 else ""
                 
-                        # Identify if section has headers like DEFINITIONS, DISCLAIMERS, REFERENCES
-                        if section.startswith("DEFINITIONS:"):
-                            story.append(Paragraph("<b>DEFINITIONS:</b>", bold_style))
-                            story.append(Spacer(1, 0.1 * inch))
-                            section = section.replace("DEFINITIONS:", "").strip()
+                    disclaimers_part, references_part = remaining.split("<b>REFERENCES:</b>") if "<b>REFERENCES:</b>" in remaining else (remaining, "")
                 
-                        elif section.startswith("DISCLAIMERS:"):
-                            story.append(Paragraph("<b>DISCLAIMERS:</b>", bold_style))
-                            story.append(Spacer(1, 0.1 * inch))
-                            section = section.replace("DISCLAIMERS:", "").strip()
-                
-                        elif section.startswith("REFERENCES:"):
-                            story.append(Paragraph("<b>REFERENCES:</b>", bold_style))
-                            story.append(Spacer(1, 0.1 * inch))
-                            section = section.replace("REFERENCES:", "").strip()
-                
-                        # Convert plain URLs to clickable anchor tags
-                        import re
-                        url_pattern = re.compile(r'(https?://[^\s]+)')
-                        section = re.sub(url_pattern, r'<a href="\1" color="blue">\1</a>', section)
-                
-                        # Replace basic markdown-like bold indicators
-                        section = section.replace("**", "<b>").replace("**", "</b>")
-                
-                        # Wrap each paragraph
-                        for para in section.split("\n"):
+                    # Add each section cleanly
+                    if definitions_part:
+                        story.append(Paragraph("<b>DEFINITIONS:</b>", bold_style))
+                        for para in definitions_part.split("\n\n"):
                             para = para.strip()
                             if para:
-                                story.append(Paragraph(para, normal_style))
+                                story.append(Paragraph(fix_href_spacing(para), normal_style))
                                 story.append(Spacer(1, 0.1 * inch))
+                        story.append(Spacer(1, 0.25 * inch))
                 
-                        story.append(Spacer(1, 0.2 * inch))  # Section spacing
-                        
-                        # story.append(Spacer(1, 0.2 * inch))
+                    if disclaimers_part:
+                        story.append(Paragraph("<b>DISCLAIMERS:</b>", bold_style))
+                        story.append(Spacer(1, 0.1 * inch))
+                        story.append(Paragraph(fix_href_spacing(disclaimers_part.strip()), normal_style))
+                        story.append(Spacer(1, 0.25 * inch))
+                
+                    if references_part:
+                        story.append(Paragraph("<b>REFERENCES:</b>", bold_style))
+                        for para in references_part.strip().split("<br/><br/>"):
+                            para = para.strip()
+                            if para:
+                                story.append(Paragraph(fix_href_spacing(para), normal_style))
+                                story.append(Spacer(1, 0.1 * inch))
                 
                     doc.build(story)
                     pdf_buffer.seek(0)
