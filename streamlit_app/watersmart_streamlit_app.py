@@ -23,6 +23,11 @@ from PIL import ImageDraw, ImageFont, Image
 from textwrap import wrap
 from PyPDF2 import PdfReader, PdfWriter
 
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.pagesizes import LETTER
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+
 from app_def.components.header import render_header
 from app_def.components.footer import render_footer
 from app_def.content.definitions import render_definitions
