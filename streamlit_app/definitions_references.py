@@ -37,24 +37,35 @@ The groundwater component of evapotranspiration is the portion of total evapotra
 
 DISCLAIMERS:
 
-This map tool presents results of modeling for Reclamation Applied Science project R19AP00278 <i>Quantifying Environmental Water Requirements for Groundwater Dependent Ecosystems for Resilient Water Management</i>. See <a href="https://www.conservationgateway.org/ConservationByGeography/NorthAmerica/UnitedStates/nevada/water/Pages/Quantifying-water-requirements-for-GDEs.aspx" color="blue">this link</a> to find out more about the project. 
-The paper describing the methods for the modeling is still in preparation but an overview is available on the <a href="https://www.conservationgateway.org/ConservationByGeography/NorthAmerica/UnitedStates/nevada/water/Documents/ModelingUpdate_Watersmart_Workshop3_forpdf.pdf" color="blue">Nevada TNC website (here)</a>.<br/><br/>
+<b>DISCLAIMERS:</b><br/><br/>
 
-This dataset does not prove or make any claim about the nature and/or extent of groundwater levels or groundwater-dependent ecosystems (GDEs) for any mapped location. The dataset is non-regulatory and no information presented here is intended to imply whether a project can or should be approved or denied, and the data are not legally binding in any way. This tool does not replace the need for field surveys or agency consultation to determine water level status, presence of GDEs, or impacts of groundwater use or climate.  
+This map tool presents results of modeling for Reclamation Applied Science project R19AP00278 
+<i>Quantifying Environmental Water Requirements for Groundwater Dependent Ecosystems for Resilient Water Management</i>. 
+See <a href="https://www.conservationgateway.org/ConservationByGeography/NorthAmerica/UnitedStates/nevada/water/Pages/Quantifying-water-requirements-for-GDEs.aspx" color="blue">this link</a> to find out more about the project. 
+The paper describing the methods for the modeling is still in preparation, but an overview is available on the 
+<a href="https://www.conservationgateway.org/ConservationByGeography/NorthAmerica/UnitedStates/nevada/water/Documents/ModelingUpdate_Watersmart_Workshop3_forpdf.pdf" color="blue">Nevada TNC website (here)</a>.<br/><br/>
 
-This tool does not contain bias in favor or against any one form of conservation or land use development. This tool does not preempt the authority of local land use agencies.  
+This dataset does not prove or make any claim about the nature and/or extent of groundwater levels or groundwater-dependent ecosystems (GDEs) for any mapped location. 
+The dataset is non-regulatory and no information presented here is intended to imply whether a project can or should be approved or denied, and the data are not legally binding in any way. 
+This tool does not replace the need for field surveys or agency consultation to determine water level status, presence of GDEs, or impacts of groundwater use or climate.<br/><br/>
 
-Features mapped here are not intended for legal uses and no warranty, expressed or implied, is made by The Nature Conservancy or data contributors as to the accuracy of the data. The Nature Conservancy shall not be held liable for improper or incorrect use of the data described and/or contained herein.  
+This tool does not contain bias in favor or against any one form of conservation or land use development. 
+This tool does not preempt the authority of local land use agencies.<br/><br/>
 
-Any sale, distribution, loan, or offering for use of these data, in whole or in part, is prohibited. The use of these data to produce other products and services with the intent to use or sell for a profit is prohibited. All parties receiving these data must be informed of these restrictions. This is an aggregate dataset with multiple data contributors.
+Features mapped here are not intended for legal uses and no warranty, expressed or implied, is made by The Nature Conservancy or data contributors as to the accuracy of the data. 
+The Nature Conservancy shall not be held liable for improper or incorrect use of the data described and/or contained herein.<br/><br/>
 
+Any sale, distribution, loan, or offering for use of these data, in whole or in part, is prohibited. 
+The use of these data to produce other products and services with the intent to use or sell for a profit is prohibited. 
+All parties receiving these data must be informed of these restrictions. 
+This is an aggregate dataset with multiple data contributors.
 
 <b>REFERENCES:</b><br/><br/>
 
 Abatzoglou JT. 2013. Development of gridded surface meteorological data for ecological applications and modelling. Int. J. Climatol. 33: 121–131. 
 Available at <a href="http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full" color="blue">http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full</a><br/><br/>
 
-Fang, H., Baret, F., Plummer, S., & Schaepman-Strub, G. (2019). An overview of global leaf area index (LAI): Methods, products, validation, and applications. Reviews of Geophysics. 57, 739–799. 
+Fang, H., Baret, F., Plummer, S., & Schaepman-Strub, G. (2019). An overview of global leaf area index (LAI): Methods, products, validation, and applications. Reviews of Geophysics, 57, 739–799. 
 Available at <a href="https://doi.org/10.1029/2018RG000608" color="blue">https://doi.org/10.1029/2018RG000608</a><br/><br/>
 
 Food and Agriculture Organization. 2006. Soil Texture. 
@@ -68,5 +79,4 @@ Available at <a href="https://www.groundwaterresourcehub.org/where-we-work/calif
 
 Walkinshaw M, O’Geen AT, Beaudette DE. 2020. Soil Properties. California Soil Resource Lab. 
 Available at <a href="https://casoilresource.lawr.ucdavis.edu/soil-properties/" color="blue">https://casoilresource.lawr.ucdavis.edu/soil-properties/</a>
-
 """
