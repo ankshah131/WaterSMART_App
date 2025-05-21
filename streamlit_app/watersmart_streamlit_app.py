@@ -1134,6 +1134,8 @@ with tab1:
                                 story.append(Spacer(1, 0.1 * inch))
                 
                         story.append(Spacer(1, 0.2 * inch))  # Section spacing
+                        
+                        # story.append(Spacer(1, 0.2 * inch))
                 
                     doc.build(story)
                     pdf_buffer.seek(0)
