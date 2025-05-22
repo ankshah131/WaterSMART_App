@@ -30,7 +30,7 @@ Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is 
 We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below (LAI data source: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H)<br/><br/>
 
 <b>Average Actual Evapotranspiration (1991-2020):</b><br/>
-Actual evapotranspiration (Actual ET)) is the actual amount of water that is evapotranspired and is limited by the amount of available water. It is always less than or equal to Potential ET. 
+Actual evapotranspiration (Actual ET)) is the actual amount of water that is evapotranspired and is limited by the amount of available water. It is always less than or equal to Potential ET.<br/><br/>
 
 <b>ET from Groundwater (ETgw):</b><br/>
 The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater (i.e., the saturated zone). The remainder of transpiration comes from the vadose (i.e., the unsaturated) zone. If the water table were deeper, the groundwater component might be reduced. The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.<br/><br/>
