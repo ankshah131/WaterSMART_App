@@ -1190,14 +1190,14 @@ with tab1:
                 merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
-                # merged_pdf = io.BytesIO()
-                # merger.write(merged_pdf)
-                # merger.close()
-                # merged_pdf.seek(0)
+                merged_pdf = io.BytesIO()
+                merger.write(merged_pdf)
+                merger.close()
+                merged_pdf.seek(0)
                 
                 st.download_button(
                     label="Download Report as PDF",
-                    data=pdf_buffer, #definitions_pdf,
+                    data=merged_pdf, #definitions_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
