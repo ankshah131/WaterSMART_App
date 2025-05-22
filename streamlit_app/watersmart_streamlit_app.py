@@ -1175,8 +1175,8 @@ with tab1:
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
                 
                 # Rewind both buffers to the start
-                pdf_buffer.seek(0)
-                definitions_pdf.seek(0)
+                # pdf_buffer.seek(0)
+                # definitions_pdf.seek(0)
                 
                 # Create merger
                 merger = PdfMerger()
@@ -1193,7 +1193,7 @@ with tab1:
                 
                 st.download_button(
                     label="Download Report as PDF",
-                    data=merged_pdf, #definitions_pdf,
+                    data=pdf_buffer, #definitions_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
