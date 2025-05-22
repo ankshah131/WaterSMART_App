@@ -1185,8 +1185,8 @@ with tab1:
                 # merger.append(PdfReader(pdf_buffer))
                 # merger.append(PdfReader(definitions_pdf))
                 
-                merger.append(pdf_buffer)
-                merger.append(definitions_pdf)
+                # merger.append(pdf_buffer)
+                # merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
                 # merged_pdf = io.BytesIO()
