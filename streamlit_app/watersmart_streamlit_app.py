@@ -1035,12 +1035,17 @@ with tab1:
                         try:
                             img_response = requests.get(image_url)
                             img_response.raise_for_status()
-                            img_buffer = io.BytesIO(img_response.content)
-                            img = reportImage(img_buffer, width=4*inch, height=3*inch)  # Adjust dimensions as needed
-                            story.append(img)
+                    
+                            pil_img = Image.open(io.BytesIO(img_response.content)).convert("RGB")
+                            img_byte_arr = io.BytesIO()
+                            pil_img.save(img_byte_arr, format='PNG')
+                            img_byte_arr.seek(0)
+                    
+                            rl_img = reportImage(img_byte_arr, width=5*inch, height=3*inch)
+                            story.append(rl_img)
+                    
                         except Exception as e:
                             print(f"Failed to load image: {e}")
-
                 
                     doc.build(story)
                     buffer.seek(0)
