@@ -1173,19 +1173,20 @@ with tab1:
                 # Button to generate and download PDF
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
-
-                # Merge them
+                
+                pdf_buffer.seek(0)
+                definitions_pdf.seek(0)
+                
+                # Merge PDFs
                 merged_pdf = io.BytesIO()
                 merger = PdfMerger()
                 
-                # Append both buffers
                 merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
-                # Write to output buffer
                 merger.write(merged_pdf)
                 merger.close()
-                # merged_pdf.seek(0)
+                merged_pdf.seek(0)
 
                 st.download_button(
                     label="Download Report as PDF",
