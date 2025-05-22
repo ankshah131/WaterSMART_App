@@ -1236,20 +1236,8 @@ with tab1:
                 
                         ### -------- FINAL SECTION: DEFINITIONS + REFERENCES -------- ###
                     
-                        add_definitions_to_pdf(pdf, definitions_text)
-                    
-                        # definitions_text = """..."""  # Use cleaned plain text block here
-                        # wrapped_lines = []
-                        # for line in definitions_text.strip().split("\n"):
-                        #     wrapped_lines.extend(wrap(line, width=100) or [""])
+                        #add_definitions_to_pdf(pdf, definitions_text)
                 
-                        # for i in range(0, len(wrapped_lines), 50):
-                        #     page = wrapped_lines[i:i + 50]
-                        #     fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
-                        #     ax.axis('off')
-                        #     ax.text(0.05, 0.95, "\n".join(page), fontsize=10, va='top', ha='left', family='monospace')
-                        #     pdf.savefig(fig)
-                        #     plt.close(fig)
                 
                     pdf_buffer.seek(0)
                     return pdf_buffer
