@@ -4,7 +4,7 @@ definitions_text = """\
 
 <b>Groundwater Boundaries:</b><br/>
 Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. 
-[Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: <a href="https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about/" color="blue">https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about/</a><br/><br/>
+[Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: <a href="https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about/" color="blue">https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about/</a>]<br/><br/>
 
 <b>Soil Texture:</b><br/>
 Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil.
