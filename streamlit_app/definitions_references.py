@@ -1,6 +1,6 @@
 definitions_text = """\
 
-DEFINITIONS
+<b>DEFINITIONS</b><br/><br/>
 
 Groundwater Boundaries:
 Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. 
@@ -35,8 +35,6 @@ ET from Groundwater (ETgw):
 The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater (i.e., the saturated zone). The remainder of transpiration comes from the vadose (i.e., the unsaturated) zone. If the water table were deeper, the groundwater component might be reduced. The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system. 
 
 
-DISCLAIMERS:
-
 <b>DISCLAIMERS:</b><br/><br/>
 
 This map tool presents results of modeling for Reclamation Applied Science project R19AP00278 
@@ -59,6 +57,7 @@ Any sale, distribution, loan, or offering for use of these data, in whole or in 
 The use of these data to produce other products and services with the intent to use or sell for a profit is prohibited. 
 All parties receiving these data must be informed of these restrictions. 
 This is an aggregate dataset with multiple data contributors.
+
 
 <b>REFERENCES:</b><br/><br/>
 
