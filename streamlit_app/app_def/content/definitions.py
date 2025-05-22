@@ -278,6 +278,7 @@ def render_definitions():
         {"id": "soil-texture-selection", "title": "Soil Texture (Selection)"},
         {"id": "rooting-depth", "title": "Rooting Depth"},
         {"id": "leaf-area-index", "title": "Leaf Area Index"},
+        {"id": "actual-et", "title": "Average Actual Evapotranspiration"},
         {"id": "etgw", "title": "Groundwater Component of ET (ETgw)"},
         {"id": "groundwater-subsidy", "title": "Groundwater Subsidy"},
         {"id": "disclaimers", "title": "Disclaimers"},
@@ -423,6 +424,15 @@ def render_definitions():
         image_size="medium",
         section_id="leaf-area-index"
     )
+
+    # Actual evapotranspiration
+    render_definition_section(
+        "Average Actual Evapotranspiration (1991-2020)",
+        """Actual evapotranspiration (Actual ET)) is the actual amount of water that is evapotranspired and is limited by the amount of available water. 
+        It is always less than or equal to Potential ET.""",
+        section_id="actual-et"
+    )
+    
     
     # Groundwater component of evapotranspiration
     render_definition_section(
