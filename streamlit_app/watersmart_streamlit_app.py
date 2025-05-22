@@ -10,6 +10,7 @@ import imgkit
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
+from pdf2image import convert_from_bytes
 
 from plotnine import *
 import matplotlib.pyplot as plt
@@ -1076,64 +1077,33 @@ with tab1:
                 #         plt.close(fig)
 
 
-                def add_definitions_to_pdf(pdf_buffer, definitions_text):
-                    doc = SimpleDocTemplate(pdf_buffer, pagesize=LETTER,
-                                            rightMargin=72, leftMargin=72,
-                                            topMargin=72, bottomMargin=72)
-                
+                def add_definitions_to_pdf(pdf, definition_text):
+                    """
+                    Renders HTML-formatted definitions_text (with hyperlinks) into a temporary
+                    single-page PDF, converts it to an image, and appends it to the existing PdfPages object.
+                    """
+                    # Step 1: Create standalone PDF with clickable links
+                    buffer = io.BytesIO()
+                    doc = SimpleDocTemplate(buffer, pagesize=LETTER)
                     styles = getSampleStyleSheet()
-                    normal_style = styles["Normal"]
-                    normal_style.fontSize = 10
-                    normal_style.leading = 13
-                
-                    bold_style = ParagraphStyle(
-                        'Bold',
-                        parent=normal_style,
-                        fontName='Helvetica-Bold',
-                        alignment=TA_LEFT
-                    )
-                
                     story = []
                 
-                    # Fix invalid spacing in href (due to newline wrapping or hard-coded line breaks)
-                    # And preserve hyperlinks
-                    def fix_href_spacing(text):
-                        return re.sub(r'href="([^"]+)\s+([^"]+)"', lambda m: f'href="{m.group(1)}{m.group(2)}"', text)
-                
-                    # Split at section headers
-                    split_defs = definitions_text.split("<b>DISCLAIMERS:</b>")
-                    definitions_part = split_defs[0].strip()
-                    remaining = split_defs[1] if len(split_defs) > 1 else ""
-                
-                    disclaimers_part, references_part = remaining.split("<b>REFERENCES:</b>") if "<b>REFERENCES:</b>" in remaining else (remaining, "")
-                
-                    # Add each section cleanly
-                    if definitions_part:
-                        story.append(Paragraph("<b>DEFINITIONS:</b>", bold_style))
-                        for para in definitions_part.split("\n\n"):
-                            para = para.strip()
-                            if para:
-                                story.append(Paragraph(fix_href_spacing(para), normal_style))
-                                story.append(Spacer(1, 0.1 * inch))
-                        story.append(Spacer(1, 0.25 * inch))
-                
-                    if disclaimers_part:
-                        story.append(Paragraph("<b>DISCLAIMERS:</b>", bold_style))
-                        story.append(Spacer(1, 0.1 * inch))
-                        story.append(Paragraph(fix_href_spacing(disclaimers_part.strip()), normal_style))
-                        story.append(Spacer(1, 0.25 * inch))
-                
-                    if references_part:
-                        story.append(Paragraph("<b>REFERENCES:</b>", bold_style))
-                        for para in references_part.strip().split("<br/><br/>"):
-                            para = para.strip()
-                            if para:
-                                story.append(Paragraph(fix_href_spacing(para), normal_style))
-                                story.append(Spacer(1, 0.1 * inch))
+                    story.append(Paragraph(definition_text, styles["Normal"]))
+                    story.append(Spacer(1, 0.25 * inch))
                 
                     doc.build(story)
-                    pdf_buffer.seek(0)
-                    return pdf_buffer
+                    buffer.seek(0)
+                
+                    # Step 2: Convert to image using pdf2image
+                    images = convert_from_bytes(buffer.getvalue(), dpi=300)
+                
+                    # Step 3: Append each page to the existing PdfPages object
+                    for img in images:
+                        fig, ax = plt.subplots(figsize=(8.5, 11))  # LETTER size in inches
+                        ax.axis('off')
+                        ax.imshow(img)
+                        pdf.savefig(fig, bbox_inches='tight')
+                        plt.close(fig)
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
