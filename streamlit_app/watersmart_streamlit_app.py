@@ -22,7 +22,8 @@ from io import StringIO
 from PIL import Image
 from PIL import ImageDraw, ImageFont, Image
 from textwrap import wrap
-from PyPDF2 import PdfReader, PdfWriter
+from PyPDF2 import PdfReader, PdfWriter, PdfMerger
+
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.pagesizes import LETTER
@@ -1179,14 +1180,14 @@ with tab1:
                 # definitions_pdf.seek(0)
                 
                 # Create merger
-                #merger = PdfMerger()
+                merger = PdfMerger()
                 
                 # Load both as PdfReader and append
                 # merger.append(PdfReader(pdf_buffer))
                 # merger.append(PdfReader(definitions_pdf))
                 
-                # merger.append(pdf_buffer)
-                # merger.append(definitions_pdf)
+                merger.append(pdf_buffer)
+                merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
                 # merged_pdf = io.BytesIO()
