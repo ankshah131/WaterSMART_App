@@ -1189,7 +1189,7 @@ with tab1:
 
                 st.download_button(
                     label="Download Report as PDF",
-                    data=merged_pdf #definitions_pdf,
+                    data=merged_pdf, #definitions_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
