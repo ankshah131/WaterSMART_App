@@ -30,6 +30,7 @@ from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_LEFT
+from reportlab.platypus import Image as reportImage
 
 from app_def.components.header import render_header
 from app_def.components.footer import render_footer
@@ -1035,7 +1036,7 @@ with tab1:
                             img_response = requests.get(image_url)
                             img_response.raise_for_status()
                             img_buffer = io.BytesIO(img_response.content)
-                            img = Image(img_buffer, width=4*inch, height=3*inch)  # Adjust dimensions as needed
+                            img = reportImage(img_buffer, width=4*inch, height=3*inch)  # Adjust dimensions as needed
                             story.append(img)
                         except Exception as e:
                             print(f"Failed to load image: {e}")
