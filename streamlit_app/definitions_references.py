@@ -2,37 +2,37 @@ definitions_text = """\
 
 <b>DEFINITIONS</b><br/><br/>
 
-<b>Groundwater Boundaries:</b>
+<b>Groundwater Boundaries:</b><br/>
 Nevada has 256 hydrographic areas that are defined by the State Engineer’s Office for administering groundwater. These were developed in the 1960s and are the basis for water planning, management and administration of water in Nevada. 
 [Source for definition: Nevada Division of Water Planning, 1999; Source of data layer: https://data-ndwr.hub.arcgis.com/datasets/NDWR::basins-state-engineer-admin-boundaries/about]<br/><br/>
 
-<b>Soil Texture:</b>
+<b>Soil Texture:</b><br/>
 Soil texture refers to the proportion of sand, silt and clay particles in the soil. This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil.
 [Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]<br/><br/>
 
-<b>Average annual precipitation (1991-2020) (P):</b>
+<b>Average annual precipitation (1991-2020) (P):</b><br/>
 The average precipitation for the area in question is calculated by summing the observed annual precipitation over 1991-2020 and dividing by the number of years for which there were observations. 
 [Source of data: Abatzoglou (2013)]<br/><br/>
 
-<b>Average annual potential evapotranspiration (1991-2020) (PET):</b>
+<b>Average annual potential evapotranspiration (1991-2020) (PET):</b><br/>
 Potential evapotranspiration gives an indication of how “thirsty” the atmosphere is. Here, it is represented as the American Society of Civil Engineers’ Grass Reference Evapotranspiration (ETref), calculated using the Penman-Monteith method. ETref is the amount of water that would evaporate or be transpired from a well-watered grass surface. 
 [Source of data: Abatzoglou (2013)]<br/><br/>
 
-<b>Average annual potential water deficit (1991-2020) (PWD):</b>
+<b>Average annual potential water deficit (1991-2020) (PWD):</b><br/>
 The potential water deficit (PWD) represents the difference between annual precipitation (supply) and annual potential evapotranspiration (demand). Negative values indicate that there is more demand for water from the atmosphere than is available from precipitation.  PWD is calculated by subtracting potential evapotranspiration from precipitation for a given area. The average annual PWD is calculated by summing observations of annual PWD over 1991-2020 and dividing by the number of years for which there were observations.<br/><br/>
 
-<b>Rooting Depth:</b>
+<b>Rooting Depth:</b><br/>
 Groundwater-dependent vegetation can access groundwater through their roots, but rooting depths vary. Meadow and rangeland grasses often have roots within 2 m of the ground surface, whereas some phreatophytic shrubs and trees can have roots as deep as 6 m or more (The Nature Conservancy 2021). Choose from 0.5 m for herbaceous meadow root depths, 2 m for grass root depth, and 3.6 m for phreatophyte shrubland root depths.<br/><br/>
 
-<b>Leaf Area Index (LAI):</b>
+<b>Leaf Area Index (LAI):</b><br/>
 Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest. LAI is the one-sided green leaf area per unit of ground surface area, and its value can be an indication of the health of an ecosystem (Fang et al. 2019).
 
 We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below (LAI data source: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H)<br/><br/>
 
-<b>ET from Groundwater (ETgw):</b>
+<b>ET from Groundwater (ETgw):</b><br/>
 The groundwater component of evapotranspiration is the portion of total evapotranspiration that is extracted from groundwater (i.e., the saturated zone). The remainder of transpiration comes from the vadose (i.e., the unsaturated) zone. If the water table were deeper, the groundwater component might be reduced. The groundwater component is a good indicator of how much groundwater is used by GDEs when calculating the water budget of a groundwater system.<br/><br/>
 
-<b>Groundwater Subsidy:</b>
+<b>Groundwater Subsidy:</b><br/>
 Groundwater subsidy is the additional water available in the vadose (i.e., unsaturated) zone for root water uptake resulting from shallow water table conditions. It is a hypothetical quantity that cannot be measured in the field but is a good indicator of how much GDEs in water-limited environments might benefit from shallow groundwater conditions that reduces the water stress experienced by vegetation.<br/><br/>
 
 
