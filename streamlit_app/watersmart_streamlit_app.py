@@ -1182,11 +1182,14 @@ with tab1:
                 merger = PdfMerger()
                 
                 # Load both as PdfReader and append
-                merger.append(PdfReader(pdf_buffer))
-                merger.append(PdfReader(definitions_pdf))
+                # merger.append(PdfReader(pdf_buffer))
+                # merger.append(PdfReader(definitions_pdf))
+                
+                merger.append(pdf_buffer)
+                merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
-                merged_pdf = io.BytesIO()
+                # merged_pdf = io.BytesIO()
                 # merger.write(merged_pdf)
                 # merger.close()
                 # merged_pdf.seek(0)
