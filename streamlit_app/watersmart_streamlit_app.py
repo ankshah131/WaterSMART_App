@@ -1237,17 +1237,17 @@ with tab1:
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
 
                 # Merge
-                merged_pdf = io.BytesIO()
-                merger = PdfMerger()
-                merger.append(plot_pdf)
-                merger.append(definitions_pdf)
-                merger.write(merged_pdf)
-                merger.close()
-                merged_pdf.seek(0)
+                # merged_pdf = io.BytesIO()
+                # merger = PdfMerger()
+                # merger.append(plot_pdf)
+                # merger.append(definitions_pdf)
+                # merger.write(merged_pdf)
+                # merger.close()
+                # merged_pdf.seek(0)
 
                 st.download_button(
                     label="Download Report as PDF",
-                    data=merged_pdf,
+                    data=definitions_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
