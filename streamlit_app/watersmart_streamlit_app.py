@@ -40,6 +40,7 @@ from definitions_references import definitions_text
 PATH_COEFFICIENTS = 'https://raw.githubusercontent.com/ankshah131/WaterSMART_App/main/streamlit_app/MixedEffectsModelCoefficients102924_ppetquad.csv'
 PATH_SOIL_TEXTURE_LEGEND = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/57bbbf9d71e4ab39bc39f6b86699799a94efc283/streamlit_app/app_def/assets/images/soil_texture_logo.png"
 PATH_MAP_LEGENDS = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/eda53037fde15d64cc1f2e89d543174888a8223c/streamlit_app/app_def/assets/images/map_legends.png"
+PATH_LOGOS = "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/c490a2622b103eec28df2371dfabcc2c45b439b9/streamlit_app/app_def/assets/logos.png"
 
 # Earth Engine Setup
 def get_auth():
@@ -1016,7 +1017,7 @@ with tab1:
 
                 
 
-                def add_definitions_to_pdf(definition_text):
+                def add_definitions_to_pdf(definition_text, image_url=PATH_LOGOS):
                     """
                     Renders HTML-formatted definitions_text (with hyperlinks) into a standalone PDF buffer.
                     """
@@ -1027,6 +1028,18 @@ with tab1:
                 
                     story.append(Paragraph(definition_text, styles["Normal"]))
                     story.append(Spacer(1, 0.25 * inch))
+
+                    # Add image from URL at the end
+                    if image_url:
+                        try:
+                            img_response = requests.get(image_url)
+                            img_response.raise_for_status()
+                            img_buffer = io.BytesIO(img_response.content)
+                            img = Image(img_buffer, width=4*inch, height=3*inch)  # Adjust dimensions as needed
+                            story.append(img)
+                        except Exception as e:
+                            print(f"Failed to load image: {e}")
+
                 
                     doc.build(story)
                     buffer.seek(0)
@@ -1172,7 +1185,8 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
-                pdf_buffer = save_plots_to_pdf()
+                #pdf_buffer = save_plots_to_pdf()
+                pdf_buffer = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
                 
                 # Rewind both buffers to the start
