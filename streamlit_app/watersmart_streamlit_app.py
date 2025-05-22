@@ -1187,9 +1187,9 @@ with tab1:
                 
                 # Write merged output to a new BytesIO buffer
                 merged_pdf = io.BytesIO()
-                merger.write(merged_pdf)
-                merger.close()
-                merged_pdf.seek(0)
+                # merger.write(merged_pdf)
+                # merger.close()
+                # merged_pdf.seek(0)
                 
                 st.download_button(
                     label="Download Report as PDF",
