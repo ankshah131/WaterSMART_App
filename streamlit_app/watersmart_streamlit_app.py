@@ -1179,7 +1179,7 @@ with tab1:
                 # definitions_pdf.seek(0)
                 
                 # Create merger
-                merger = PdfMerger()
+                #merger = PdfMerger()
                 
                 # Load both as PdfReader and append
                 # merger.append(PdfReader(pdf_buffer))
