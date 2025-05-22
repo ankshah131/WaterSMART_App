@@ -1174,20 +1174,23 @@ with tab1:
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
                 
+                # Rewind both buffers to the start
                 pdf_buffer.seek(0)
                 definitions_pdf.seek(0)
                 
-                # Merge PDFs
-                merged_pdf = io.BytesIO()
+                # Create merger
                 merger = PdfMerger()
                 
-                merger.append(pdf_buffer)
-                merger.append(definitions_pdf)
+                # Load both as PdfReader and append
+                merger.append(PdfReader(pdf_buffer))
+                merger.append(PdfReader(definitions_pdf))
                 
+                # Write merged output to a new BytesIO buffer
+                merged_pdf = io.BytesIO()
                 merger.write(merged_pdf)
                 merger.close()
                 merged_pdf.seek(0)
-
+                
                 st.download_button(
                     label="Download Report as PDF",
                     data=merged_pdf, #definitions_pdf,
