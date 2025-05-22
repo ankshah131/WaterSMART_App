@@ -1077,12 +1077,10 @@ with tab1:
                 #         plt.close(fig)
 
 
-                def add_definitions_to_pdf(pdf, definition_text):
+                def add_definitions_to_pdf(definition_text):
                     """
-                    Renders HTML-formatted definitions_text (with hyperlinks) into a temporary
-                    single-page PDF, converts it to an image, and appends it to the existing PdfPages object.
+                    Renders HTML-formatted definitions_text (with hyperlinks) into a standalone PDF buffer.
                     """
-                    # Step 1: Create standalone PDF with clickable links
                     buffer = io.BytesIO()
                     doc = SimpleDocTemplate(buffer, pagesize=LETTER)
                     styles = getSampleStyleSheet()
@@ -1093,17 +1091,8 @@ with tab1:
                 
                     doc.build(story)
                     buffer.seek(0)
-                
-                    # Step 2: Convert to image using pdf2image
-                    images = convert_from_bytes(buffer.getvalue(), dpi=300)
-                
-                    # Step 3: Append each page to the existing PdfPages object
-                    for img in images:
-                        fig, ax = plt.subplots(figsize=(8.5, 11))  # LETTER size in inches
-                        ax.axis('off')
-                        ax.imshow(img)
-                        pdf.savefig(fig, bbox_inches='tight')
-                        plt.close(fig)
+                    return buffer
+
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
@@ -1245,9 +1234,20 @@ with tab1:
                 
                 # Button to generate and download PDF
                 pdf_buffer = save_plots_to_pdf()
+                definitions_pdf = add_definitions_to_pdf(definitions_text)
+
+                # Merge
+                merged_pdf = io.BytesIO()
+                merger = PdfMerger()
+                merger.append(plot_pdf)
+                merger.append(definitions_pdf)
+                merger.write(merged_pdf)
+                merger.close()
+                merged_pdf.seek(0)
+
                 st.download_button(
                     label="Download Report as PDF",
-                    data=pdf_buffer,
+                    data=merged_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
