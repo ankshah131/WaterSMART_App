@@ -1015,68 +1015,6 @@ with tab1:
 
                 
 
-                # def add_definitions_to_pdf(pdf, definitions_text):
-                #     DPI = 300
-                #     LETTER_WIDTH_IN = 8.5
-                #     LETTER_HEIGHT_IN = 11
-
-                #     story = []
-                
-                #     # Pre-format section headers
-                #     formatted_text = definitions_text.replace("DEFINITIONS", "\nDEFINITIONS:")
-                #     formatted_text = formatted_text.replace("DISCLAIMERS:", "\n\nDISCLAIMERS:")
-                #     formatted_text = formatted_text.replace("REFERENCES:", "\n\nREFERENCES:")
-                
-                #     replacements = [
-                #         ("Groundwater Boundaries:", "**Groundwater Boundaries:**"),
-                #         ("Soil Texture:", "**Soil Texture:**"),
-                #         ("Average annual precipitation (1991-2020) (P):", "**Average annual precipitation (1991-2020) (P):**"),
-                #         ("Average annual potential evapotranspiration (1991-2020) (PET)", "**Average annual potential evapotranspiration (1991-2020) (PET):**"),
-                #         ("Average annual potential water deficit (1991-2020) (PWD)", "**Average annual potential water deficit (1991-2020) (PWD):**"),
-                #         ("Rooting Depth:", "**Rooting Depth:**"),
-                #         ("Leaf Area Index (LAI)", "**Leaf Area Index (LAI):**"),
-                #         ("ET from Groundwater (ETgw):", "**ET from Groundwater (ETgw):**"),
-                #         ("Groundwater Subsidy:", "**Groundwater Subsidy:**"),
-                #     ]
-                #     for old, new in replacements:
-                #         formatted_text = formatted_text.replace(old, new)
-                
-                #     # Line wrapping
-                #     wrapped_lines = []
-                #     for line in formatted_text.strip().split("\n"):
-                #         if line.strip().startswith("**") and line.strip().endswith("**"):
-                #             wrapped_lines.append(line)
-                #         else:
-                #             wrapped_lines.extend(wrap(line, width=92) or [""])
-                
-                #     # Paginate and draw using pure matplotlib
-                #     lines_per_page = 52
-                #     for i in range(0, len(wrapped_lines), lines_per_page):
-                #         page = wrapped_lines[i:i + lines_per_page]
-                
-                #         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN), dpi=DPI)
-                #         ax.axis('off')
-                        
-                #         # Add invisible rect to force fixed size
-                #         ax.add_patch(plt.Rectangle((0, 0), 1, 1, transform=ax.transAxes,
-                #                                    linewidth=0, edgecolor='none', facecolor='none'))
-                
-                #         y = 0.96
-                #         line_height = 0.018
-                
-                #         for line in page:
-                #             if line.startswith("**") and line.endswith("**"):
-                #                 ax.text(0.04, y, line[2:-2], fontsize=10, weight='bold', va='top', ha='left')
-                #             else:
-                #                 ax.text(0.04, y, line, fontsize=10, va='top', ha='left')
-                #             y -= line_height
-                            
-
-                #         # Page size preservation
-                #         pdf.savefig(fig, bbox_inches='tight')  # ← page size preserved
-                #         plt.close(fig)
-
-
                 def add_definitions_to_pdf(definition_text):
                     """
                     Renders HTML-formatted definitions_text (with hyperlinks) into a standalone PDF buffer.
@@ -1236,18 +1174,22 @@ with tab1:
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text)
 
-                # Merge
-                # merged_pdf = io.BytesIO()
-                # merger = PdfMerger()
-                # merger.append(plot_pdf)
-                # merger.append(definitions_pdf)
-                # merger.write(merged_pdf)
-                # merger.close()
+                # Merge them
+                merged_pdf = io.BytesIO()
+                merger = PdfMerger()
+                
+                # Append both buffers
+                merger.append(pdf_buffer)
+                merger.append(definitions_pdf)
+                
+                # Write to output buffer
+                merger.write(merged_pdf)
+                merger.close()
                 # merged_pdf.seek(0)
 
                 st.download_button(
                     label="Download Report as PDF",
-                    data=definitions_pdf,
+                    data=merged_pdf #definitions_pdf,
                     file_name="Nevada GDE Water Needs Explorer Tool Output.pdf",
                     mime="application/pdf"
                 )
