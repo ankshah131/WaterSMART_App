@@ -1185,9 +1185,8 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
-                #pdf_buffer = save_plots_to_pdf()
-                pdf_buffer = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
-                definitions_pdf = add_definitions_to_pdf(definitions_text)
+                pdf_buffer = save_plots_to_pdf()
+                definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
                 # Rewind both buffers to the start
                 # pdf_buffer.seek(0)
