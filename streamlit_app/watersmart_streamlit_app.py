@@ -7,6 +7,7 @@ import json
 import base64
 import io
 import imgkit
+import requests
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
@@ -1030,22 +1031,25 @@ with tab1:
                     story.append(Paragraph(definition_text, styles["Normal"]))
                     story.append(Spacer(1, 0.25 * inch))
 
-                    # Add image from URL at the end
+                    # Add image from URL (optional)
                     if image_url:
                         try:
                             img_response = requests.get(image_url)
                             img_response.raise_for_status()
-                    
+                
+                            # Open with PIL and convert to RGB
                             pil_img = Image.open(io.BytesIO(img_response.content)).convert("RGB")
+                
+                            # Save to byte array in PNG format
                             img_byte_arr = io.BytesIO()
                             pil_img.save(img_byte_arr, format='PNG')
                             img_byte_arr.seek(0)
-                    
-                            rl_img = reportImage(img_byte_arr, width=5*inch, height=3*inch)
+                
+                            # Create ReportLab Image and append to story
+                            rl_img = reportImage(img_byte_arr, width=7*inch, height=2*inch)
                             story.append(rl_img)
-                    
                         except Exception as e:
-                            print(f"Failed to load image: {e}")
+                            st.error(f"[ERROR] Failed to load image from URL: {e}")
                 
                     doc.build(story)
                     buffer.seek(0)
