@@ -8,6 +8,7 @@ import base64
 import io
 import imgkit
 import requests
+from datetime import datetime
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
@@ -113,22 +114,11 @@ LETTER_HEIGHT_IN = 11
 # Get current query params
 query_params = st.query_params
 
-# Get the tab name from URL or default to "GDE Explorer"
-# default_tab = query_params.get("tab", "GDE Explorer")
+# Get current date and time
+now = datetime.now()
 
-# tab_labels = ["GDE Explorer", "Definitions"]
-
-# Reorder tabs so the selected one appears first
-# if default_tab == "Definitions":
-#     tab_labels = ["Definitions", "GDE Explorer"]
-# else:
-#     tab_labels = ["GDE Explorer", "Definitions"]
-
-# # Create Streamlit tabs
-# tabs = st.tabs(tab_labels)
-
-# # Get references
-# tab_map = dict(zip(tab_labels, tabs))
+# Convert to string
+datetime_str = now.strftime("%Y-%m-%d %H:%M:%S")
 
 # Create tabs
 tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
@@ -1084,6 +1074,7 @@ with tab1:
                     4) groundwater depths are assumed constant 
                     over time.
                     
+                    Date: {datetine_str}
                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                     Annual precipitation: {precip_value:.2f} mm    
                     Annual evaporative demand: {eto_value:.2f} mm
@@ -1100,7 +1091,7 @@ with tab1:
                             font = ImageFont.load_default()
                         
                         # Increase height of info box to fit bigger text
-                        info_box_height = 730  # was 250
+                        info_box_height = 800  # was 250
                         padding = 75  # Optional: increase padding too for cleaner layout
                         
                         info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
@@ -1238,40 +1229,6 @@ with tab1:
             render_footer()
             #st.error(str(e))  # Optional: for debugging    
 
-
-# with tab_map["Definitions"]:
-#     if default_tab == "Definitions":
-#          # Render header with logos
-#         render_header()
-        
-#         # Main title and subtitle
-#         st.markdown("<h1 class='main-title'>Definitions</h1>", unsafe_allow_html=True)
-
-#         render_definitions()
-
-#         jump_to = st.query_params.get("jump_to")
-#         if jump_to:
-#             st.markdown(f"""
-#                 <script>
-#                     // Delay scroll to anchor after full render
-#                     window.addEventListener("load", function() {{
-#                         setTimeout(function() {{
-#                             var el = document.getElementById("{jump_to}");
-#                             if (el) {{
-#                                 el.scrollIntoView({{ behavior: "smooth", block: "start" }});
-#                                 // Optional: clean up the hash from the URL
-#                                 history.replaceState(null, "", window.location.pathname + window.location.search);
-#                             }}
-#                         }}, 500);
-#                     }});
-#                 </script>
-#             """, unsafe_allow_html=True)
-        
-#         # Close container
-#         st.markdown('</div>', unsafe_allow_html=True)
-        
-#         # Render footer
-#         render_footer()
 
 with tab2:
 # with tab_map["Definitions"]:
