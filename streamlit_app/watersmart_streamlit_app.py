@@ -8,7 +8,7 @@ import base64
 import io
 import imgkit
 import requests
-from datetime import datetime
+from datetime import date, atetime
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
@@ -114,11 +114,11 @@ LETTER_HEIGHT_IN = 11
 # Get current query params
 query_params = st.query_params
 
-# Get current date and time
-now = datetime.now()
+# Get today's date
+today = date.today()
 
 # Convert to string
-datetime_str = now.strftime("%Y-%m-%d %H:%M:%S")
+date_str = today.strftime("%Y-%m-%d")
 
 # Create tabs
 tab1, tab2 = st.tabs(["GDE Explorer", "Definitions"])
@@ -1073,7 +1073,8 @@ with tab1:
                     3) species-level differences are not accounted for;
                     4) groundwater depths are assumed constant 
                     over time.
-                    
+
+                    Date: {date_str}
                     Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
                     Annual precipitation: {precip_value:.2f} mm    
                     Annual evaporative demand: {eto_value:.2f} mm
