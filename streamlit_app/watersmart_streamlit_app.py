@@ -97,8 +97,8 @@ def crop_pdf_to_letter(pdf_buffer):
     return output
 
 
-def create_map_snapshot(lat, lon, zoom=10):
-    m = StaticMap(800, 600)
+def create_map_snapshot(lat, lon, zoom=10, width=2550, height=1200):
+    m = StaticMap(width, height)
     marker = CircleMarker((lon, lat), 'red', 3)  # looks like a point
     m.add_marker(marker)
     image = m.render(zoom=zoom)
@@ -1116,8 +1116,10 @@ with tab1:
                         combined_top.paste(img_pwd1, (0, info_img.height))
 
                         # First, generate the map image
-                        map_buffer = create_map_snapshot(lat, lon)
+                        map_buffer = create_map_snapshot(lat, lon, width=combined_top.width, height=600)
                         map_img = Image.open(map_buffer).convert("RGB")
+                        map_img = map_img.resize((combined_top.width, map_img.height), Image.ANTIALIAS)
+
 
                         # # --- Use SAME method as later pages: fixed canvas, centered image ---
                         # canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
