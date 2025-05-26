@@ -17,3 +17,4 @@ imgkit
 reportlab
 pdf2image
 datetime
+staticmap
