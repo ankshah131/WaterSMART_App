@@ -8,7 +8,7 @@ import base64
 import io
 import imgkit
 import requests
-from datetime import date, atetime
+from datetime import date
 from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
