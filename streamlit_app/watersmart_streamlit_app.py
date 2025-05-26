@@ -1103,23 +1103,51 @@ with tab1:
                         combined_top.paste(info_img, (0, 0))
                         combined_top.paste(img_pwd1, (0, info_img.height))
 
-                        # --- Use SAME method as later pages: fixed canvas, centered image ---
+                        # First, generate the map image
+                        map_buffer = create_map_snapshot(lat, lon)
+                        map_img = Image.open(map_buffer).convert("RGB")
+
+                        # # --- Use SAME method as later pages: fixed canvas, centered image ---
+                        # canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
+                        # canvas = Image.new("RGB", canvas_px, (255, 255, 255))
+
+                        # # Horizontally center the image, align to top
+                        # x_offset = (canvas_px[0] - combined_top.width) // 2
+                        # y_offset = 50  # Optional small top margin (can be 0)
+                        
+                        # canvas.paste(combined_top, (x_offset, y_offset))
+                        
+                        # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
+                        # ax.axis('off')
+                        # ax.imshow(canvas)
+                        # pdf.savefig(fig, bbox_inches='tight')  # Keep this to trim outer whitespace, since canvas is fixed
+                        # plt.close(fig)
+
+                        # Combine combined_top + map vertically
+                        combined_first_page = Image.new(
+                            "RGB",
+                            (max(combined_top.width, map_img.width), combined_top.height + map_img.height),
+                            (255, 255, 255)
+                        )
+                        combined_first_page.paste(combined_top, (0, 0))
+                        combined_first_page.paste(map_img, (0, combined_top.height))
+                        
+                        # Create canvas and paste combined_first_page centered
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-
-                        # Horizontally center the image, align to top
-                        x_offset = (canvas_px[0] - combined_top.width) // 2
-                        y_offset = 50  # Optional small top margin (can be 0)
                         
-                        canvas.paste(combined_top, (x_offset, y_offset))
+                        x_offset = (canvas_px[0] - combined_first_page.width) // 2
+                        y_offset = 50
                         
+                        canvas.paste(combined_first_page, (x_offset, y_offset))
+                        
+                        # Save to PDF
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(canvas)
-                        pdf.savefig(fig, bbox_inches='tight')  # Keep this to trim outer whitespace, since canvas is fixed
+                        pdf.savefig(fig, bbox_inches='tight')
                         plt.close(fig)
-
- 
+                         
                 
                         ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
                         paired_plots = [
