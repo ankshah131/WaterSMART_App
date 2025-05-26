@@ -13,6 +13,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from textwrap import wrap
 from matplotlib import rcParams
 from pdf2image import convert_from_bytes
+from staticmap import StaticMap, CircleMarker, IconMarker
 
 from plotnine import *
 import matplotlib.pyplot as plt
@@ -25,7 +26,6 @@ from PIL import Image
 from PIL import ImageDraw, ImageFont, Image
 from textwrap import wrap
 from PyPDF2 import PdfReader, PdfWriter, PdfMerger
-
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.pagesizes import LETTER
@@ -95,6 +95,18 @@ def crop_pdf_to_letter(pdf_buffer):
     writer.write(output)
     output.seek(0)
     return output
+
+
+def create_map_snapshot(lat, lon, zoom=10):
+    m = StaticMap(800, 600)
+    marker = CircleMarker((lon, lat), 'red', 3)  # looks like a point
+    m.add_marker(marker)
+    image = m.render(zoom=zoom)
+
+    img_buffer = io.BytesIO()
+    image.save(img_buffer, format='PNG')
+    img_buffer.seek(0)
+    return img_buffer
 
 # Text control
 # Set monospaced font globally
