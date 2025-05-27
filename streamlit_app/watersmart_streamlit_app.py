@@ -99,7 +99,7 @@ def crop_pdf_to_letter(pdf_buffer):
 
 
 # ---- Static map renderer ----
-def create_map_snapshot(lat, lon, zoom=10):
+def create_map_snapshot(lat, lon, zoom=8):
     m = StaticMap(400, 300)
     marker = CircleMarker((lon, lat), 'red', 12)
     m.add_marker(marker)
