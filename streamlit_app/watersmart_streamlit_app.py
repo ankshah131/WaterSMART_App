@@ -100,7 +100,7 @@ def crop_pdf_to_letter(pdf_buffer):
 
 # ---- Static map renderer ----
 def create_map_snapshot(lat, lon, zoom=10):
-    m = StaticMap(800, 600)
+    m = StaticMap(400, 300)
     marker = CircleMarker((lon, lat), 'red', 12)
     m.add_marker(marker)
     image = m.render(zoom=zoom)
@@ -1037,14 +1037,14 @@ with tab1:
                     3) species-level differences are not accounted for;<br/><br/>
                     4) groundwater depths are assumed constant over time.<br/><br/>
     
-                    Date: {date_str}<br/><br/>
-                    Location: {lat:.2f} N, {lon:.2f} W <br/><br/>    
-                    Soil type: {soilt}<br/><br/>
-                    Annual precipitation: {precip_value:.2f} mm<br/><br/>    
-                    Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
-                    Root depth: {rd} m<br/><br/>     
-                    Admin Basin ID: {basin_id}<br/><br/>
-                    Admin Basin Name: {basin_name}
+                    <b>Date:</b> {date_str}<br/><br/>
+                    <b>Location:</b> {lat:.2f} N, {lon:.2f} W <br/><br/>    
+                    <b>Soil type:</b> {soilt}<br/><br/>
+                    <b>Annual precipitation:</b> {precip_value:.2f} mm<br/><br/>    
+                    <b>Annual evaporative demand:</b> {eto_value:.2f} mm<br/><br/>
+                    <b>Root depth:</b> {rd} m<br/><br/>     
+                    <b>Admin Basin ID:</b> {basin_id}<br/><br/>
+                    <b>Admin Basin Name:</b> {basin_name}
                     """
                     
                     story.append(Paragraph(text, styles["Normal"]))
@@ -1269,7 +1269,7 @@ with tab1:
                 # Button to generate and download PDF
                 map_buffer = create_map_snapshot(lat, lon)
                 intro_page = first_page(map_img_buffer=map_buffer)
-                #pdf_buffer = save_plots_to_pdf()
+                pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
                 # Rewind both buffers to the start
@@ -1281,7 +1281,7 @@ with tab1:
                 
                 # Load both as PdfReader and append
                 merger.append(intro_page)
-                #merger.append(pdf_buffer)
+                merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
