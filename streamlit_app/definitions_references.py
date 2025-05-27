@@ -60,7 +60,7 @@ The Nature Conservancy shall not be held liable for improper or incorrect use of
 Any sale, distribution, loan, or offering for use of these data, in whole or in part, is prohibited. 
 The use of these data to produce other products and services with the intent to use or sell for a profit is prohibited. 
 All parties receiving these data must be informed of these restrictions. 
-This is an aggregate dataset with multiple data contributors.<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+This is an aggregate dataset with multiple data contributors.<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 
 <b>REFERENCES:</b><br/><br/><br/>
