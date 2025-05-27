@@ -1010,7 +1010,7 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <font size=28><b>Nevada GDE Water Needs Explorer Tool Output</b></font>
+                    <font size=18><b>Nevada GDE Water Needs Explorer Tool Output</b></font><br/><br/>
 
                                         
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
