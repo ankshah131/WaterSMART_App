@@ -340,6 +340,15 @@ with tab1:
             icon=folium.Icon(color="red", icon="info-sign")
         ).add_to(folium_map)
 
+        # Add Esri Satellite basemap
+        folium.TileLayer(
+            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attr="Esri",
+            name="Esri Satellite",
+            overlay=False,
+            control=True
+        ).add_to(folium_map)
+
 
         # Add layers based on checkbox state
         for label in layer_options.keys():
