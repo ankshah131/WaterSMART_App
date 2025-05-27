@@ -1024,8 +1024,8 @@ with tab1:
                 
                 title = 'Nevada GDE Water Needs Explorer Tool Output'
             
-                intro_text = f"""
-                <b>{title}</b><br/><br/>
+                intro_text = """
+                <b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/><br/><br/>
                 
                 Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/><br/>
                 1) uniform soil texture in soil column is assumed;<br/><br/>
@@ -1043,13 +1043,13 @@ with tab1:
                 # Admin Basin ID: {basin_id}<br/><br/>
                 # Admin Basin Name: {basin_name}
                 
-                def first_page(intro_text, map_img_buffer=None):
+                def first_page(text, map_img_buffer=None):
                     buffer = io.BytesIO()
                     doc = SimpleDocTemplate(buffer, pagesize=LETTER)
                     styles = getSampleStyleSheet()
                     story = []
                     
-                    story.append(Paragraph(intro_text, styles["Normal"]))
+                    story.append(Paragraph(text, styles["Normal"]))
                     story.append(Spacer(1, 0.25 * inch))
                 
                     # Add map image
@@ -1268,6 +1268,7 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
+                intro_text=intro_text
                 map_buffer = create_map_snapshot(lat, lon)
                 intro_page = first_page(intro_text, map_img_buffer=map_buffer)
                 pdf_buffer = save_plots_to_pdf()
