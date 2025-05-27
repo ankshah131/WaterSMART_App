@@ -1002,7 +1002,7 @@ with tab1:
                     st.pyplot(ggplot.draw(p_aetgw2))        
 
                 #<b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/> 
-                
+                # <div style="font-size:32pt; text-align:center;"><b>Nevada GDE Water Needs Explorer Tool Output</b></div><br/><br/>
                 def first_page(map_img_buffer=None):
                     buffer = io.BytesIO()
                     doc = SimpleDocTemplate(buffer, pagesize=LETTER)
@@ -1010,7 +1010,7 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <div style="font-size:32pt; text-align:center;"><b>Nevada GDE Water Needs Explorer Tool Output</b></div><br/><br/>
+                    <font size=28><b>Nevada GDE Water Needs Explorer Tool Output</b></font>
 
                                         
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
