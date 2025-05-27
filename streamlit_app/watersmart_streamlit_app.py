@@ -32,6 +32,7 @@ from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_LEFT
+
 from reportlab.platypus import Image as reportImage
 
 from app_def.components.header import render_header
@@ -1038,7 +1039,8 @@ with tab1:
                 Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
                 Root depth: {rd} m<br/><br/>     
                 Admin Basin ID: {basin_id}<br/><br/>
-                Admin Basin Name: {basin_name}"""
+                Admin Basin Name: {basin_name}
+                """
 
                 
                 def first_page(intro_text, map_img_buffer=None):
@@ -1281,7 +1283,7 @@ with tab1:
                 # Load both as PdfReader and append
                 # merger.append(PdfReader(pdf_buffer))
                 # merger.append(PdfReader(definitions_pdf))
-                merger.append(intro_page)
+                #merger.append(intro_page)
                 merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
