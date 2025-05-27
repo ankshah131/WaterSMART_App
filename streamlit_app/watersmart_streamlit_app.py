@@ -1031,19 +1031,19 @@ with tab1:
                     text = f"""
                     <b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/><br/><br/>
                     
-                    Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/><br/>
-                    1) uniform soil texture in soil column is assumed;<br/><br/>
-                    2) variation in root distribution is not considered;<br/><br/>
-                    3) species-level differences are not accounted for;<br/><br/>
+                    Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
+                    1) uniform soil texture in soil column is assumed;<br/>
+                    2) variation in root distribution is not considered;<br/>
+                    3) species-level differences are not accounted for;<br/>
                     4) groundwater depths are assumed constant over time.<br/><br/>
     
-                    <b>Date:</b> {date_str}<br/><br/>
-                    <b>Location:</b> {lat:.2f} N, {lon:.2f} W <br/><br/>    
-                    <b>Soil type:</b> {soilt}<br/><br/>
-                    <b>Annual precipitation:</b> {precip_value:.2f} mm<br/><br/>    
-                    <b>Annual evaporative demand:</b> {eto_value:.2f} mm<br/><br/>
-                    <b>Root depth:</b> {rd} m<br/><br/>     
-                    <b>Admin Basin ID:</b> {basin_id}<br/><br/>
+                    <b>Date:</b> {date_str}<br/>
+                    <b>Location:</b> {lat:.2f} N, {lon:.2f} W <br/>
+                    <b>Soil type:</b> {soilt}<br/>
+                    <b>Annual precipitation:</b> {precip_value:.2f} mm<br/>
+                    <b>Annual evaporative demand:</b> {eto_value:.2f} mm<br/>
+                    <b>Root depth:</b> {rd} m<br/>   
+                    <b>Admin Basin ID:</b> {basin_id}<br/>
                     <b>Admin Basin Name:</b> {basin_name}
                     """
                     
