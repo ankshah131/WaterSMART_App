@@ -1183,30 +1183,19 @@ with tab1:
                         plt.close(fig_pwd1)
                         buf_pwd1.seek(0)
                         img_pwd1 = Image.open(buf_pwd1)
-                
-                        # Get map image
-                        map_buffer = create_map_snapshot(lat, lon, width=img_pwd1.width, height=600)
-                        map_img = Image.open(map_buffer).convert("RGB")
-                        map_img = map_img.resize((img_pwd1.width, map_img.height), Image.ANTIALIAS)
-                
-                        # Stack plot and map vertically
-                        combined_top = Image.new("RGB", (img_pwd1.width, img_pwd1.height + map_img.height), (255, 255, 255))
-                        combined_top.paste(img_pwd1, (0, 0))
-                        combined_top.paste(map_img, (0, img_pwd1.height))
-                
-                        # Place combined image on canvas (centered)
+                        
+                        # Place plot image on fixed-size canvas (centered)
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-                        x_offset = (canvas_px[0] - combined_top.width) // 2
-                        y_offset = 50
-                        canvas.paste(combined_top, (x_offset, y_offset))
-                
+                        x_offset = (canvas_px[0] - img_pwd1.width) // 2
+                        y_offset = 50  # small top margin
+                        canvas.paste(img_pwd1, (x_offset, y_offset))
+                        
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
                         ax.axis('off')
                         ax.imshow(canvas)
                         pdf.savefig(fig, bbox_inches='tight')
                         plt.close(fig)
-                     
                 
                         ### -------- PAGES 2+: SIDE-BY-SIDE PLOTS -------- ###
                         paired_plots = [
