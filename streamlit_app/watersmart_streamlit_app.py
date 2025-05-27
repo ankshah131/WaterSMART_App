@@ -1034,7 +1034,7 @@ with tab1:
 
                 Date: {date_str}<br/><br/>
                 Location: {lat:.2f} N, {lon:.2f} W <br/><br/>    
-                Soil type: {soil_string}<br/><br/>
+                Soil type: {soilt}<br/><br/>
                 Annual precipitation: {precip_value:.2f} mm<br/><br/>    
                 Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
                 Root depth: {rd} m<br/><br/>     
@@ -1268,8 +1268,8 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
-                # map_buffer = create_map_snapshot(lat, lon)
-                # intro_page = first_page(intro_text, map_img_buffer=map_buffer)
+                map_buffer = create_map_snapshot(lat, lon)
+                intro_page = first_page(intro_text, map_img_buffer=map_buffer)
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
@@ -1281,9 +1281,7 @@ with tab1:
                 merger = PdfMerger()
                 
                 # Load both as PdfReader and append
-                # merger.append(PdfReader(pdf_buffer))
-                # merger.append(PdfReader(definitions_pdf))
-                #merger.append(intro_page)
+                merger.append(intro_page)
                 merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
