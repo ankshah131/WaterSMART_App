@@ -1001,6 +1001,7 @@ with tab1:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))        
 
+                #<b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/> 
                 
                 def first_page(map_img_buffer=None):
                     buffer = io.BytesIO()
@@ -1009,7 +1010,8 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/><br/><br/>
+                    <div style="font-size:32pt; text-align:center;"><b>Nevada GDE Water Needs Explorer Tool Output</b></div><br/><br/>
+
                                         
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
                     1) uniform soil texture in soil column is assumed;<br/>
