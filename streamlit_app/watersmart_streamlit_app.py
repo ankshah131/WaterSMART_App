@@ -1021,8 +1021,9 @@ with tab1:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
 
-                title = 'Nevada GDE Water Needs Explorer Tool Output'
                 
+                title = 'Nevada GDE Water Needs Explorer Tool Output'
+            
                 intro_text = f"""
                 <b>{title}</b><br/><br/>
                 
@@ -1031,24 +1032,23 @@ with tab1:
                 2) variation in root distribution is not considered;<br/><br/>
                 3) species-level differences are not accounted for;<br/><br/>
                 4) groundwater depths are assumed constant over time.<br/><br/>
-
-                Date: {date_str}<br/><br/>
-                Location: {lat:.2f} N, {lon:.2f} W <br/><br/>    
-                Soil type: {soilt}<br/><br/>
-                Annual precipitation: {precip_value:.2f} mm<br/><br/>    
-                Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
-                Root depth: {rd} m<br/><br/>     
-                Admin Basin ID: {basin_id}<br/><br/>
-                Admin Basin Name: {basin_name}
                 """
 
+                # Date: {date_str}<br/><br/>
+                # Location: {lat:.2f} N, {lon:.2f} W <br/><br/>    
+                # Soil type: {soilt}<br/><br/>
+                # Annual precipitation: {precip_value:.2f} mm<br/><br/>    
+                # Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
+                # Root depth: {rd} m<br/><br/>     
+                # Admin Basin ID: {basin_id}<br/><br/>
+                # Admin Basin Name: {basin_name}
                 
                 def first_page(intro_text, map_img_buffer=None):
                     buffer = io.BytesIO()
                     doc = SimpleDocTemplate(buffer, pagesize=LETTER)
                     styles = getSampleStyleSheet()
                     story = []
-                
+                    
                     story.append(Paragraph(intro_text, styles["Normal"]))
                     story.append(Spacer(1, 0.25 * inch))
                 
