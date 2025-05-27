@@ -1009,7 +1009,7 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <b>Nevada GDE Water Needs Explorer Tool Output</b></span><br/><br/><br/><br/>
+                    <b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/><br/><br/>
                                         
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
                     1) uniform soil texture in soil column is assumed;<br/>
