@@ -528,26 +528,6 @@ with tab1:
             # col3, col4 = st.columns([0.012, 0.1])
             # with col3:
             st.subheader("Soil Texture")
-            # with col4:
-            #     st.markdown("""
-            #         <div class="tooltip">
-            #             <span class="info-icon">ℹ️</span>
-            #             <span class="tooltiptext">
-            #                 The soil texture from Walkinshaw et al. (2020) is the default choice for the area in question.
-            #                 Soils with different amounts of sand, silt, and clay have differing abilities to retain water.
-            #                 Some drain away instantly, and some also hold onto it more tightly when dry, like a clay, which can limit plant access to that water.
-            #             </span>
-            #         </div>
-            #     """, unsafe_allow_html=True)
-
-            
-            # Soil Type Dropdown
-            # soil_type = st.selectbox(
-            #     "Select soil type:",
-            #     ["loamysand", "sandyloam", "loam", "siltloam", "silt",
-            #      "sandyclayloam", "clayloam", "siltyclayloam", "sandyclay", "siltyclay", "clay"],
-            #     index=2
-            # )
 
             soil_options = ["loamysand", "sandyloam", "loam", "siltloam", "silt",
             "sandyclayloam", "clayloam", "siltyclayloam", "sandyclay", "siltyclay", "clay"]
@@ -1029,7 +1009,7 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <span style="font-size:25pt;"><b>Nevada GDE Water Needs Explorer Tool Output</b></span><br/><br/><br/><br/>
+                    <span style="font-size:40pt;"><b>Nevada GDE Water Needs Explorer Tool Output</b></span><br/><br/><br/><br/>
                                         
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
                     1) uniform soil texture in soil column is assumed;<br/>
