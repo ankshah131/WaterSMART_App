@@ -1029,8 +1029,8 @@ with tab1:
                     story = []
 
                     text = f"""
-                    <b>Nevada GDE Water Needs Explorer Tool Output</b><br/><br/><br/><br/>
-                    
+                    <span style="font-size:25pt;"><b>Nevada GDE Water Needs Explorer Tool Output</b></span><br/><br/><br/><br/>
+                                        
                     Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/>
                     1) uniform soil texture in soil column is assumed;<br/>
                     2) variation in root distribution is not considered;<br/>
@@ -1226,7 +1226,7 @@ with tab1:
             render_footer()
         
         except Exception as e:
-            st.write(e)
+            #st.write(e)
             st.warning("Please choose another location on the map.")
             render_footer()
             #st.write(e)
