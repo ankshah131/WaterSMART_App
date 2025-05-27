@@ -1268,8 +1268,8 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
-                map_buffer = create_map_snapshot(lat, lon)
-                intro_page = first_page(intro_text, map_img_buffer=map_buffer)
+                # map_buffer = create_map_snapshot(lat, lon)
+                # intro_page = first_page(intro_text, map_img_buffer=map_buffer)
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
