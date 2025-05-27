@@ -1269,7 +1269,7 @@ with tab1:
                 # Button to generate and download PDF
                 map_buffer = create_map_snapshot(lat, lon)
                 intro_page = first_page(map_img_buffer=map_buffer)
-                pdf_buffer = save_plots_to_pdf()
+                #pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
                 # Rewind both buffers to the start
@@ -1280,8 +1280,8 @@ with tab1:
                 merger = PdfMerger()
                 
                 # Load both as PdfReader and append
-                # merger.append(intro_page)
-                merger.append(pdf_buffer)
+                merger.append(intro_page)
+                #merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
                 # Write merged output to a new BytesIO buffer
