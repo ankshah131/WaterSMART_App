@@ -63,7 +63,7 @@ All parties receiving these data must be informed of these restrictions.
 This is an aggregate dataset with multiple data contributors.<br/><br/><br/><br/>
 
 
-<b>REFERENCES:</b><br/><br/>
+<b>REFERENCES:</b><br/><br/><br/><br/><br/><br/><br/><br/>
 
 Abatzoglou JT. 2013. Development of gridded surface meteorological data for ecological applications and modelling. Int. J. Climatol. 33: 121–131. 
 Available at <a href="http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full" color="blue">http://onlinelibrary.wiley.com/doi/10.1002/joc.3413/full</a><br/><br/>
