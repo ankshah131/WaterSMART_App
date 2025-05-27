@@ -97,9 +97,10 @@ def crop_pdf_to_letter(pdf_buffer):
     return output
 
 
-def create_map_snapshot(lat, lon, zoom=10, width=2550, height=1200):
-    m = StaticMap(width, height)
-    marker = CircleMarker((lon, lat), 'red', 3)  # looks like a point
+# ---- Static map renderer ----
+def create_map_snapshot(lat, lon, zoom=10):
+    m = StaticMap(800, 600)
+    marker = IconMarker((lon, lat), 'red', 12)
     m.add_marker(marker)
     image = m.render(zoom=zoom)
 
@@ -1019,7 +1020,44 @@ with tab1:
                     st.markdown("#### Boxplot of Annual Actual Evapotranspiration-Groundwater (mm)")
                     st.pyplot(ggplot.draw(p_aetgw2))
 
+                title = 'Nevada GDE Water Needs Explorer Tool Output'
                 
+                intro_text = f"""
+                <b>{title}</b><br/><br/>
+                
+                Estimates are based on model estimates but have uncertainty due to the following simplifications:<br/><br/>
+                1) uniform soil texture in soil column is assumed;<br/><br/>
+                2) variation in root distribution is not considered;<br/><br/>
+                3) species-level differences are not accounted for;<br/><br/>
+                4) groundwater depths are assumed constant over time.<br/><br/>
+
+                Date: {date_str}<br/><br/>
+                Location: {lat:.2f} N, {lon:.2f} W <br/><br/>    
+                Soil type: {soil_string}<br/><br/>
+                Annual precipitation: {precip_value:.2f} mm<br/><br/>    
+                Annual evaporative demand: {eto_value:.2f} mm<br/><br/>
+                Root depth: {rd} m<br/><br/>     
+                Admin Basin ID: {basin_id}<br/><br/>
+                Admin Basin Name: {basin_name}"""
+
+                
+                def first_page(intro_text, map_img_buffer=None):
+                    buffer = io.BytesIO()
+                    doc = SimpleDocTemplate(buffer, pagesize=LETTER)
+                    styles = getSampleStyleSheet()
+                    story = []
+                
+                    story.append(Paragraph(intro_text, styles["Normal"]))
+                    story.append(Spacer(1, 0.25 * inch))
+                
+                    # Add map image
+                    if map_img_buffer:
+                        story.append(Paragraph("<b>Map Location:</b>", styles["Normal"]))
+                        story.append(reportImage(map_img_buffer, width=6 * inch, height=4 * inch))
+                
+                    doc.build(story)
+                    buffer.seek(0)
+                    return buffer
 
                 def add_definitions_to_pdf(definition_text, image_url=PATH_LOGOS):
                     """
@@ -1078,20 +1116,20 @@ with tab1:
                 
                         # Create info box image
                         info_text = f"""
-                    Estimates are based on model estimates but have 
-                    uncertainty due to the following simplifications:
-                    1) uniform soil texture in soil column is assumed;
-                    2) variation in root distribution is not considered;
-                    3) species-level differences are not accounted for;
-                    4) groundwater depths are assumed constant 
-                    over time.
-
-                    Date: {date_str}
-                    Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                    Annual precipitation: {precip_value:.2f} mm    
-                    Annual evaporative demand: {eto_value:.2f} mm
-                    Root depth: {rd} m     Admin Basin ID: {basin_id}
-                    Admin Basin Name: {basin_name}
+                        Estimates are based on model estimates but have 
+                        uncertainty due to the following simplifications:
+                        1) uniform soil texture in soil column is assumed;
+                        2) variation in root distribution is not considered;
+                        3) species-level differences are not accounted for;
+                        4) groundwater depths are assumed constant 
+                        over time.
+    
+                        Date: {date_str}
+                        Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
+                        Annual precipitation: {precip_value:.2f} mm    
+                        Annual evaporative demand: {eto_value:.2f} mm
+                        Root depth: {rd} m     Admin Basin ID: {basin_id}
+                        Admin Basin Name: {basin_name}
                                     """
 
 
@@ -1228,6 +1266,8 @@ with tab1:
                 
                 
                 # Button to generate and download PDF
+                map_buffer = create_map_snapshot(lat, lon)
+                intro_page = first_page(intro_text, map_img_buffer=map_buffer)
                 pdf_buffer = save_plots_to_pdf()
                 definitions_pdf = add_definitions_to_pdf(definitions_text, image_url=PATH_LOGOS)
                 
@@ -1241,7 +1281,7 @@ with tab1:
                 # Load both as PdfReader and append
                 # merger.append(PdfReader(pdf_buffer))
                 # merger.append(PdfReader(definitions_pdf))
-                
+                merger.append(intro_page)
                 merger.append(pdf_buffer)
                 merger.append(definitions_pdf)
                 
