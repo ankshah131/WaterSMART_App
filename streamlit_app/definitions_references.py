@@ -27,7 +27,7 @@ Groundwater-dependent vegetation can access groundwater through their roots, but
 <b>Leaf Area Index (LAI):</b><br/>
 Leaf area index (LAI) represents the amount of leaf area in an ecosystem and is related to the amount of photosynthesis, evapotranspiration and productivity of an area of interest. LAI is the one-sided green leaf area per unit of ground surface area, and its value can be an indication of the health of an ecosystem (Fang et al. 2019).
 
-We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below (LAI data source: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H)<br/><br/>
+We have assumed a typical target LAI for a phreatophytic shrubland in Nevada to be 1, whereas a meadow in Nevada would have a typical target LAI of 2, as shown in examples below (LAI data source: <a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H/" color="blue">https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD15A3H/</a>)<br/><br/>
 
 <b>Average Actual Evapotranspiration (1991-2020):</b><br/>
 Actual evapotranspiration (Actual ET)) is the actual amount of water that is evapotranspired and is limited by the amount of available water. It is always less than or equal to Potential ET.<br/><br/>
