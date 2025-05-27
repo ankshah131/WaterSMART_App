@@ -1106,75 +1106,6 @@ with tab1:
                 
                     with PdfPages(pdf_buffer) as pdf:
                         
-                        ### -------- PAGE 1: INFO BOX + CUMULATIVE PLOT -------- ###
-                        # fig_pwd1 = p_pwd1.draw()
-                        # fig_pwd1.set_size_inches(6, 4)
-                        # buf_pwd1 = io.BytesIO()
-                        # fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
-                        # plt.close(fig_pwd1)
-                        # buf_pwd1.seek(0)
-                        # img_pwd1 = Image.open(buf_pwd1)
-                
-                        # # Create info box image
-                        # info_text = f"""
-                        # Estimates are based on model estimates but have 
-                        # uncertainty due to the following simplifications:
-                        # 1) uniform soil texture in soil column is assumed;
-                        # 2) variation in root distribution is not considered;
-                        # 3) species-level differences are not accounted for;
-                        # 4) groundwater depths are assumed constant 
-                        # over time.
-    
-                        # Date: {date_str}
-                        # Location: {lat:.2f} N, {lon:.2f} W     Soil type: {soil_string}
-                        # Annual precipitation: {precip_value:.2f} mm    
-                        # Annual evaporative demand: {eto_value:.2f} mm
-                        # Root depth: {rd} m     Admin Basin ID: {basin_id}
-                        # Admin Basin Name: {basin_name}
-                        #             """
-
-
-                        # # Double the font size
-                        # font_size = 48  # was 20
-                        # try:
-                        #     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
-                        # except:
-                        #     font = ImageFont.load_default()
-                        
-                        # # Increase height of info box to fit bigger text
-                        # info_box_height = 800  # was 250
-                        # padding = 75  # Optional: increase padding too for cleaner layout
-                        
-                        # info_img = Image.new("RGB", (img_pwd1.width, info_box_height), "#c6e2a9")
-                        # draw = ImageDraw.Draw(info_img)
-                        # draw.text((padding, 20), info_text, font=font, fill="black")
-
-                        # # Combine banner + plot vertically
-                        # combined_top = Image.new("RGB", (img_pwd1.width, info_img.height + img_pwd1.height), (255, 255, 255))
-                        # combined_top.paste(info_img, (0, 0))
-                        # combined_top.paste(img_pwd1, (0, info_img.height))
-
-                        # # First, generate the map image
-                        # # map_buffer = create_map_snapshot(lat, lon, width=combined_top.width, height=600)
-                        # # map_img = Image.open(map_buffer).convert("RGB")
-                        # # map_img = map_img.resize((combined_top.width, map_img.height), Image.ANTIALIAS)
-
-
-                        # # --- Use SAME method as later pages: fixed canvas, centered image ---
-                        # canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
-                        # canvas = Image.new("RGB", canvas_px, (255, 255, 255))
-
-                        # # Horizontally center the image, align to top
-                        # x_offset = (canvas_px[0] - combined_top.width) // 2
-                        # y_offset = 50  # Optional small top margin (can be 0)
-                        
-                        # canvas.paste(combined_top, (x_offset, y_offset))
-                        
-                        # fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
-                        # ax.axis('off')
-                        # ax.imshow(canvas)
-                        # pdf.savefig(fig, bbox_inches='tight')  # Keep this to trim outer whitespace, since canvas is fixed
-                        # plt.close(fig)
                         ### -------- PAGE 1: PLOT + MAP SNAPSHOT -------- ###
                         fig_pwd1 = p_pwd1.draw()
                         fig_pwd1.set_size_inches(8, 6)
@@ -1188,7 +1119,7 @@ with tab1:
                         canvas_px = (int(LETTER_WIDTH_IN * DPI), int(LETTER_HEIGHT_IN * DPI))
                         canvas = Image.new("RGB", canvas_px, (255, 255, 255))
                         x_offset = (canvas_px[0] - img_pwd1.width) // 2
-                        y_offset = 50  # small top margin
+                        y_offset = (canvas_px[1] - img_pwd1.height) // 2  # small top margin
                         canvas.paste(img_pwd1, (x_offset, y_offset))
                         
                         fig, ax = plt.subplots(figsize=(LETTER_WIDTH_IN, LETTER_HEIGHT_IN))
