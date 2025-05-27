@@ -1206,7 +1206,7 @@ with tab1:
             render_footer()
         
         except Exception as e:
-            #st.write(e)
+            st.write(e)
             st.warning("Please choose another location on the map.")
             render_footer()
             #st.write(e)
