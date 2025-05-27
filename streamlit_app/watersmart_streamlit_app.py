@@ -101,7 +101,7 @@ def crop_pdf_to_letter(pdf_buffer):
 # ---- Static map renderer ----
 def create_map_snapshot(lat, lon, zoom=10):
     m = StaticMap(800, 600)
-    marker = IconMarker((lon, lat), 'red', 12)
+    marker = CircleMarker((lon, lat), 'red', 12)
     m.add_marker(marker)
     image = m.render(zoom=zoom)
 
