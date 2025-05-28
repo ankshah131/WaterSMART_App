@@ -367,8 +367,8 @@ with tab1:
                     # Convert to image for Folium
                     # ee_features = ee_fc.style(color='black', width=1)
                     # folium_map.add_ee_layer(ee_features, {}, label)
-                    styled = ee_fc.style(color='red', width=2)
-                    styled_image = styled.visualize(**{"opacity": 0.7})
+                    styled = ee_fc.style(color='black', width=4)
+                    styled_image = styled.visualize(**{"opacity": 0.6})
                     folium_map.add_ee_layer(styled_image, {}, label)
                 else:
                     ee_image = ee.Image(asset_id)   
