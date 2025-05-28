@@ -331,22 +331,25 @@ with tab1:
             st.checkbox(label, key=f"layer_checkbox_{label}")
 
         # Initialize map
-        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=9, tiles="OpenStreetMap")
-    
+        #folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=9, tiles="OpenStreetMap")
+
+        # Initialize map without base tiles
+        folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=9, tiles=None)
+        
+        # Add Stadia Alidade Satellite tiles
+        folium.TileLayer(
+            tiles='https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
+            attr='&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            name='Stadia Alidade Satellite',
+            overlay=False,
+            control=True
+        ).add_to(folium_map)
+            
         # Add marker
         folium.Marker(
             location=st.session_state.selected_coords,
             popup="Selected Location",
             icon=folium.Icon(color="red", icon="info-sign")
-        ).add_to(folium_map)
-
-        # Add Esri Satellite basemap
-        folium.TileLayer(
-            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-            attr="Esri",
-            name="Esri Satellite",
-            overlay=False,
-            control=True
         ).add_to(folium_map)
 
 
