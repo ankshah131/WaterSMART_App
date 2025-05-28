@@ -336,13 +336,14 @@ with tab1:
         # Initialize map without base tiles
         folium_map = folium.Map(location=st.session_state.selected_coords, zoom_start=9, tiles=None)
         
-        # Add Stadia Alidade Satellite tiles
+        # Add the USGS Imagery Topo tile layer
         folium.TileLayer(
-            tiles='https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
-            attr='&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            name='Stadia Alidade Satellite',
+            tiles='https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}',
+            attr='Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>',
+            name='USGS Imagery Topo',
             overlay=False,
-            control=True
+            control=True,
+            max_zoom=20
         ).add_to(folium_map)
             
         # Add marker
