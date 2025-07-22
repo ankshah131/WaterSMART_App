@@ -1091,6 +1091,7 @@ with tab1:
                     buffer.seek(0)
                     return buffer
 
+               
                 def remove_duplicate_titles(fig):
                     try:
                         fig.suptitle("")  # remove any suptitle
@@ -1099,6 +1100,21 @@ with tab1:
                     except Exception:
                         pass
                     return fig
+
+               
+                def strip_plot_titles(gg):
+                    """
+                    Removes title, subtitle, and caption from a Plotnine ggplot object.
+                    Prevents duplication when using gg.draw().
+                    """
+                    if 'title' in gg.labels:
+                        gg.labels['title'] = ''
+                    if 'subtitle' in gg.labels:
+                        gg.labels['subtitle'] = ''
+                    if 'caption' in gg.labels:
+                        gg.labels['caption'] = ''
+                    return gg
+
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
@@ -1142,17 +1158,8 @@ with tab1:
                         for plot1, title1, plot2, title2 in paired_plots:
                             # fig1 = plot1.draw()
                             # fig2 = plot2.draw()
-                            fig1 = plot1.draw()
-                            fig1.suptitle("")
-                            for ax in fig1.axes:
-                                ax.set_title("")
-                            
-                            fig2 = plot2.draw()
-                            fig2.suptitle("")
-                            for ax in fig2.axes:
-                                ax.set_title("")
-                            # fig1 = remove_duplicate_titles(plot1.draw())
-                            # fig2 = remove_duplicate_titles(plot2.draw())
+                            fig1 = strip_plot_titles(plot1).draw()
+                            fig2 = strip_plot_titles(plot2).draw()
                             
                             fig1.set_size_inches(6, 4)
                             fig2.set_size_inches(6, 4)
