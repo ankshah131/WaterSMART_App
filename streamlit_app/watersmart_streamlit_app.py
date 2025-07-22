@@ -1224,7 +1224,7 @@ with tab1:
             #st.write(e)
             st.warning("Please choose another location on the map.")
             render_footer()
-            #st.write(e)
+            st.write(e)
             
     else:
         if map_data is None:
