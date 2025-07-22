@@ -1146,7 +1146,7 @@ with tab1:
                         
                         ### -------- PAGE 1: PLOT + MAP SNAPSHOT -------- ###
                         #fig_pwd1 = p_pwd1.draw()
-                        fig_pwd1 = strip_plot_titles(p_pwd1).draw()
+                        fig_pwd1 = strip_plot_titles(p_pwd1)#.draw()
                         fig_pwd1.set_size_inches(8, 6)
                         buf_pwd1 = io.BytesIO()
                         fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
@@ -1178,8 +1178,8 @@ with tab1:
                         for plot1, title1, plot2, title2 in paired_plots:
                             # fig1 = plot1.draw()
                             # fig2 = plot2.draw()
-                            fig1 = strip_plot_titles(plot1).draw()
-                            fig2 = strip_plot_titles(plot2).draw()
+                            fig1 = strip_plot_titles(plot1)#.draw()
+                            fig2 = strip_plot_titles(plot2)#.draw()
                             
                             fig1.set_size_inches(6, 4)
                             fig2.set_size_inches(6, 4)
