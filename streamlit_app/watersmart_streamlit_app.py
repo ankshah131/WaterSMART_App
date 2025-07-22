@@ -1104,16 +1104,10 @@ with tab1:
                
                 def strip_plot_titles(gg):
                     """
-                    Removes title, subtitle, and caption from a Plotnine ggplot object.
-                    Prevents duplication when using gg.draw().
+                    Safely remove title, subtitle, and caption from a Plotnine ggplot object
+                    to prevent duplication in matplotlib rendering.
                     """
-                    if 'title' in gg.labels:
-                        gg.labels['title'] = ''
-                    if 'subtitle' in gg.labels:
-                        gg.labels['subtitle'] = ''
-                    if 'caption' in gg.labels:
-                        gg.labels['caption'] = ''
-                    return gg
+                    return gg + labs(title=None, subtitle=None, caption=None)
 
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
