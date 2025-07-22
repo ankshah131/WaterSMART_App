@@ -1091,6 +1091,14 @@ with tab1:
                     buffer.seek(0)
                     return buffer
 
+                def remove_duplicate_titles(fig):
+                    try:
+                        fig.suptitle("")  # remove any suptitle
+                        for ax in fig.axes:
+                            ax.set_title("")  # remove subplot titles
+                    except Exception:
+                        pass
+                    return fig
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
                 
@@ -1132,8 +1140,10 @@ with tab1:
                         ]
 
                         for plot1, title1, plot2, title2 in paired_plots:
-                            fig1 = plot1.draw()
-                            fig2 = plot2.draw()
+                            # fig1 = plot1.draw()
+                            # fig2 = plot2.draw()
+                            fig1 = remove_duplicate_titles(plot1.draw())
+                            fig2 = remove_duplicate_titles(plot2.draw())
                             fig1.set_size_inches(6, 4)
                             fig2.set_size_inches(6, 4)
                         
