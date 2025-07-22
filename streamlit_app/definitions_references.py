@@ -74,7 +74,7 @@ Available at <a href="https://doi.org/10.1029/2018RG000608" color="blue">https:/
 Food and Agriculture Organization. 2006. Soil Texture. 
 Available at <a href="https://www.fao.org/fishery/static/FAO_Training/FAO_Training/General/x6706e/x6706e06.htm" color="blue">https://www.fao.org/fishery/static/FAO_Training/FAO_Training/General/x6706e/x6706e06.htm</a><br/><br/>
 
-Lowry, C. S., and S. P. Loheide II (2010), Groundwater-dependent vegetation: Quantifying the groundwater subsidy, Water Resour. Res., 46, W06202, doi:10.1029/2009WR008874</a><br/><br/>
+Lowry, C. S., and S. P. Loheide II (2010), Groundwater-dependent vegetation: Quantifying the groundwater subsidy, Water Resour. Res., 46, W06202. <a href="https://doi.org/10.1029/2009WR008874" color="blue">https://doi.org/10.1029/2009WR008874</a><br/><br/>
 
 Nevada Division of Water Planning. 1999. Nevada State Water Plan. Carson City: Department of Conservation and Natural Resources, Nevada Division of Water Planning. 
 Available at <a href="https://water.nv.gov/library/water-planning-reports" color="blue">https://water.nv.gov/library/water-planning-reports</a><br/><br/>
