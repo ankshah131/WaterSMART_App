@@ -1104,12 +1104,35 @@ with tab1:
                     return fig
 
                
-                def strip_plot_titles(gg):
+                # def strip_plot_titles(gg):
+                #     """
+                #     Safely remove title, subtitle, and caption from a Plotnine ggplot object
+                #     to prevent duplication in matplotlib rendering.
+                #     """
+                #     return gg + labs(title=None, subtitle=None, caption=None)
+
+                
+                def strip_plot_titles(ggplot_obj):
                     """
-                    Safely remove title, subtitle, and caption from a Plotnine ggplot object
-                    to prevent duplication in matplotlib rendering.
+                    Clean a ggplot object for PDF export by removing ggplot titles, subtitles,
+                    and also clearing any matplotlib axis/figure titles after draw().
                     """
-                    return gg + labs(title=None, subtitle=None, caption=None)
+                    # Strip titles from ggplot labels
+                    clean_gg = ggplot_obj + labs(title=None, subtitle=None, caption=None)
+                
+                    # Render to matplotlib figure
+                    fig = clean_gg.draw()
+                
+                    # Clear matplotlib suptitle
+                    fig.suptitle("")
+                    
+                    # Clear each axis title (which is where duplication usually occurs)
+                    for ax in fig.axes:
+                        ax.set_title("")
+                        ax.set_xlabel("")
+                        ax.set_ylabel("")
+                
+                    return fig
 
 
                 def save_plots_to_pdf(lat=lat, lon=-lon, soil_string=soilt):
