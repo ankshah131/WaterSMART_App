@@ -35,7 +35,7 @@ from reportlab.lib.enums import TA_LEFT
 
 from reportlab.platypus import Image as reportImage
 
-#from app_def.components.header import render_header
+from app_def.components.header import render_header
 from app_def.components.footer import render_footer
 from app_def.content.definitions import render_definitions
 from definitions_references import definitions_text
@@ -1224,7 +1224,6 @@ with tab1:
             #st.write(e)
             st.warning("Please choose another location on the map.")
             render_footer()
-            st.write(e)
             
     else:
         if map_data is None:
@@ -1244,7 +1243,7 @@ with tab2:
     #     st.query_params.jump_to = None
     #     st.rerun()
 
-    #render_header()
+    render_header()
     st.markdown("<h1 class='main-title'>Nevada GDE Water Needs Explorer Definitions, Disclaimers, and References</h1>", unsafe_allow_html=True)
 
     render_definitions()
