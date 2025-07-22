@@ -354,7 +354,8 @@ def render_definitions():
         "Soil Texture",
         """Soil texture refers to the proportion of sand, silt, and clay particles in the soil.  
         This can influence the ease of working with the soil, the amount of water and air the soil holds, and the rate at which water enters and moves through the soil. 
-        <span class="source-text">[Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]</span>""",
+        <span class="source-text">[Source for definition: Food and Agriculture Organization, 2006; Source of data layer: Walkinshaw et all (2020)]</span>
+        Select soil textures to explore how different proportions of sand, silt, and clay influence the soil's ability to retain water. For example, clay can hold water more tightly, limiting plant access when dry.""",
         "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png", 
         "Soil Texture Example",
         image_size="medium",
@@ -392,16 +393,16 @@ def render_definitions():
         section_id="water-deficit"
     )
     
-    # Soil texture selection
-    render_definition_section(
-        "Soil Texture Selection",
-        """Select soil textures to explore how different proportions of sand, silt, and clay influence the soil's ability to retain water. 
-        For example, clay can hold water more tightly, limiting plant access when dry.""",
-        "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png",
-        "Soil Texture Example",
-        image_size="small",
-        section_id="soil-texture-selection"
-    )
+    # # Soil texture selection
+    # render_definition_section(
+    #     "Soil Texture Selection",
+    #     """Select soil textures to explore how different proportions of sand, silt, and clay influence the soil's ability to retain water. 
+    #     For example, clay can hold water more tightly, limiting plant access when dry.""",
+    #     "https://raw.githubusercontent.com/ankshah131/WaterSMART_App/46955734559a0046773e492b70d013737377c1ec/streamlit_app/app_def/assets/images/soil_texture.png",
+    #     "Soil Texture Example",
+    #     image_size="small",
+    #     section_id="soil-texture-selection"
+    # )
     
     # Rooting depth
     render_definition_section(
