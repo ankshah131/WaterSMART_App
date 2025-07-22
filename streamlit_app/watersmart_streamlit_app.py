@@ -14,8 +14,10 @@ from textwrap import wrap
 from matplotlib import rcParams
 from pdf2image import convert_from_bytes
 from staticmap import StaticMap, CircleMarker, IconMarker
+from plotnine import labs
 
 from plotnine import *
+from plotnine import labs
 import matplotlib.pyplot as plt
 from streamlit_folium import st_folium
 from google.oauth2 import service_account
