@@ -1126,7 +1126,8 @@ with tab1:
                     with PdfPages(pdf_buffer) as pdf:
                         
                         ### -------- PAGE 1: PLOT + MAP SNAPSHOT -------- ###
-                        fig_pwd1 = p_pwd1.draw()
+                        #fig_pwd1 = p_pwd1.draw()
+                        fig_pwd1 = strip_plot_titles(p_pwd1).draw()
                         fig_pwd1.set_size_inches(8, 6)
                         buf_pwd1 = io.BytesIO()
                         fig_pwd1.savefig(buf_pwd1, format='png', dpi=DPI, bbox_inches='tight')
@@ -1248,7 +1249,7 @@ with tab1:
             render_footer()
         
         except Exception as e:
-            #st.write(e)
+            st.write(e)
             st.warning("Please choose another location on the map.")
             render_footer()
             
