@@ -275,7 +275,7 @@ def render_definitions():
         {"id": "precipitation", "title": "Precipitation"},
         {"id": "evapotranspiration", "title": "Evapotranspiration"},
         {"id": "water-deficit", "title": "Water Deficit"},
-        {"id": "soil-texture-selection", "title": "Soil Texture (Selection)"},
+        # {"id": "soil-texture-selection", "title": "Soil Texture (Selection)"},
         {"id": "rooting-depth", "title": "Rooting Depth"},
         {"id": "leaf-area-index", "title": "Leaf Area Index"},
         {"id": "actual-et", "title": "Average Actual Evapotranspiration"},
