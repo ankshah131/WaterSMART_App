@@ -9,7 +9,7 @@ geopandas
 streamlit_folium
 earthengine-api
 geemap
-plotnine
+plotnine==0.14.6
 pillow==10.2.0
 watchdog==3.0.0
 PyPDF2
